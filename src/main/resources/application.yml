@@ -1,0 +1,25 @@
+
+spring:
+  main:
+    web-application-type: servlet
+  datasource:
+    url: jdbc:postgresql://localhost:5432/spring-test
+    username: XX
+    password: XX
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update # Options: validate, create, create-drop, none
+    show-sql: true
+#    properties:
+#      hibernate:
+#        dialect: org.hibernate.dialect.PostgreSQLDialect # Adjust for your database
+#  profiles:
+#    active: dev
+
+# Set logging level to DEBUG
+logging:
+  level:
+    root: DEBUG
+#    affenbande: DEBUG
+
