@@ -8,24 +8,27 @@ import kotlin.Int
 data class Subcategory(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Int? = null,
+    val id: Int?,
+
+    @Column(unique = true)
     var name: String,
-    var imageSrc: String? = null,
+
+//    var imageSrc: String? = null,
 //    @ManyToMany
 //    @JoinTable(
 //        name = "t_sport_subcategory",
 //        joinColumns = [JoinColumn(name = "subcategory_id")],
 //        inverseJoinColumns = [JoinColumn(name = "sport_id")]
 //    )
-    var sportIds: List<Int>? = null,
+//    var sportIds: List<Int>? = null,
 //    @ManyToMany
 //    @JoinTable(
 //        name = "t_move_subcategory",
 //        joinColumns = [JoinColumn(name = "subcategory_id")],
 //        inverseJoinColumns = [JoinColumn(name = "move_id")]
 //    )
-    var moveIds: List<Int>? = null,
+//    var moveIds: List<Int>? = null,
 ) {
     // No-argument constructor
-    constructor() : this(null, "", null, null, null)
+    constructor() : this(null, "")
 }

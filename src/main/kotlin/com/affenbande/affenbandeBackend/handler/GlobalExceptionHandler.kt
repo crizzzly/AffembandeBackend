@@ -1,4 +1,4 @@
-package com.affenbande.affenbandeBackend.handlers
+package com.affenbande.affenbandeBackend.handler
 
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus

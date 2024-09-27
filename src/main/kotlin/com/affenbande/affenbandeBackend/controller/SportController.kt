@@ -1,11 +1,14 @@
 package com.affenbande.affenbandeBackend.controller
 
 import com.affenbande.affenbandeBackend.dao.SportDao
+import com.affenbande.affenbandeBackend.model.ImageSrc
 import com.affenbande.affenbandeBackend.model.Sport
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.multipart.MultipartFile
+import java.io.File
 import java.util.*
 
 
@@ -14,20 +17,31 @@ class SportController {
     @Autowired
     lateinit var sportDao: SportDao
 
+    @Autowired
+    lateinit var imageSrcDao: com.affenbande.affenbandeBackend.dao.ImageSrcDao
+
     @PostMapping("/sports/add")
     fun addSport(
-        @RequestBody sport: Sport
-//        @RequestParam(name = "name", required = true,) name: String,
-//        @RequestParam(name = "imageSrc", required = false,) imageSrc: String,
-//        @RequestParam(name = "subcategoryIds", required = false,) subcategoryIds: List<Int>? = null,
-//        @RequestParam(name = "moveIds", required = false,) moveIds: List<Int>? = null,
-    ): ResponseEntity<Sport> {
-//        val sport = Sport(
-//            name = name,
-//            imageSrc = imageSrc,
-//            subcategoryIds = subcategoryIds?.toList(),
-//            moveIds = moveIds?.toList(),
-//        )
+        @RequestParam("name") name: String,
+        @RequestParam("image_file") imageFile: MultipartFile
+    ): ResponseEntity<out Any> {
+        val sport = Sport()
+        sport.name = name
+        if (!imageFile.isEmpty) {
+//            val fileBytes = imageFile.bytes
+            val filename = imageFile.originalFilename!!.split(".")[0]
+            val filepath = "uploads/sports/$filename"
+            sport.imageSrc = handleImageInput(imageFile, filepath)
+            var imageSrces = ImageSrc()
+            imageSrces.name = sport.imageSrc?.name.toString()
+            imageSrces.xs = sport.imageSrc?.xs
+            imageSrces.s = sport.imageSrc?.s
+            imageSrces.m = sport.imageSrc?.m
+            imageSrces.l = sport.imageSrc?.l
+            imageSrces.xl = sport.imageSrc?.xl
+            imageSrcDao.add(imageSrces)
+
+        }
         sportDao.add(sport)
         return ResponseEntity.ok(sport)
     }

@@ -24,13 +24,12 @@ class MoveController {
         @RequestParam("sportIds", required = false) sportIds: List<Int>
 
     ): Move {
-        val move = Move(
-            name = name,
-            description = description,
-            imageSrc = imageSrc,
-            subcategoryIds = subcategoryIds,
-            sportIds = sportIds
-        )
+        val move = Move()
+        move.name = name
+        move.description = description
+        move.imageSrc = imageSrc
+//        move.subcategoryIds = subcategoryIds
+//        move.sportIds = sportIds
         moveDao.add(move)
         return move
     }

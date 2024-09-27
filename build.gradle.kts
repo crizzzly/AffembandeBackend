@@ -34,6 +34,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa") // JPA with Hibernate
 	implementation("jakarta.persistence:jakarta.persistence-api:3.1.0") // Jakarta Persistence API
 	implementation("org.postgresql:postgresql:42.2.20")
+	implementation("com.twelvemonkeys.imageio:imageio-webp:3.11.0")
 	implementation("org.mockito.kotlin:mockito-kotlin:5.4.0")
 
 }

@@ -24,12 +24,14 @@ class SubcategoryController {
         @RequestParam("sports") sportIds: List<Int>,
         @RequestParam("moves") moveIds: List<Int>,
     ): Subcategory {
-        val subcategory = Subcategory(
-            name = name,
-            imageSrc = imageSrc,
-            sportIds = sportIds,
-            moveIds = moveIds,
-        )
+        val subcategory = Subcategory()
+
+
+        subcategory.name = name
+//        subcategory.imageSrc = imageSrc
+//        subcategory.sportIds = sportIds
+//        subcategory.moveIds = moveIds
+
         subcategoryDao.add(subcategory)
         return subcategory
     }
