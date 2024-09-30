@@ -1,14 +1,18 @@
 package com.affenbande.affenbandeBackend.controller
 
+import com.affenbande.affenbandeBackend.dao.ImagePathDao
+import com.affenbande.affenbandeBackend.dao.MoveDao
+import com.affenbande.affenbandeBackend.dao.SportDao
 import com.affenbande.affenbandeBackend.dao.SubcategoryDao
-import com.affenbande.affenbandeBackend.model.Move
-import com.affenbande.affenbandeBackend.model.Sport
 import com.affenbande.affenbandeBackend.model.Subcategory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.multipart.MultipartFile
 import java.util.*
+import javax.lang.model.util.SimpleTypeVisitor7
 
 
 @RestController
@@ -16,21 +20,40 @@ class SubcategoryController {
     @Autowired
     lateinit var subcategoryDao: SubcategoryDao
 
+    @Autowired
+    lateinit var sportDao: SportDao
 
-    @GetMapping("/subcategories/addd")
+    @Autowired
+    lateinit var moveDao: MoveDao
+
+    @Autowired
+    lateinit var imagePathDao: ImagePathDao
+
+    @PostMapping("/subcategories/add")
     fun addSubcategory(
         @RequestParam("name", required = true   ) name: String,
-        @RequestParam("imageSrc") imageSrc: String,
-        @RequestParam("sports") sportIds: List<Int>,
-        @RequestParam("moves") moveIds: List<Int>,
+        @RequestParam("sports") sports: List<String>,
+        @RequestParam("moves") moves: List<String>?  ,
+        @RequestParam("image_file", required = false) imageFile: MultipartFile?
     ): Subcategory {
         val subcategory = Subcategory()
-
-
         subcategory.name = name
-//        subcategory.imageSrc = imageSrc
-//        subcategory.sportIds = sportIds
-//        subcategory.moveIds = moveIds
+
+        if (!imageFile!!.isEmpty) {
+            val filename = imageFile.originalFilename!!.split(".")[0]
+            val filepath = "uploads/sports/$filename"
+            val imagePaths = handleImageInput(imageFile, filepath)
+
+            imagePathDao.add(imagePaths)
+            subcategory.imagePath = imagePaths
+        }
+
+        if(sports != null) {
+          subcategory.sports = loadRelatedEntitiesByName(sports, sportDao::findByNameOrNull)
+        }
+        if (moves != null) {
+            subcategory.moves = loadRelatedEntitiesByName(moves, moveDao::findByNameOrNull)
+        }
 
         subcategoryDao.add(subcategory)
         return subcategory

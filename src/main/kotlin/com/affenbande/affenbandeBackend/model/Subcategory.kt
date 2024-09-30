@@ -13,22 +13,26 @@ class Subcategory(
     @Column(unique = true)
     var name: String,
 
-//    var imageSrc: String? = null,
-//    @ManyToMany
-//    @JoinTable(
-//        name = "t_sport_subcategory",
-//        joinColumns = [JoinColumn(name = "subcategory_id")],
-//        inverseJoinColumns = [JoinColumn(name = "sport_id")]
-//    )
-//    var sportIds: List<Int>? = null,
-//    @ManyToMany
-//    @JoinTable(
-//        name = "t_move_subcategory",
-//        joinColumns = [JoinColumn(name = "subcategory_id")],
-//        inverseJoinColumns = [JoinColumn(name = "move_id")]
-//    )
-//    var moveIds: List<Int>? = null,
+    @ManyToOne(cascade = [CascadeType.MERGE])
+    @JoinColumn(name = "image_path_ids")
+    var imagePath: ImagePath? = null,
+
+    @ManyToMany
+    @JoinTable(
+        name = "t_sport_subcategory",
+        joinColumns = [JoinColumn(name = "subcategory_id")],
+        inverseJoinColumns = [JoinColumn(name = "sport_id")]
+    )
+    var sports: List<Sport>? = null,
+
+    @ManyToMany
+    @JoinTable(
+        name = "t_move_subcategory",
+        joinColumns = [JoinColumn(name = "subcategory_id")],
+        inverseJoinColumns = [JoinColumn(name = "move_id")]
+    )
+    var moves: List<Move>? = null,
 ) {
     // No-argument constructor
-    constructor() : this(null, "")
+    constructor() : this(null, "", null, null, null)
 }

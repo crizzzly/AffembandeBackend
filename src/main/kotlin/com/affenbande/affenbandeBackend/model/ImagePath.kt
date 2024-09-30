@@ -9,7 +9,6 @@ class ImagePath(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Int?,
 
-    @Column(unique = true)
     var name: String,
     var xs: String? = null,
     var s: String? = null,

@@ -1,7 +1,6 @@
 package com.affenbande.affenbandeBackend.controller
 
 import com.affenbande.affenbandeBackend.dao.SportDao
-import com.affenbande.affenbandeBackend.model.ImagePath
 import com.affenbande.affenbandeBackend.model.Sport
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -20,30 +19,40 @@ class SportController {
     lateinit var sportDao: SportDao
 
     @Autowired
-    lateinit var imageSrcDao: com.affenbande.affenbandeBackend.dao.ImageSrcDao
+    lateinit var imagePathDao: com.affenbande.affenbandeBackend.dao.ImagePathDao
+
+    @Autowired
+    lateinit var subcategoryDao: com.affenbande.affenbandeBackend.dao.SubcategoryDao
+
+    @Autowired
+    lateinit var moveDao: com.affenbande.affenbandeBackend.dao.MoveDao
 
     @PostMapping("/sports/add")
     fun addSport(
         @RequestParam("name") name: String,
-        @RequestParam("image_file") imageFile: MultipartFile
+        @RequestParam("image_file") imageFile: MultipartFile,
+        @RequestParam("subcategories", required = false) subcategories: List<String>? = null,
+        @RequestParam("moves", required = false) moves: List<String>? = null,
     ): ResponseEntity<out Any> {
         val sport = Sport()
         sport.name = name
         if (!imageFile.isEmpty) {
-//            val fileBytes = imageFile.bytes
             val filename = imageFile.originalFilename!!.split(".")[0]
             val filepath = "uploads/sports/$filename"
             val imagePaths = handleImageInput(imageFile, filepath)
-//            val imageSrces = ImagePath()
-//            imageSrces.name = sport.imagePath?.name.toString()
-//            imageSrces.xs = sport.imagePath?.xs
-//            imageSrces.s = sport.imagePath?.s
-//            imageSrces.m = sport.imagePath?.m
-//            imageSrces.l = sport.imagePath?.l
-//            imageSrces.xl = sport.imagePath?.xl
-            imageSrcDao.add(imagePaths)
+
+            imagePathDao.add(imagePaths)
             sport.imagePath = imagePaths
         }
+
+        if (subcategories != null) {
+            sport.subcategories = loadRelatedEntitiesByName(subcategories, subcategoryDao::findByNameOrNull)
+        }
+        if (moves != null) {
+            sport.moves = loadRelatedEntitiesByName(moves, moveDao::findByNameOrNull)
+        }
+
+
         sportDao.add(sport)
         return ResponseEntity.ok(sport)
     }
