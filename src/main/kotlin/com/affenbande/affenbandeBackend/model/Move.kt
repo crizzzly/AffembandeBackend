@@ -3,8 +3,8 @@ package com.affenbande.affenbandeBackend.model
 import jakarta.persistence.*
 
 @Entity
-@Table(name="t_move")
-data class Move(
+@Table(name="t_moves")
+class Move(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Int?,

@@ -4,27 +4,32 @@ spring:
     web-application-type: servlet
   datasource:
     url: jdbc:postgresql://localhost:5432/spring-test
-    username: xx
-    password: xx
+    username: ${DB_USER}
+    password: ${DB_PASSWD}
     driver-class-name: org.postgresql.Driver
   jpa:
     show-sql: true
+    hibernate.ddl-auto: create-drop
+    hibernate.jakarta.persistence.jdbc.url: jdbc:postgresql://localhost:5432/spring-test
     properties:
       hibernate: format_sql=true
-      ddl-auto: update # Options: validate, create, create-drop, none
+      dialect: org.hibernate.dialect.PostgreSQL10Dialect # Adjust for your database
+#      dialect: org.hibernate.dialect.PostgreSQLDialect # Adjust for your database
+#      ddl-auto: create-drop # Options: validate, create: while developing, create-drop, none, update: generate schema automatically
+#        persistence:
+#          provider: org.hibernate.service.jdbc.connections.internal.DatasourceConnectionProvider
+#          jta-data-source: jdbc:postgresql://localhost:5432/spring-test
+#          jdbc-data-source: jdbc:postgresql://localhost:5432/spring-test
+
   servlet:
     multipart:
       max-file-size: 35MB
       max-request-size: 40MB
-#    properties:
-#      hibernate:
-#        dialect: org.hibernate.dialect.PostgreSQLDialect # Adjust for your database
   profiles:
     active: dev
+
 
 # Set logging level to DEBUG
 logging:
   level:
     root: DEBUG
-#    affenbande: DEBUG
-

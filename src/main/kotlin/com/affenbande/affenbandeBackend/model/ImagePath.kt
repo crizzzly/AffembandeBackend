@@ -4,7 +4,7 @@ import jakarta.persistence.*
 
 @Entity
 @Table(name = "t_image_paths")
-data class ImageSrc(
+class ImagePath(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Int?,
@@ -16,8 +16,7 @@ data class ImageSrc(
     var m: String? = null,
     var l: String? = null,
     var xl: String? = null
-)
-{
+) {
     // No-argument constructor
     constructor() : this(null, "", null, null, null, null, null)
 }

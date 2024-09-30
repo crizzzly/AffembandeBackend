@@ -4,8 +4,8 @@ import jakarta.persistence.*
 import kotlin.Int
 
 @Entity
-@Table(name = "t_subcategory")
-data class Subcategory(
+@Table(name = "t_subcategories")
+class Subcategory(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int?,

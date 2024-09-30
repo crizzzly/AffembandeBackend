@@ -1,16 +1,15 @@
 package com.affenbande.affenbandeBackend.controller
 
-import com.affenbande.affenbandeBackend.model.ImageSrc
+import com.affenbande.affenbandeBackend.model.ImagePath
 import org.springframework.web.multipart.MultipartFile
 import java.awt.Image
 import java.awt.image.BufferedImage
 import java.io.ByteArrayInputStream
-import java.io.ByteArrayOutputStream
 import java.io.File
 import javax.imageio.ImageIO
 
 
-fun handleImageInput(imageFile: MultipartFile, filePath: String): ImageSrc {
+fun handleImageInput(imageFile: MultipartFile, filePath: String): ImagePath {
 
     println("Received file: $filePath")
 
@@ -21,15 +20,15 @@ fun handleImageInput(imageFile: MultipartFile, filePath: String): ImageSrc {
     val lImage = resizeImage(imageFile, 800)   // Example size
     val xlImage = resizeImage(imageFile, 1200) // Example size
 
-    val imageSrc = ImageSrc()
-    imageSrc.name = filePath
-    imageSrc.xs = saveImage(xsImage, "$filePath-xs.webp")
-    imageSrc.s = saveImage(sImage, "$filePath-s.webp")
-    imageSrc.m = saveImage(mImage, "$filePath-m.webp")
-    imageSrc.l = saveImage(lImage, "$filePath-l.webp")
-    imageSrc.xl = saveImage(xlImage, "$filePath-xl.webp")
+    val imagePath = ImagePath()
+    imagePath.name = filePath
+    imagePath.xs = saveImage(xsImage, "$filePath-xs.webp")
+    imagePath.s = saveImage(sImage, "$filePath-s.webp")
+    imagePath.m = saveImage(mImage, "$filePath-m.webp")
+    imagePath.l = saveImage(lImage, "$filePath-l.webp")
+    imagePath.xl = saveImage(xlImage, "$filePath-xl.webp")
 
-    return imageSrc
+    return imagePath
 }
 
 fun resizeImage(imageFile: MultipartFile, width: Int): BufferedImage? {

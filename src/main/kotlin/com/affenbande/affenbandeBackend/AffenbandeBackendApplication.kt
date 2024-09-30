@@ -1,19 +1,17 @@
 package com.affenbande.affenbandeBackend
 
-
+import io.github.cdimascio.dotenv.Dotenv
 import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.SpringApplication
-import org.springframework.boot.actuate.autoconfigure.wavefront.WavefrontProperties.Application
 import org.springframework.boot.autoconfigure.SpringBootApplication
-import org.springframework.boot.runApplication
+import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.Bean
 import java.util.*
 
 
-
-
 @SpringBootApplication
+@EntityScan(basePackages = ["com.affenbande.affenbandeBackend.model"])
 public class AffenbandeBackendApplication{
 
 	@Bean
@@ -29,6 +27,13 @@ public class AffenbandeBackendApplication{
 	}
 }
 fun main(args: Array<String>) {
+	val dotenv = Dotenv.configure().filename("secrets.env").load()
+
+
+	// Set system properties for DB_USER and DB_PASSWORD
+	System.setProperty("DB_USER", dotenv["DB_USER"])
+	System.setProperty("DB_PASSWD", dotenv["DB_PASSWD"])
+
 	SpringApplication.run(AffenbandeBackendApplication::class.java, *args)
 }
 

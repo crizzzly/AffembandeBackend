@@ -36,7 +36,7 @@ dependencies {
 	implementation("org.postgresql:postgresql:42.2.20")
 	implementation("com.twelvemonkeys.imageio:imageio-webp:3.11.0")
 	implementation("org.mockito.kotlin:mockito-kotlin:5.4.0")
-
+	implementation("io.github.cdimascio:dotenv-kotlin:6.2.2")
 }
 
 kotlin {
