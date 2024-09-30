@@ -1,7 +1,5 @@
 package com.affenbande.affenbandeBackend.controller
 
-import java.util.*
-import kotlin.reflect.KFunction1
 
 fun <T> loadRelatedEntitiesByName(
     names: List<String>, // List of related names

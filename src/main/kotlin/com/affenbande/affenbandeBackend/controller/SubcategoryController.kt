@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
 import java.util.*
-import javax.lang.model.util.SimpleTypeVisitor7
 
 
 @RestController
@@ -38,6 +37,7 @@ class SubcategoryController {
     ): Subcategory {
         val subcategory = Subcategory()
         subcategory.name = name
+        subcategory.sports = loadRelatedEntitiesByName(sports, sportDao::findByNameOrNull)
 
         if (!imageFile!!.isEmpty) {
             val filename = imageFile.originalFilename!!.split(".")[0]
@@ -48,9 +48,6 @@ class SubcategoryController {
             subcategory.imagePath = imagePaths
         }
 
-        if(sports != null) {
-          subcategory.sports = loadRelatedEntitiesByName(sports, sportDao::findByNameOrNull)
-        }
         if (moves != null) {
             subcategory.moves = loadRelatedEntitiesByName(moves, moveDao::findByNameOrNull)
         }
@@ -60,7 +57,7 @@ class SubcategoryController {
     }
 
     @GetMapping("/subcategories/update")
-    fun updateSubcategory(@RequestParam("id") id: kotlin.Int, @RequestParam("name") name: String) {
+    fun updateSubcategory(@RequestParam("id") id: Int, @RequestParam("name") name: String) {
         val subcategory = subcategoryDao.findById(id).get()
         subcategory.name = name
         subcategoryDao.update(subcategory)
@@ -73,7 +70,7 @@ class SubcategoryController {
     }
 
     @GetMapping("/subcategories/get-by-id")
-    fun getSubcategoryById(@RequestParam("id") id: kotlin.Int): Optional<Subcategory> {
+    fun getSubcategoryById(@RequestParam("id") id: Int): Optional<Subcategory> {
         return subcategoryDao.findById(id)
     }
 
@@ -83,7 +80,7 @@ class SubcategoryController {
     }
 
     @GetMapping("/subcategories/delete-by-id")
-    fun deleteSubcategoryById(@RequestParam("id") id: kotlin.Int) {
+    fun deleteSubcategoryById(@RequestParam("id") id: Int) {
         subcategoryDao.deleteById(id)
     }
 }

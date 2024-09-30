@@ -74,7 +74,7 @@ class SportController {
 
     @GetMapping("/sports/get-by-name")
     fun getSportByName(@RequestParam("name") name: String): ResponseEntity<Sport?> {
-        val sport = sportDao.findByNameOrNull(name.toString())
+        val sport = sportDao.findByNameOrNull(name)
         return ResponseEntity(sport, sport?.let { HttpStatus.OK } ?: HttpStatus.NOT_FOUND)
     }
 }

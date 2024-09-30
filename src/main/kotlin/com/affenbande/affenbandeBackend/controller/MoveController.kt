@@ -64,7 +64,7 @@ class MoveController {
     }
 
     @GetMapping("/moves/get-by-id")
-    fun getMoveById(@RequestParam("id") id: kotlin.Int): Optional<Move> {
+    fun getMoveById(@RequestParam("id") id: Int): Optional<Move> {
         val move = moveDao.findById(id)
         return move
     }
