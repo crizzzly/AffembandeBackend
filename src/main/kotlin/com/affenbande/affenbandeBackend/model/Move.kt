@@ -12,6 +12,7 @@ class Move(
     @Column(unique = true)
     var name: String,
 
+    @Column(length = 1000)
     var description: String? = null,
 
     @ManyToOne(cascade = [CascadeType.MERGE])

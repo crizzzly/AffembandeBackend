@@ -53,6 +53,8 @@ fun resizeImage(imageFile: MultipartFile, width: Int): BufferedImage? {
     }
 }
 
+
+// TODO: Check why's not saving
 fun saveImage(image: BufferedImage?, filePath: String): String {
     if (image != null) {
         val outputFile = File(filePath)
