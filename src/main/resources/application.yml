@@ -9,8 +9,8 @@ spring:
     driver-class-name: org.postgresql.Driver
   jpa:
     show-sql: true
-    hibernate.ddl-auto: update #create-drop
-    hibernate.jakarta.persistence.jdbc.url: jdbc:postgresql://localhost:5432/spring-test
+    hibernate.ddl-auto: create-drop # update #create-drop
+#    hibernate.jakarta.persistence.jdbc.url: jdbc:postgresql://localhost:5432/spring-test
     properties:
       hibernate: format_sql=true
       dialect: org.hibernate.dialect.PostgreSQLDialect # Adjust for your database
@@ -22,8 +22,13 @@ spring:
   profiles:
     active: dev
 
+#jakarta:
+#  persistence:
+#    jdbc:
+#      url: jdbc:postgresql://localhost:5432/spring-test
 
 # Set logging level to DEBUG
 logging:
   level:
-    root: DEBUG
+    root: INFO
+    org.springframework: DEBUG

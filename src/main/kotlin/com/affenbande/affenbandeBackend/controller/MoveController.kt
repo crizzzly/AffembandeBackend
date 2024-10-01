@@ -40,11 +40,11 @@ class MoveController {
         move.description = description
 
         if(imageFile != null && !imageFile.isEmpty) {
-            val filename = imageFile.originalFilename!!.split(".")[0]
-            val filepath = "uploads/subcategories/$filename"
-            val imagePaths = handleImageInput(imageFile, filepath)
+            // TODO: check this filename sh
+            val path = ImageConstants.MOVE_PATH + imageFile.originalFilename
+            val imagePaths = handleImageInput(imageFile, path)
             imagePathDao.add(imagePaths)
-            move.imagePath = imagePaths
+            move.image = imagePaths
         }
 
         if(subcategories != null) {

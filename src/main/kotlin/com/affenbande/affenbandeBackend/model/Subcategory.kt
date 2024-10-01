@@ -13,23 +13,29 @@ class Subcategory(
     @Column(unique = true)
     var name: String,
 
+//    @ManyToMany
+//    @JoinTable(
+//        name = "t_subcategory_image",
+//        joinColumns = [JoinColumn(name = "fk_subcategory_id")],
+//        inverseJoinColumns = [JoinColumn(name = "fk_image_id")]
+//    )
     @ManyToOne(cascade = [CascadeType.MERGE])
     @JoinColumn(name = "image_path_ids")
-    var imagePath: ImagePath? = null,
+    var image: ImagePath? = null,
 
-    @ManyToMany
+    @ManyToMany(cascade = [CascadeType.PERSIST])
     @JoinTable(
         name = "t_sport_subcategory",
-        joinColumns = [JoinColumn(name = "subcategory_id")],
-        inverseJoinColumns = [JoinColumn(name = "sport_id")]
+        joinColumns = [JoinColumn(name = "fk_subcategory_id")],
+        inverseJoinColumns = [JoinColumn(name = "fk_sport_id")]
     )
     var sports: List<Sport>? = null,
 
-    @ManyToMany
+    @ManyToMany(cascade = [CascadeType.PERSIST])
     @JoinTable(
         name = "t_move_subcategory",
-        joinColumns = [JoinColumn(name = "subcategory_id")],
-        inverseJoinColumns = [JoinColumn(name = "move_id")]
+        joinColumns = [JoinColumn(name = "fk_subcategory_id")],
+        inverseJoinColumns = [JoinColumn(name = "fk_move_id")]
     )
     var moves: List<Move>? = null,
 ) {

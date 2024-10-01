@@ -11,13 +11,13 @@ class ImagePathController {
     @Autowired
     lateinit var imagePathDao: ImagePathDao
 
-    @GetMapping("/imagesrc/add")
+    @GetMapping("/images/add")
     fun addImageSrc(imagePath: ImagePath) {
         return imagePathDao.add(imagePath)
     }
 
 
-    @GetMapping("/imagesrc/get-all")
+    @GetMapping("/images/get-all")
     fun getImageSrc(): List<ImagePath> {
         return imagePathDao.findAll()
     }

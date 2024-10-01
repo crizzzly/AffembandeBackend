@@ -37,12 +37,11 @@ class SportController {
         val sport = Sport()
         sport.name = name
         if (!imageFile.isEmpty) {
-            val filename = imageFile.originalFilename!!.split(".")[0]
-            val filepath = "uploads/sports/$filename"
+            val filepath = ImageConstants.SPORT_PATH + imageFile.originalFilename
             val imagePaths = handleImageInput(imageFile, filepath)
 
             imagePathDao.add(imagePaths)
-            sport.imagePath = imagePaths
+            sport.image = imagePaths
         }
 
         if (subcategories != null) {

@@ -1,5 +1,5 @@
 //package com.affenbande.affenbandeBackend.controller
-//import com.affenbande.affenbandeBackend.dao.ImageSrcDao
+//import com.affenbande.affenbandeBackend.dao.ImagePathDao
 //import com.affenbande.affenbandeBackend.model.Sport
 //import org.assertj.core.api.Assertions.assertThat
 //import org.junit.jupiter.api.Test
@@ -9,6 +9,9 @@
 //import org.springframework.boot.test.web.client.TestRestTemplate
 //import org.springframework.core.ParameterizedTypeReference
 //import org.springframework.http.*
+//import org.springframework.http.client.MultipartBodyBuilder
+//import org.springframework.mock.web.MockMultipartFile
+//import java.io.File
 //
 //
 //fun print_response_to_console(response: ResponseEntity<Sport>) {
@@ -28,7 +31,7 @@
 //    private lateinit var template: TestRestTemplate
 //
 //    @MockBean
-//    private lateinit var imageSrcDao: ImageSrcDao
+//    private lateinit var imageSrcDao: ImagePathDao
 //
 //    val sport = Sport()
 ////                name = "Football",
@@ -37,59 +40,60 @@
 //    //            moveIds = emptyList()           // Set to null
 //
 //    val testImagePath = "uploads/Dog.png"
-////    @Test
-////    @Throws(Exception::class)
-////    fun `addSport should return sport when all parameters are provided`() {
-////        val headers = HttpHeaders()
-////        headers.set("Content-Type", "application/json")
-////
-////        // Create the Sport object
-////        val sport = Sport()
-////        sport.name = "Football.png"
-////        val imgFile: File = File(testImagePath)
-////        val imageFileContent = imgFile.readBytes()
-////
-////        val imageFile = MockMultipartFile(
-////            "image_file",
-////            "football.png",
-////            MediaType.IMAGE_PNG_VALUE,
-////            imageFileContent
-////        )
-////
-////        // Create HttpEntity with the MultipartFile and Sport name
-////        val bodyBuilder = MultipartBodyBuilder()
-////        bodyBuilder.part("name", "Football.png")
-////        bodyBuilder.part("image_file", imageFile.resource)
-////
-////        val requestEntity = HttpEntity(bodyBuilder.build(), headers)
-////        // Send POST request
-////        val response: ResponseEntity<Sport> = template.postForEntity(
-////            "/sports/add",
-////            requestEntity,
-////            Sport::class.java
-////        )
-////
-////        // Assert the response
-////        assertThat(response.statusCode).isEqualTo(HttpStatus.OK) // Expecting HTTP 200
-////
-////        val actualSport = response.body
-////        assertThat(actualSport).isNotNull
+//    @Test
+//    @Throws(Exception::class)
+//    fun `addSport should return sport when all parameters are provided`() {
+//        val headers = HttpHeaders()
+//        headers.set("Content-Type", "application/json")
+//
+//        // Create the Sport object
+//        val sport = Sport()
+//        sport.name = exampleSport["name"].toString()
+//        val imgFile: File = File(exampleSport["imageSrc"].toString())
+//        val imageFileContent = imgFile.readBytes()
+//
+//        val imageFile = MockMultipartFile(
+//            "image_file",
+//            "football.png",
+//            MediaType.IMAGE_PNG_VALUE,
+//            imageFileContent
+//        )
+//
+//        // Create HttpEntity with the MultipartFile and Sport name
+//        val bodyBuilder = MultipartBodyBuilder()
+//        bodyBuilder.part("name", "football")
+//        bodyBuilder.part("image_file", imageFile.resource)
+//
+//        val requestEntity = HttpEntity(bodyBuilder.build(), headers)
+//        // Send POST request
+//        val response: ResponseEntity<Sport> = template.postForEntity(
+//            "/sports/add",
+//            requestEntity,
+//            Sport::class.java
+//        )
+//
+//        // Assert the response
+//        assertThat(response.statusCode).isEqualTo(HttpStatus.OK) // Expecting HTTP 200
+//
+//        val actualSport = response.body
+//        println("received sport: $actualSport")
+//        assertThat(actualSport).isNotNull
 ////        assertThat(actualSport?.name).isEqualTo(sport.name)
 ////
 ////        // Assert that the imageSrc object is not null
-////        val imageSrc = actualSport?.imageSrc
+////        val imageSrc = actualSport?.image
 ////        assertThat(imageSrc).isNotNull
-////
-////        // Verify that the image file paths are correctly stored in ImageSrc
+//
+//        // Verify that the image file paths are correctly stored in ImageSrc
 ////        assertThat(imageSrc?.xs).endsWith("-xs.webp")
 ////        assertThat(imageSrc?.s).endsWith("-s.webp")
 ////        assertThat(imageSrc?.m).endsWith("-m.webp")
 ////        assertThat(imageSrc?.l).endsWith("-l.webp")
 ////        assertThat(imageSrc?.xl).endsWith("-xl.webp")
-////    }
+//    }}
 //
-//    @Test
-//    fun `getAllSports should return all sports`() {
+////    @Test
+////    fun `getAllSports should return all sports`() {
 ////        val headers = HttpHeaders()
 ////        headers.contentType = MediaType.APPLICATION_JSON  // Set content type to JSON
 ////
@@ -106,10 +110,10 @@
 ////        val actualSports = response.body
 ////        assertThat(actualSports).isNotNull
 ////        assertThat(actualSports?.size).isGreaterThan(0)
-//    }
-//
-//    @Test
-//    fun `getSportByName should return sport`() {
+////    }
+////
+////    @Test
+////    fun `getSportByName should return sport`() {
 ////        val headers = HttpHeaders()
 ////        headers.set("Content-Type", "application/json")
 ////
@@ -144,7 +148,7 @@
 ////        assertThat(actualSport?.imagePath).isEqualTo(sport.imagePath)
 ////        assertThat(actualSport?.subcategoryIds).isEqualTo(sport.subcategoryIds)
 ////        assertThat(actualSport?.moveIds).isEqualTo(sport.moveIds)
-//    }}
+////    }}
 //
 ////    @Test()
 ////    fun `getSportById should return sport`() { //getAllSports should return all sports

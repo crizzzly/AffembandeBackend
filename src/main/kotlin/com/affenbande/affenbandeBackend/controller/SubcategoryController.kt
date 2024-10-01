@@ -40,12 +40,11 @@ class SubcategoryController {
         subcategory.sports = loadRelatedEntitiesByName(sports, sportDao::findByNameOrNull)
 
         if (!imageFile!!.isEmpty) {
-            val filename = imageFile.originalFilename!!.split(".")[0]
-            val filepath = "uploads/sports/$filename"
+            val filepath = ImageConstants.SUBCATEGORY_PATH + imageFile.originalFilename
             val imagePaths = handleImageInput(imageFile, filepath)
 
             imagePathDao.add(imagePaths)
-            subcategory.imagePath = imagePaths
+            subcategory.image = imagePaths
         }
 
         if (moves != null) {

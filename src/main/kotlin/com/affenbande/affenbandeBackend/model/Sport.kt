@@ -12,11 +12,17 @@ class Sport(
     @Column(unique = true)
     var name: String,
 
+//    @ManyToMany
+//    @JoinTable(
+//        name = "t_sport_image",
+//        joinColumns = [JoinColumn(name = "fk_sport_id")],
+//        inverseJoinColumns = [JoinColumn(name = "fk_image_id")]
+//    )
     @ManyToOne(cascade = [CascadeType.MERGE])
-    @JoinColumn(name = "image_path_ids")
-    var imagePath: ImagePath? = null,
+    @JoinColumn(name = "image_path_id")
+    var image: ImagePath? = null,
 
-    @ManyToMany
+    @ManyToMany(cascade = [CascadeType.PERSIST])
     @JoinTable(
         name = "t_sport_subcategory",
         joinColumns = [JoinColumn(name = "fk_sport_id")],
@@ -24,7 +30,7 @@ class Sport(
     )
     var subcategories: List<Subcategory>? = null,
 
-    @ManyToMany
+    @ManyToMany(cascade = [CascadeType.PERSIST])
     @JoinTable(
         name = "t_sport_move",
         joinColumns = [JoinColumn(name = "fk_sport_id")],
