@@ -32,15 +32,40 @@ class MoveController {
         @RequestParam("name", required = true) name: String,
         @RequestParam("description", required = false) description: String,
         @RequestParam("subcategories", required = false) subcategories: List<String>? = null,
+        @RequestParam("level", required = false) level: Int? = null,
+        @RequestParam("is_core_move", required = false) isCoreMove: Boolean? = null,
+        @RequestParam("intensity", required = false) intensity: Int? = null,
+        @RequestParam("repetitions", required = false) repetitions: Int? = null,
+        @RequestParam("time_preparation", required = false) timePreparation: Int? = null,
+        @RequestParam("time_exercise", required = false) timeExercise: Int? = null,
+        @RequestParam("set_formula", required = false) setFormula: String? = null,
+        @RequestParam("pre_moves", required = false) preMoves: List<String>? = null,
+        @RequestParam("opt_pre_moves", required = false) optPreMoves: List<String>? = null,
         @RequestParam("sports", required = false) sports: List<String>? = null,
         @RequestParam("image_file", required = false) imageFile: MultipartFile? = null
     ): Move {
         val move = Move()
         move.name = name
         move.description = description
+        move.isCoreMove = isCoreMove
+        move.level  = level
+        move.intensity = intensity
+        move.repetitions = repetitions
+        move.timePreparation = timePreparation
+        move.timeExercise = timeExercise
+        move.setFormula = setFormula
+
+        println("Incomin Move Data")
+        println("pre moves: $preMoves, opt pre moves $optPreMoves")
+        if(preMoves != null) {
+            move.preMoves = loadRelatedEntitiesByName(preMoves, moveDao::findByNameOrNull)
+        }
+        if(optPreMoves != null) {
+            move.optPreMoves = loadRelatedEntitiesByName(optPreMoves, moveDao::findByNameOrNull)
+        }
+
 
         if(imageFile != null && !imageFile.isEmpty) {
-            // TODO: check this filename sh
             val path = ImageConstants.MOVE_PATH + imageFile.originalFilename
             val imagePaths = handleImageInput(imageFile, path)
             imagePathDao.add(imagePaths)

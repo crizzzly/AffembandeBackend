@@ -23,21 +23,21 @@ class Subcategory(
     @JoinColumn(name = "image_path_ids")
     var image: ImagePath? = null,
 
-    @ManyToMany(cascade = [CascadeType.PERSIST])
+    @ManyToMany(cascade = [CascadeType.ALL])
     @JoinTable(
         name = "t_sport_subcategory",
         joinColumns = [JoinColumn(name = "fk_subcategory_id")],
         inverseJoinColumns = [JoinColumn(name = "fk_sport_id")]
     )
-    var sports: List<Sport>? = null,
+    var sports: List<Sport>? = mutableListOf(),
 
-    @ManyToMany(cascade = [CascadeType.PERSIST])
+    @ManyToMany(cascade = [CascadeType.ALL])
     @JoinTable(
         name = "t_move_subcategory",
         joinColumns = [JoinColumn(name = "fk_subcategory_id")],
         inverseJoinColumns = [JoinColumn(name = "fk_move_id")]
     )
-    var moves: List<Move>? = null,
+    var moves: List<Move>? = mutableListOf(),
 ) {
     // No-argument constructor
     constructor() : this(null, "", null, null, null)

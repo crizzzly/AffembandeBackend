@@ -122,11 +122,7 @@
 ////        headers.set("name", name)
 ////        val requestEntity = HttpEntity<Any>(headers)
 //
-////        TODO(
-////         An error occurred:
-////         Argument 'Football' could not be converted to the
-////         identifier type of entity 'com.affenbande.affenbandeBackend.model.Sport' [Error coercing value]
-////         )
+
 ////        val response: ResponseEntity<Sport> = template.getForEntity(
 ////            "/sports/get-by-name",  //?name=${name}
 ////            Sport::class.java,

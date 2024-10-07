@@ -20,7 +20,7 @@ fun isPathWritable(path: String): Boolean {
 
 fun handleImageInput(imageFile: MultipartFile, filePath: String): ImagePath {
 
-    println("Received file: $filePath")
+//    println("Received file: $filePath")
 
     // Generate resized images for different sizes
     val xsImage = resizeImage(imageFile, 100)  // Example size
@@ -37,7 +37,6 @@ fun handleImageInput(imageFile: MultipartFile, filePath: String): ImagePath {
         extension = "jpeg"
     }
 
-    // TODO: handle gif files differently
     val imagePath = ImagePath()
     imagePath.name = filePath
     imagePath.xs = saveImage(xsImage, "$pathWithoutExtension-xs.${extension}")
@@ -80,7 +79,7 @@ fun saveImage(image: BufferedImage?, filePath: String): String {
     {
         val outputFile = File(filePath)
         try {
-            println("Attempting to save image to: ${outputFile.absolutePath}")
+//            println("Attempting to save image to: ${outputFile.absolutePath}")
             if (!outputFile.parentFile.exists()) {
                 println("Parent directory does not exist, creating directories: ${outputFile.parentFile.absolutePath}")
                 outputFile.parentFile.mkdirs() // Ensure directories exist

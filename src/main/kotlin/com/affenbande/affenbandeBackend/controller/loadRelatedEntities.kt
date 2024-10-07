@@ -6,6 +6,10 @@ fun <T> loadRelatedEntitiesByName(
     dao: (String) -> T? // Function to fetch the related object by name, returning nullable T
 ): List<T> {
     return names.mapNotNull { name ->
-        dao(name) // Return the entity if found, otherwise null
+
+        //TODO:
+        val cleanedName = name.replace("[", "").replace("]", "")
+        println("Loading related entity: $cleanedName")
+        dao(cleanedName) // Return the entity if found, otherwise null
     }
 }

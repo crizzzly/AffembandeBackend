@@ -12,14 +12,15 @@ class Move(
     @Column(unique = true)
     var name: String,
 
-    // TODO: description should be a set - create new table "descriptions"
+    // TODO: description should be a list/set - create new table "descriptions"
     @Column(length = 1000)
     var description: String? = null,
 
+
+    // TODO: controller - input
     @ManyToOne(cascade = [CascadeType.MERGE])
     @JoinColumn(name = "image_path_id")
-    var image: ImagePath? = null,  // TODO: rename to images
-
+    var image: ImagePath? = null,
     var level: Int? = null,
     var isCoreMove: Boolean? = null,
     var intensity: Int? = null,

@@ -31,13 +31,16 @@ class SubcategoryController {
     @PostMapping("/subcategories/add")
     fun addSubcategory(
         @RequestParam("name", required = true   ) name: String,
-        @RequestParam("sports") sports: List<String>,
+        @RequestParam("sports") sports: List<List<String>>,
         @RequestParam("moves") moves: List<String>?  ,
         @RequestParam("image_file", required = false) imageFile: MultipartFile?
     ): Subcategory {
+        println("New Subcategory: $name")
+        println("sports: $sports")
+
         val subcategory = Subcategory()
         subcategory.name = name
-        subcategory.sports = loadRelatedEntitiesByName(sports, sportDao::findByNameOrNull)
+        subcategory.sports = loadRelatedEntitiesByName(sports.flatten(), sportDao::findByNameOrNull)
 
         if (!imageFile!!.isEmpty) {
             val filepath = ImageConstants.SUBCATEGORY_PATH + imageFile.originalFilename
