@@ -1,5 +1,6 @@
 package com.affenbande.affenbandeBackend.model
 
+import com.fasterxml.jackson.annotation.JsonManagedReference
 import jakarta.persistence.*
 
 @Entity
@@ -21,6 +22,7 @@ class Move(
     @ManyToOne(cascade = [CascadeType.MERGE])
     @JoinColumn(name = "image_path_id")
     var image: ImagePath? = null,
+
     var level: Int? = null,
     var isCoreMove: Boolean? = null,
     var intensity: Int? = null,
@@ -35,7 +37,7 @@ class Move(
         joinColumns = [JoinColumn(name = "move_id")],
         inverseJoinColumns = [JoinColumn(name = "pre_move_id")]
     )
-    var preMoves: List<Move>? = null,
+    var preMoves: List<Move>? = mutableListOf(),
 
     @ManyToMany(cascade = [CascadeType.PERSIST])
     @JoinTable(
@@ -43,24 +45,26 @@ class Move(
         joinColumns = [JoinColumn(name = "fk_move_id")],
         inverseJoinColumns = [JoinColumn(name = "fk_opt_pre_move_id")]
     )
-    var optPreMoves: List<Move>? = null,
+    var optPreMoves: List<Move>? = mutableListOf(),
 
 
     @ManyToMany(cascade = [CascadeType.PERSIST])
+    @JsonManagedReference
     @JoinTable(
         name = "t_sport_subcategory",
         joinColumns = [JoinColumn(name = "fk_sport_id")],
         inverseJoinColumns = [JoinColumn(name = "fk_subcategory_id")]
     )
-    var subcategories: List<Subcategory>? = null,
+    var subcategories: List<Subcategory>? = mutableListOf(),
 
     @ManyToMany(cascade = [CascadeType.PERSIST])
+    @JsonManagedReference
     @JoinTable(
         name = "t_subcategory_move",
         joinColumns = [JoinColumn(name = "fk_subcategory_id")],
         inverseJoinColumns = [JoinColumn(name = "fk_move_id")]
     )
-    var sports: List<Sport>? = null,
+    var sports: List<Sport>? = mutableListOf(),
 ) {
 
 

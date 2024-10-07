@@ -1,5 +1,6 @@
 package com.affenbande.affenbandeBackend.model
 
+import com.fasterxml.jackson.annotation.JsonBackReference
 import jakarta.persistence.*
 
 @Entity
@@ -17,19 +18,10 @@ class Sport(
     var image: ImagePath? = null,
 
     @ManyToMany(mappedBy = "sports",  cascade = [CascadeType.ALL])
-//    @JoinTable(
-//        name = "t_sport_subcategory",
-//        joinColumns = [JoinColumn(name = "fk_sport_id")],
-//        inverseJoinColumns = [JoinColumn(name = "fk_subcategory_id")]
-//    )
+    @JsonBackReference
     var subcategories: List<Subcategory>? = mutableListOf(),
 
-    @ManyToMany(cascade = [CascadeType.ALL])
-    @JoinTable(
-        name = "t_sport_move",
-        joinColumns = [JoinColumn(name = "fk_sport_id")],
-        inverseJoinColumns = [JoinColumn(name = "fk_move_id")]
-    )
+    @ManyToMany(mappedBy = "sports", cascade = [CascadeType.ALL])
     var moves: List<Move>? = mutableListOf(),
     ) {
     // No-argument constructor

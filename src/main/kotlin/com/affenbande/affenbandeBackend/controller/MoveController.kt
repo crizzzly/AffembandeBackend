@@ -48,11 +48,11 @@ class MoveController {
         move.name = name
         move.description = description
         move.isCoreMove = isCoreMove
-        move.level  = level
-        move.intensity = intensity
-        move.repetitions = repetitions
-        move.timePreparation = timePreparation
-        move.timeExercise = timeExercise
+        move.level  = level ?: 0
+        move.intensity = intensity ?: 0
+        move.repetitions = repetitions ?: 0
+        move.timePreparation = timePreparation ?: 0
+        move.timeExercise = timeExercise ?: 0
         move.setFormula = setFormula
 
         println("Incomin Move Data")
