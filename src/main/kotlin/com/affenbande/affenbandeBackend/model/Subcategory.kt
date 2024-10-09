@@ -17,7 +17,7 @@ class Subcategory(
 
     @ManyToOne(cascade = [CascadeType.MERGE])
     @JoinColumn(name = "image_path_ids")
-    var image: ImagePath? = null,
+    var image: ImagePath?,
 
     @ManyToMany(cascade = [CascadeType.ALL])
     @JsonManagedReference

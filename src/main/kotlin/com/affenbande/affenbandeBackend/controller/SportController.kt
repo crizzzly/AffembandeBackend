@@ -27,6 +27,9 @@ class SportController {
     @Autowired
     lateinit var moveDao: com.affenbande.affenbandeBackend.dao.MoveDao
 
+    // TODO: handle file uploads in separate endpoint
+    // TODO: work with json data
+
     @PostMapping("/sports/add")
     fun addSport(
         @RequestParam("name") name: String,

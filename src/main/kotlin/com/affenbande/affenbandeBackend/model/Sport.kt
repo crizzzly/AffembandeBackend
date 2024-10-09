@@ -15,7 +15,7 @@ class Sport(
 
     @ManyToOne(cascade = [CascadeType.MERGE])
     @JoinColumn(name = "image_path_id")
-    var image: ImagePath? = null,
+    var image: ImagePath?,
 
     @ManyToMany(mappedBy = "sports",  cascade = [CascadeType.ALL])
     @JsonBackReference
@@ -23,7 +23,8 @@ class Sport(
 
     @ManyToMany(mappedBy = "sports", cascade = [CascadeType.ALL])
     var moves: List<Move>? = mutableListOf(),
-    ) {
+    )
+{
     // No-argument constructor
     constructor() : this(null, "", null, null, null)
 //    constructor() : this(null, "", null)

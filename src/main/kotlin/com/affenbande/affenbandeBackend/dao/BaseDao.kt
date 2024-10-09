@@ -55,6 +55,13 @@ abstract class BaseDao<E : Any>(private val entityType: Class<E>) {
         return Optional.ofNullable(entityManager.find(entityType, id))
     }
 
+//    /**
+//     * Find by ID.
+//     */
+//    open fun findAllById(id: Any): Optional<E> {
+//        return Optional.ofNullable(entityManager.find(entityType, id))
+//    }
+
     /**
      * Find by Name
      */
