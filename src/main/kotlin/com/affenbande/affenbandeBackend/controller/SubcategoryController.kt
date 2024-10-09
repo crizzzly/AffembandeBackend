@@ -5,6 +5,7 @@ import com.affenbande.affenbandeBackend.dao.MoveDao
 import com.affenbande.affenbandeBackend.dao.SportDao
 import com.affenbande.affenbandeBackend.dao.SubcategoryDao
 import com.affenbande.affenbandeBackend.dto.SportIdsRequest
+import com.affenbande.affenbandeBackend.dto.SubcategoryRequest
 import com.affenbande.affenbandeBackend.model.Subcategory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
@@ -29,28 +30,17 @@ class SubcategoryController {
 
     @PostMapping("/add")
     fun addSubcategory(
-        @RequestParam("name", required = true   ) name: String,
-        @RequestParam("sports") sports: List<List<String>>,
-        @RequestParam("moves") moves: List<String>?  ,
-        @RequestParam("image_file", required = false) imageFile: MultipartFile?
+        @RequestBody request: SubcategoryRequest,
     ): Subcategory {
-        println("New Subcategory: $name")
-        println("sports: $sports")
+        println("New Subcategory: $request")
 
         val subcategory = Subcategory()
-        subcategory.name = name
-        subcategory.sports = loadRelatedEntitiesByName(sports.flatten(), sportDao::findByNameOrNull)
+        subcategory.name = request.name
+        subcategory.sports = loadRelatedEntitiesByName(request.sports!!, sportDao::findByNameOrNull)
+        subcategory.image = imagePathDao.findById(request.imagePathId!!).orElse(null)
 
-        if (!imageFile!!.isEmpty) {
-            val filepath = ImageConstants.SUBCATEGORY_PATH + imageFile.originalFilename
-            val imagePaths = handleImageInput(imageFile, filepath)
-
-            imagePathDao.add(imagePaths)
-            subcategory.image = imagePaths
-        }
-
-        if (moves != null) {
-            subcategory.moves = loadRelatedEntitiesByName(moves, moveDao::findByNameOrNull)
+        if (request.moves!!.isNotEmpty()) {
+            subcategory.moves = loadRelatedEntitiesByName(request.moves, moveDao::findByNameOrNull)
         }
 
         subcategoryDao.add(subcategory)
