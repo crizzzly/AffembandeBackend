@@ -1,14 +1,17 @@
 
 services:
+
   postgres:
     image: postgres:14
     container_name: postgres-db
+    env_file: ./.env
     environment:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWD}
       POSTGRES_DB: ${DB_NAME}
     ports:
       - "5432:5432"
+
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
@@ -29,16 +32,14 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+    env_file: ./.env
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWD}
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-db:${DB_PORT}/${DB_NAME}
       SPRING_DATASOURCE_USERNAME: ${DB_USER}
       SPRING_DATASOURCE_PASSWORD: ${DB_PASSWD}
-      DB_USER: ${DB_USER}
-      DB_PASSWD: ${DB_PASSWD}
-      DB_NAME: ${DB_NAME}
-      DB_HOST: ${DB_HOST}
-      DB_PORT: ${DB_PORT}
-
+    restart: on-failure
     networks:
       - backend-network
 
