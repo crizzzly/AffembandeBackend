@@ -6,7 +6,7 @@ data class SportIdsRequest(
 
 data class SportRequest(
     val name: String,
-    val subcategories : List<String>?,
-    val moves : List<String>?,
-    var imagePathId: Int?
+    val subcategories: List<String>?,
+    val moves: List<String>?,
+    var imagePathId: Int?,
 )

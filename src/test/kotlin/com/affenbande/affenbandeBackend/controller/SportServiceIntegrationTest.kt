@@ -1,172 +1,119 @@
-//package com.affenbande.affenbandeBackend.controller
+//package com.affenbande.affenbandeBackend
+//
 //import com.affenbande.affenbandeBackend.dao.ImagePathDao
+//import com.affenbande.affenbandeBackend.dto.SportRequest
+//import com.affenbande.affenbandeBackend.model.ImagePath
 //import com.affenbande.affenbandeBackend.model.Sport
-//import org.assertj.core.api.Assertions.assertThat
+//import com.fasterxml.jackson.databind.ObjectMapper
+//import org.junit.jupiter.api.BeforeEach
 //import org.junit.jupiter.api.Test
 //import org.springframework.beans.factory.annotation.Autowired
+//import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 //import org.springframework.boot.test.context.SpringBootTest
-//import org.springframework.boot.test.mock.mockito.MockBean
-//import org.springframework.boot.test.web.client.TestRestTemplate
-//import org.springframework.core.ParameterizedTypeReference
-//import org.springframework.http.*
-//import org.springframework.http.client.MultipartBodyBuilder
-//import org.springframework.mock.web.MockMultipartFile
-//import java.io.File
+//import org.springframework.http.MediaType
+//import org.springframework.test.context.ActiveProfiles
+//import org.springframework.test.web.servlet.MockMvc
+//import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+//import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+//import org.springframework.transaction.annotation.Transactional
 //
-//
-//fun print_response_to_console(response: ResponseEntity<Sport>) {
-//    println("##############################################################")
-//    println("##############################################################")
-//    println()
-//    println("Response Status: ${response.statusCode}")  // Log status
-//    println("Response Body: ${response.body}")  // Log the raw response body
-//    println()
-//    println("##############################################################")
-//    println("##############################################################")
-//}
-//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+//@SpringBootTest
+//@ActiveProfiles("test")
+//@AutoConfigureMockMvc
+//@Transactional // Reset database between tests
 //class SportControllerIntegrationTest {
-//    var fetchedId: Int? = null
+//
 //    @Autowired
-//    private lateinit var template: TestRestTemplate
+//    lateinit var mockMvc: MockMvc
 //
-//    @MockBean
-//    private lateinit var imageSrcDao: ImagePathDao
+//    @Autowired
+//    lateinit var imagePathDao: ImagePathDao
 //
-//    val sport = Sport()
-////                name = "Football",
-////                imageSrc = "football.png",
-//    //            subcategoryIds = emptyList(),  // Set to null
-//    //            moveIds = emptyList()           // Set to null
+//    @Autowired
+//    lateinit var objectMapper: ObjectMapper
 //
-//    val testImagePath = "uploads/Dog.png"
+//    lateinit var sampleImagePath: ImagePath
+//
+//    @BeforeEach
+//    fun setUp() {
+//        // Insert a mock ImagePath into the database
+//        sampleImagePath = ImagePath(null, "/path/to/mock/image")
+//        imagePathDao.add(sampleImagePath)
+//    }
+//
 //    @Test
-//    @Throws(Exception::class)
-//    fun `addSport should return sport when all parameters are provided`() {
-//        val headers = HttpHeaders()
-//        headers.set("Content-Type", "application/json")
-//
-//        // Create the Sport object
-//        val sport = Sport()
-//        sport.name = exampleSport["name"].toString()
-//        val imgFile: File = File(exampleSport["imageSrc"].toString())
-//        val imageFileContent = imgFile.readBytes()
-//
-//        val imageFile = MockMultipartFile(
-//            "image_file",
-//            "football.png",
-//            MediaType.IMAGE_PNG_VALUE,
-//            imageFileContent
+//    fun `should add a new sport`() {
+//        val sportRequest = SportRequest(
+//            name = "Basketball",
+//            imagePathId = sampleImagePath.id,
+//            subcategories = listOf(),
+//            moves = listOf()
 //        )
 //
-//        // Create HttpEntity with the MultipartFile and Sport name
-//        val bodyBuilder = MultipartBodyBuilder()
-//        bodyBuilder.part("name", "football")
-//        bodyBuilder.part("image_file", imageFile.resource)
-//
-//        val requestEntity = HttpEntity(bodyBuilder.build(), headers)
-//        // Send POST request
-//        val response: ResponseEntity<Sport> = template.postForEntity(
-//            "/sports/add",
-//            requestEntity,
-//            Sport::class.java
+//        mockMvc.perform(
+//            MockMvcRequestBuilders.post("/sports/add")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(objectMapper.writeValueAsString(sportRequest))
 //        )
+//            .andExpect(MockMvcResultMatchers.status().isOk)
+//            .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Basketball"))
+//            .andExpect(MockMvcResultMatchers.jsonPath("$.image.imagePath").value("/path/to/mock/image"))
+//    }
 //
-//        // Assert the response
-//        assertThat(response.statusCode).isEqualTo(HttpStatus.OK) // Expecting HTTP 200
+//    @Test
+//    fun `should get sport by id`() {
+//        // Create and save a sport to the database
+//        val sport = Sport(null, "Soccer", sampleImagePath, null, null)
+//        mockMvc.perform(
+//            MockMvcRequestBuilders.post("/sports/add")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(objectMapper.writeValueAsString(SportRequest("Soccer", listOf(), listOf(), sampleImagePath.id)))
+//        ).andReturn()
 //
-//        val actualSport = response.body
-//        println("received sport: $actualSport")
-//        assertThat(actualSport).isNotNull
-////        assertThat(actualSport?.name).isEqualTo(sport.name)
-////
-////        // Assert that the imageSrc object is not null
-////        val imageSrc = actualSport?.image
-////        assertThat(imageSrc).isNotNull
+//        // Get the saved sport by its ID
+//        val savedSportId = 1  // Assuming it's the first inserted record
+//        mockMvc.perform(
+//            MockMvcRequestBuilders.get("/sports/get-by-id")
+//                .param("id", savedSportId.toString())
+//        )
+//            .andExpect(MockMvcResultMatchers.status().isOk)
+//            .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Soccer"))
+//    }
 //
-//        // Verify that the image file paths are correctly stored in ImageSrc
-////        assertThat(imageSrc?.xs).endsWith("-xs.webp")
-////        assertThat(imageSrc?.s).endsWith("-s.webp")
-////        assertThat(imageSrc?.m).endsWith("-m.webp")
-////        assertThat(imageSrc?.l).endsWith("-l.webp")
-////        assertThat(imageSrc?.xl).endsWith("-xl.webp")
-//    }}
+//    @Test
+//    fun `should retrieve all sports`() {
+//        // Add two sports to the database
+//        val sport1 = SportRequest("Tennis", listOf(), listOf(), sampleImagePath.id)
+//        val sport2 = SportRequest("Badminton", listOf(), listOf(), sampleImagePath.id)
 //
-////    @Test
-////    fun `getAllSports should return all sports`() {
-////        val headers = HttpHeaders()
-////        headers.contentType = MediaType.APPLICATION_JSON  // Set content type to JSON
-////
-////        val requestEntity = HttpEntity<Any>(headers)   // Create HttpEntity with the request
-////        val response: ResponseEntity<List<Sport>> = template.exchange(
-////            "/sports/get-all",
-////            HttpMethod.GET,
-////            requestEntity,
-////            object : ParameterizedTypeReference<List<Sport>>() {}
-////        )
-////
-////
-////        assertThat(response.statusCode).isEqualTo(HttpStatus.OK)
-////        val actualSports = response.body
-////        assertThat(actualSports).isNotNull
-////        assertThat(actualSports?.size).isGreaterThan(0)
-////    }
-////
-////    @Test
-////    fun `getSportByName should return sport`() {
-////        val headers = HttpHeaders()
-////        headers.set("Content-Type", "application/json")
-////
-////        // Create HttpEntity with the Sport object
-////        val name = sport.name
-////        headers.set("name", name)
-////        val requestEntity = HttpEntity<Any>(headers)
+//        mockMvc.perform(
+//            MockMvcRequestBuilders.post("/sports/add")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(objectMapper.writeValueAsString(sport1))
+//        ).andReturn()
 //
-
-////        val response: ResponseEntity<Sport> = template.getForEntity(
-////            "/sports/get-by-name",  //?name=${name}
-////            Sport::class.java,
-////            requestEntity,
-////            object : ParameterizedTypeReference<Sport>() {}
-////        )
-////        val response: ResponseEntity<Sport> = template.getForEntity(
-////            "/sports/get-by-name?name=${name}",
-////            Sport::class.java,
-////            requestEntity
-////        )
-////        print_response_to_console(response)
-////        assertThat(response.statusCode).isEqualTo(HttpStatus.OK)
-////        val actualSport = response.body
-////
-////        fetchedId = actualSport?.id
-////        assertThat(actualSport).isNotNull
-////        assertThat(actualSport?.name).isEqualTo(sport.name)
-////        assertThat(actualSport?.imagePath).isEqualTo(sport.imagePath)
-////        assertThat(actualSport?.subcategoryIds).isEqualTo(sport.subcategoryIds)
-////        assertThat(actualSport?.moveIds).isEqualTo(sport.moveIds)
-////    }}
+//        mockMvc.perform(
+//            MockMvcRequestBuilders.post("/sports/add")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(objectMapper.writeValueAsString(sport2))
+//        ).andReturn()
 //
-////    @Test()
-////    fun `getSportById should return sport`() { //getAllSports should return all sports
-////        val headers = HttpHeaders()
-////        headers.set("Content-Type", "application/json")
-////        val sportId = fetchedId ?: 4
-////        headers.set("id", sportId.toString())
-////        // Create HttpEntity with the Sport object
-////        val requestEntity = HttpEntity<Any>(headers)
-////
-////        val response: ResponseEntity<Sport> = template.getForEntity(
-////            "/sports/get-by-id?id=${sportId}",
-////            Sport::class.java,
-////            requestEntity
-////        )
-////        assertThat(response.statusCode).isEqualTo(HttpStatus.OK)
-////
-////        val actualSport = response.body
-////        assertThat(actualSport).isNotNull
-////        assertThat(actualSport?.name).isEqualTo(sport.name)
-////        assertThat(actualSport?.imageSrc).isEqualTo(sport.imageSrc)
-//////        assertThat(actualSport?.subcategoryIds).isEqualTo(sport.subcategoryIds)
-//////        assertThat(actualSport?.moveIds).isEqualTo(sport.moveIds)
-////    }
-////}
+//        // Fetch all sports
+//        mockMvc.perform(
+//            MockMvcRequestBuilders.get("/sports/get-all")
+//        )
+//            .andExpect(MockMvcResultMatchers.status().isOk)
+//            .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(2))
+//            .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("Tennis"))
+//            .andExpect(MockMvcResultMatchers.jsonPath("$[1].name").value("Badminton"))
+//    }
+//
+//    @Test
+//    fun `should return 404 when sport is not found by name`() {
+//        mockMvc.perform(
+//            MockMvcRequestBuilders.get("/sports/get-by-name")
+//                .param("name", "NonExistingSport")
+//        )
+//            .andExpect(MockMvcResultMatchers.status().isNotFound)
+//    }
+//}

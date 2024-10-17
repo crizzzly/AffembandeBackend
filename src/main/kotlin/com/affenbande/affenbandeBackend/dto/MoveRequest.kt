@@ -14,5 +14,5 @@ data class MoveRequest(
     val preMoves: List<String>?,
     val optPreMoves: List<String>?,
     val sports: List<String>?,
-    val imageFile: String? // You can handle file uploads separately if needed
+//    val imageFile: String? // You can handle file uploads separately if needed
 )

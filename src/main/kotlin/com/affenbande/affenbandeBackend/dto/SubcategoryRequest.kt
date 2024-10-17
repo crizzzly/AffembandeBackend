@@ -4,5 +4,5 @@ data class SubcategoryRequest(
     val name: String,
     val sports: List<String>?,
     val moves: List<String>?,
-    val imagePathId: Int?
+    val imagePathId: Int?,
 )

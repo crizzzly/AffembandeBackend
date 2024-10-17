@@ -1,6 +1,7 @@
 package com.affenbande.affenbandeBackend.controller
 
 import com.affenbande.affenbandeBackend.dao.ImagePathDao
+import com.affenbande.affenbandeBackend.model.ImagePath
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
@@ -21,6 +22,7 @@ class FileUploadController {
         @RequestParam("image_file") imageFile: MultipartFile,
         @RequestParam("model") model: String
     ): ResponseEntity<out Any> {
+        // TODO: use constants
         val modelDirectory = when (model) {
             "sport" -> ImageConstants.SPORT_PATH
             "subcategory" -> ImageConstants.SUBCATEGORY_PATH
@@ -31,6 +33,11 @@ class FileUploadController {
         val imagePaths = handleImageInput(imageFile, filepath)
         imagePathDao.add(imagePaths)
         return ResponseEntity.ok(imagePaths)
+    }
+
+    private fun handleImageInput(imageFile: MultipartFile, filepath: String): ImagePath {
+        // Simulate saving the image to disk and creating ImagePath object
+        return ImagePath(null, filepath)
     }
 
 }

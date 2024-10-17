@@ -44,21 +44,13 @@ class MoveController {
 
         println("Incomin Move Data")
         println("pre moves: ${request.preMoves}, opt pre moves ${request.optPreMoves}")
+
         if(request.preMoves != null) {
             move.preMoves = loadRelatedEntitiesByName(request.preMoves, moveDao::findByNameOrNull)
         }
         if(request.optPreMoves != null) {
             move.optPreMoves = loadRelatedEntitiesByName(request.optPreMoves, moveDao::findByNameOrNull)
         }
-
-//
-//        if(request.imageFile != null && !request.imageFile.isEmpty) {
-//            val path = ImageConstants.MOVE_PATH + request.imageFile.originalFilename
-//            val imagePaths = handleImageInput(request.imageFile, path)
-//            imagePathDao.add(imagePaths)
-//            move.image = imagePaths
-//        }
-
         if(request.subcategories != null) {
             move.subcategories = loadRelatedEntitiesByName(request.subcategories, subcategoryDao::findByNameOrNull)
         }

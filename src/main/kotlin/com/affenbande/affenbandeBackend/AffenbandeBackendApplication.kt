@@ -27,17 +27,17 @@ public class AffenbandeBackendApplication{
 	}
 }
 fun main(args: Array<String>) {
-	val dotenv = Dotenv.configure().filename("secrets.env").load()
+	val dotenv = Dotenv.configure().filename(".env").load()
 
 
 	// Set system properties for DB_USER and DB_PASSWORD
 	System.setProperty("DB_USER", dotenv["DB_USER"])
 	System.setProperty("DB_PASSWD", dotenv["DB_PASSWD"])
 	System.setProperty("DB_URL_SHORT", dotenv["DB_URL_SHORT"])
+	System.setProperty("DB_NAME", dotenv["DB_NAME"])
+	System.setProperty("DB_HOST", dotenv["DB_HOST"])
+	System.setProperty("DB_PORT", dotenv["DB_PORT"])
 
 	SpringApplication.run(AffenbandeBackendApplication::class.java, *args)
 }
 
-//fun main(args: Array<String>) {
-//	runApplication<AffenbandeBackendApplication>(*args)
-//}
