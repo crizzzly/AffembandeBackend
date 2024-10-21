@@ -12,9 +12,12 @@ class WebConfig {
     @Bean
     fun corsConfigurer(): WebMvcConfigurer {
         return object : WebMvcConfigurer {
+            val host = System.getenv("DB_HOST")
+            val port = System.getenv("DB_PORT")
+            val url = "http://${host}:${port}"
             override fun addCorsMappings(registry: CorsRegistry) {
                 registry.addMapping("/**") // Adjust the path as needed
-                    .allowedOrigins(System.getenv("DB_URL_SHORT")) // Replace with your frontend's URL
+                    .allowedOrigins(url) // Replace with your frontend's URL
                     .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                     .allowedHeaders("*")
             }
