@@ -25,4 +25,4 @@ RUN ./gradlew build
 EXPOSE 8080
 
 # Run the Kotlin app
-CMD ["java", "-jar", "AffenbandeBackend-0.0.1-SNAPSHOT.jar"]
+CMD ["java", "-jar", "/build/libs/AffenbandeBackend-0.0.1-SNAPSHOT.jar"]
