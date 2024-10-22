@@ -1,4 +1,4 @@
-package com.affenbande.affenbandeBackend.controller
+package com.affenbande.affenbandeBackend.controller.helper
 
 object ImageConstants {
     const val MOVE_PATH = "uploads/moves/"

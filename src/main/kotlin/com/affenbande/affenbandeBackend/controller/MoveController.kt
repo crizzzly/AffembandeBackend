@@ -1,5 +1,6 @@
 package com.affenbande.affenbandeBackend.controller
 
+import com.affenbande.affenbandeBackend.controller.helper.loadRelatedEntitiesByName
 import com.affenbande.affenbandeBackend.dao.ImagePathDao
 import com.affenbande.affenbandeBackend.dao.MoveDao
 import com.affenbande.affenbandeBackend.dao.SportDao
@@ -7,8 +8,8 @@ import com.affenbande.affenbandeBackend.dao.SubcategoryDao
 import com.affenbande.affenbandeBackend.dto.MoveRequest
 import com.affenbande.affenbandeBackend.model.Move
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import org.springframework.web.multipart.MultipartFile
 import java.util.*
 
 @RestController
@@ -30,7 +31,7 @@ class MoveController {
     @PostMapping("/add")
     fun addMove(
         @RequestBody request: MoveRequest,
-    ): Move {
+    ): ResponseEntity<Move> {
         val move = Move()
         move.name = request.name
         move.description = request.description
@@ -59,22 +60,24 @@ class MoveController {
         }
 
         moveDao.add(move)
-        return move
+        return ResponseEntity.ok(move)
     }
 
     @GetMapping("/get-all")
-    fun getAllMoves(): List<Move> {
-        return moveDao.findAll()
+    fun getAllMoves(): ResponseEntity<List<Move>> {
+        val moves = moveDao.findAll()
+        return ResponseEntity.ok(moves)
     }
 
     @GetMapping("/get-by-id")
-    fun getMoveById(@RequestParam("id") id: Int): Optional<Move> {
+    fun getMoveById(@RequestParam("id") id: Int): ResponseEntity<Optional<Move>> {
         val move = moveDao.findById(id)
-        return move
+        return ResponseEntity.ok(move)
     }
 
     @GetMapping("/get-by-name")
-    fun getMoveByName(@RequestParam("name") name: String): Move? {
-        return moveDao.findByNameOrNull(name)
+    fun getMoveByName(@RequestParam("name") name: String): ResponseEntity<Move> {
+        val move = moveDao.findByNameOrNull(name)
+        return ResponseEntity.ok(move)
     }
 }

@@ -1,5 +1,6 @@
 package com.affenbande.affenbandeBackend.controller
 
+import com.affenbande.affenbandeBackend.controller.helper.loadRelatedEntitiesByName
 import com.affenbande.affenbandeBackend.dao.SportDao
 import com.affenbande.affenbandeBackend.dto.SportRequest
 import com.affenbande.affenbandeBackend.model.Sport
@@ -30,8 +31,6 @@ class SportController {
     @Autowired
     lateinit var moveDao: com.affenbande.affenbandeBackend.dao.MoveDao
 
-    // TODO: handle file uploads in separate endpoint
-    // TODO: work with json data
 
     @PostMapping("/add")
     fun addSport(

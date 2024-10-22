@@ -1,4 +1,4 @@
-package com.affenbande.affenbandeBackend.controller
+package com.affenbande.affenbandeBackend.controller.old
 
 object TestConstants {
     const val EXAMPLE_MOVE_IMAGE = "uploads/exampleFiles/Baer.png"

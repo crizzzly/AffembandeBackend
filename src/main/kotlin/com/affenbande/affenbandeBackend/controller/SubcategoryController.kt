@@ -1,5 +1,6 @@
 package com.affenbande.affenbandeBackend.controller
 
+import com.affenbande.affenbandeBackend.controller.helper.loadRelatedEntitiesByName
 import com.affenbande.affenbandeBackend.dao.ImagePathDao
 import com.affenbande.affenbandeBackend.dao.MoveDao
 import com.affenbande.affenbandeBackend.dao.SportDao
@@ -8,8 +9,9 @@ import com.affenbande.affenbandeBackend.dto.SportIdsRequest
 import com.affenbande.affenbandeBackend.dto.SubcategoryRequest
 import com.affenbande.affenbandeBackend.model.Subcategory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import org.springframework.web.multipart.MultipartFile
 import java.util.*
 
 
@@ -31,7 +33,7 @@ class SubcategoryController {
     @PostMapping("/add")
     fun addSubcategory(
         @RequestBody request: SubcategoryRequest,
-    ): Subcategory {
+    ): ResponseEntity<Subcategory> {
         println("New Subcategory: $request")
 
         val subcategory = Subcategory()
@@ -44,30 +46,34 @@ class SubcategoryController {
         }
 
         subcategoryDao.add(subcategory)
-        return subcategory
+        return ResponseEntity.ok(subcategory)
     }
 
     @GetMapping("/update")
-    fun updateSubcategory(@RequestParam("id") id: Int, @RequestParam("name") name: String) {
+    fun updateSubcategory(@RequestParam("id") id: Int, @RequestParam("name") name: String): ResponseEntity.BodyBuilder {
         val subcategory = subcategoryDao.findById(id).get()
         subcategory.name = name
         subcategoryDao.update(subcategory)
+        return ResponseEntity.ok()
     }
 
 
     @GetMapping("/get-all")
-    fun getAllSubcategories(): List<Subcategory> {
-        return subcategoryDao.findAll()
+    fun getAllSubcategories(): ResponseEntity<List<Subcategory>> {
+        val subcats = subcategoryDao.findAll()
+        return ResponseEntity.ok(subcats)
     }
 
     @GetMapping("/get-by-id")
-    fun getSubcategoryById(@RequestParam("id") id: Int): Optional<Subcategory> {
-        return subcategoryDao.findById(id)
+    fun getSubcategoryById(@RequestParam("id") id: Int): ResponseEntity<Optional<Subcategory>> {
+        val subcat = subcategoryDao.findById(id)
+        return ResponseEntity(subcat, subcat.let { HttpStatus.OK } ?: HttpStatus.NOT_FOUND)
     }
 
     @GetMapping("/get-by-name")
-    fun getSubcategoryByName(@RequestParam("name") name: String): Subcategory? {
-        return subcategoryDao.findByNameOrNull(name)
+    fun getSubcategoryByName(@RequestParam("name") name: String): ResponseEntity<Subcategory> {
+        val subcat = subcategoryDao.findByNameOrNull(name)
+        return ResponseEntity(subcat, subcat?.let { HttpStatus.OK } ?: HttpStatus.NOT_FOUND)
     }
 
     @PostMapping("/get-by-sport")
@@ -78,7 +84,8 @@ class SubcategoryController {
     }
 
     @GetMapping("/delete-by-id")
-    fun deleteSubcategoryById(@RequestParam("id") id: Int) {
+    fun deleteSubcategoryById(@RequestParam("id") id: Int): ResponseEntity.BodyBuilder {
         subcategoryDao.deleteById(id)
+        return ResponseEntity.ok()
     }
 }

@@ -1,4 +1,4 @@
-package com.affenbande.affenbandeBackend.controller
+package com.affenbande.affenbandeBackend.controller.helper
 
 
 fun <T> loadRelatedEntitiesByName(

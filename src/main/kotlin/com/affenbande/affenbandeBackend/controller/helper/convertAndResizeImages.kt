@@ -1,4 +1,4 @@
-package com.affenbande.affenbandeBackend.controller
+package com.affenbande.affenbandeBackend.controller.helper
 
 import com.affenbande.affenbandeBackend.model.ImagePath
 import org.springframework.web.multipart.MultipartFile

@@ -1,5 +1,6 @@
 package com.affenbande.affenbandeBackend.controller
 
+import com.affenbande.affenbandeBackend.controller.helper.ImageConstants
 import com.affenbande.affenbandeBackend.dao.ImagePathDao
 import com.affenbande.affenbandeBackend.model.ImagePath
 import org.springframework.beans.factory.annotation.Autowired

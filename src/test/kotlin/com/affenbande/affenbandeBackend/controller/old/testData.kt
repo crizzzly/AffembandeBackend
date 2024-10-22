@@ -1,6 +1,4 @@
-package com.affenbande.affenbandeBackend.controller
-
-import net.bytebuddy.implementation.bytecode.constant.TextConstant
+package com.affenbande.affenbandeBackend.controller.old
 
 
 const val BEARWALK_DESCR = TestConstants.BEARWALK_DESCRIPT_1 + "\n" + TestConstants.BEARWALK_DESCRIPT_2
@@ -16,7 +14,7 @@ val exampleSubcat = mapOf(
     "sports" to listOf("Parkour", "Turnen", "Breakdance", "Capoeira"),
     "imagePath" to TestConstants.EXAMPLE_SUBCAT_IMAGE,
 
-)
+    )
 
 
 val exampleMove = mapOf(
