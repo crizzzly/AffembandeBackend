@@ -1,6 +1,5 @@
 
 services:
-
   postgres:
     image: postgres:14
     container_name: postgres-db
@@ -17,7 +16,7 @@ services:
     networks:
       - backend-network
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U ${DB_USER}" ]
+      test: [ "CMD-SHELL", "pg_isready -d ${DB_NAME} -U ${DB_USER}" ]
       interval: 10s
       timeout: 5s
       retries: 5
