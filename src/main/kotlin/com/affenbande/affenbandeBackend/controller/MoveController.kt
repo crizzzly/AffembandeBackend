@@ -1,5 +1,6 @@
 package com.affenbande.affenbandeBackend.controller
 
+import com.affenbande.affenbandeBackend.config.*
 import com.affenbande.affenbandeBackend.controller.helper.loadRelatedEntitiesByName
 import com.affenbande.affenbandeBackend.dao.ImagePathDao
 import com.affenbande.affenbandeBackend.dao.MoveDao
@@ -7,6 +8,9 @@ import com.affenbande.affenbandeBackend.dao.SportDao
 import com.affenbande.affenbandeBackend.dao.SubcategoryDao
 import com.affenbande.affenbandeBackend.dto.MoveRequest
 import com.affenbande.affenbandeBackend.model.Move
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.responses.ApiResponse
+import io.swagger.v3.oas.annotations.responses.ApiResponses
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -27,8 +31,16 @@ class MoveController {
     @Autowired
     lateinit var subcategoryDao: SubcategoryDao
 
-
+    companion object {
+        const val OPERATION_ADD = "Add a new move."
+    }
     @PostMapping("/add")
+    @Operation(summary = OPERATION_ADD, description = OPERATION_ADD)
+    @ApiResponses(value = [
+        ApiResponse(responseCode = RESPONSE_CREATED_CODE, description = RESPONSE_CREATED_DESCRIPTION),
+        ApiResponse(responseCode = RESPONSE_BAD_REQUEST_CODE, description = RESPONSE_BAD_REQUEST_DESCRIPTION),
+        ApiResponse(responseCode = RESPONSE_INTERNAL_SERVER_ERROR_CODE, description = RESPONSE_INTERNAL_SERVER_ERROR_DESCRIPTION)
+    ])
     fun addMove(
         @RequestBody request: MoveRequest,
     ): ResponseEntity<Move> {

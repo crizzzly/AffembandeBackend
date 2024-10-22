@@ -28,16 +28,21 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-freemarker")
 	implementation("org.springframework.boot:spring-boot-starter-jdbc:2.7.0")
 	implementation("org.springframework.boot:spring-boot-starter-logging")
-//	implementation("io.springfox:springfox-boot-starter:3.0.0")
+	developmentOnly("org.springframework.boot:spring-boot-devtools")
+	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa") // JPA with Hibernate
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0")
+	constraints {
+       implementation("org.springdoc:springdoc-openapi-ui:1.6.0") {
+           because("To ensure OpenApiCustomiser is available")
+       }
+   }
 	implementation("jakarta.persistence:jakarta.persistence-api:3.1.0") // Jakarta Persistence API
 	implementation("org.postgresql:postgresql:42.2.20")
 	implementation("com.twelvemonkeys.imageio:imageio-webp:3.11.0")
 	implementation("org.mockito.kotlin:mockito-kotlin:5.4.0")
 	implementation("io.github.cdimascio:dotenv-kotlin:6.2.2")
-	developmentOnly("org.springframework.boot:spring-boot-devtools")
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
-	testImplementation("com.h2database:h2")
+//	testImplementation("com.h2database:h2")
 	testImplementation("io.mockk:mockk:1.13.5")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")

@@ -13,11 +13,18 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.media.Content
+import io.swagger.v3.oas.annotations.media.Schema
+import io.swagger.v3.oas.annotations.responses.ApiResponse
+import io.swagger.v3.oas.annotations.responses.ApiResponses
+import io.swagger.v3.oas.annotations.tags.Tag
 import java.util.*
 
 
 @RestController
-@RequestMapping("/sports")
+@RequestMapping("/sports" )
+@Tag(name = "Sports API", description = "Endpoints for managing sports")
 class SportController {
     @Autowired
     lateinit var sportDao: SportDao
@@ -58,6 +65,12 @@ class SportController {
         return ResponseEntity.ok(sport)
     }
 
+    @Operation(summary = "Get all sports", description = "Returns a list of all available sports.")
+    @ApiResponses(value = [
+      ApiResponse(responseCode = "200", description = "Successful operation", content = [
+          (Content(mediaType = "application/json", schema = Schema(implementation = Array<SportRequest>::class)))]),
+      ApiResponse(responseCode = "404", description = "No sports found", content = [Content()])
+    ])
     @GetMapping("/get-all")
     fun getAllSports(): ResponseEntity<List<Sport>> {
         val sports = sportDao.findAll()
