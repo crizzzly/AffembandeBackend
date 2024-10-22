@@ -40,6 +40,5 @@ out/
 ### Kotlin ###
 .kotlin
 
-copilot/
 
 .env
