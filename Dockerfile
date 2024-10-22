@@ -11,7 +11,7 @@ WORKDIR /app
 #COPY src/main/resources/application.yml /app/config/application.yml
 
 # Alternatively, copy to a standard Spring Boot location (root of the container or /app folder)
-COPY src/main/resources/application.yml /app/application.yml
+#COPY src/main/resources/application.yml /app/application.yml
 
 # Copy your application's build files and directories
 COPY . .
@@ -25,4 +25,4 @@ RUN ./gradlew build
 EXPOSE 8080
 
 # Run the Kotlin app
-CMD ["java", "-jar", "/build/libs/AffenbandeBackend-0.0.1-SNAPSHOT.jar"]
+CMD ["java", "-jar", "/app/build/libs/AffenbandeBackend-0.0.1-SNAPSHOT.jar"]
