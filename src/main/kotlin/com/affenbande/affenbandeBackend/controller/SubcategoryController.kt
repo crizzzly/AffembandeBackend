@@ -49,7 +49,7 @@ class SubcategoryController {
         return ResponseEntity.ok(subcategory)
     }
 
-    @GetMapping("/update")
+    @PostMapping("/update")
     fun updateSubcategory(@RequestParam("id") id: Int, @RequestParam("name") name: String): ResponseEntity.BodyBuilder {
         val subcategory = subcategoryDao.findById(id).get()
         subcategory.name = name
@@ -83,7 +83,7 @@ class SubcategoryController {
         return subcatIds!!.mapNotNull { subcategoryDao.findById(it!!).orElse(null) }
     }
 
-    @GetMapping("/delete-by-id")
+    @DeleteMapping("/delete-by-id")
     fun deleteSubcategoryById(@RequestParam("id") id: Int): ResponseEntity.BodyBuilder {
         subcategoryDao.deleteById(id)
         return ResponseEntity.ok()
