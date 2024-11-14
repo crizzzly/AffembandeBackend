@@ -42,7 +42,6 @@ dependencies {
 	implementation("com.twelvemonkeys.imageio:imageio-webp:3.11.0")
 	implementation("org.mockito.kotlin:mockito-kotlin:5.4.0")
 	implementation("io.github.cdimascio:dotenv-kotlin:6.2.2")
-//	testImplementation("com.h2database:h2")
 	testImplementation("io.mockk:mockk:1.13.5")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
