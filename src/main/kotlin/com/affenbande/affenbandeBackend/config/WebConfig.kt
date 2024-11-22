@@ -17,7 +17,7 @@ class WebConfig {
             val url = "http://${host}:${port}"
             override fun addCorsMappings(registry: CorsRegistry) {
                 registry.addMapping("/**") // Adjust the path as needed
-                    .allowedOrigins(System.getenv("*")) // Replace with your frontend's URL
+                    .allowedOrigins("*") // Replace with your frontend's URL
                     .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                     .allowedHeaders("*")
             }
