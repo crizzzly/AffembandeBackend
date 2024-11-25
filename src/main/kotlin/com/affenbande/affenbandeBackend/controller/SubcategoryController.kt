@@ -77,7 +77,7 @@ class SubcategoryController {
     }
 
     @GetMapping("/get-by-sport")
-    fun getSubcategoriesBySportId(@RequestBody request: SportIdsRequest): List<Subcategory> {
+    fun getSubcategoriesBySportId(@RequestParam request: SportIdsRequest): List<Subcategory> {
         val sportId = request.sportId
         val subcatIds = subcategoryDao.getSubcategoryIdsByRelatedSportId(sportId)
         return subcatIds!!.mapNotNull { subcategoryDao.findById(it!!).orElse(null) }
