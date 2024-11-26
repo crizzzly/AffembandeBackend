@@ -76,7 +76,7 @@ class SubcategoryController {
         return ResponseEntity(subcat, subcat?.let { HttpStatus.OK } ?: HttpStatus.NOT_FOUND)
     }
 
-    @GetMapping("/get-by-sport")
+    @GetMapping("/get-by-sport/")
     fun getSubcategoriesBySportId(@RequestParam request: SportIdsRequest): List<Subcategory> {
         val sportId = request.sportId
         val subcatIds = subcategoryDao.getSubcategoriesByRelatedSportId(sportId)
