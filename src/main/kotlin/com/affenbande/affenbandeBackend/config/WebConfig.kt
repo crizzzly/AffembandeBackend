@@ -24,3 +24,5 @@ class WebConfig {
         }
     }
 }
+
+// TODO: add restrictions to admin page - only allowed users

@@ -5,7 +5,6 @@ import com.affenbande.affenbandeBackend.dao.ImagePathDao
 import com.affenbande.affenbandeBackend.dao.MoveDao
 import com.affenbande.affenbandeBackend.dao.SportDao
 import com.affenbande.affenbandeBackend.dao.SubcategoryDao
-import com.affenbande.affenbandeBackend.dto.SportIdsRequest
 import com.affenbande.affenbandeBackend.dto.SubcategoryRequest
 import com.affenbande.affenbandeBackend.model.Subcategory
 import org.springframework.beans.factory.annotation.Autowired
@@ -76,11 +75,11 @@ class SubcategoryController {
         return ResponseEntity(subcat, subcat?.let { HttpStatus.OK } ?: HttpStatus.NOT_FOUND)
     }
 
-    @GetMapping("/get-by-sport/")
-    fun getSubcategoriesBySportId(@RequestParam request: SportIdsRequest): List<Subcategory> {
-        val sportId = request.sportId
-        val subcatIds = subcategoryDao.getSubcategoriesByRelatedSportId(sportId)
-        return subcatIds!!.mapNotNull { subcategoryDao.findById(it!!).orElse(null) }
+    @GetMapping("/get-by-sport/{sportId}")
+    fun getSubcategoriesBySportId(@RequestParam sportId: String): ResponseEntity<List<Subcategory>> {
+        println("getSubcategoriesBySportId Request: $sportId")
+        val subcatIds = subcategoryDao.getSubcategoryIdsByRelatedSportId(sportId.toInt())
+        return ResponseEntity.ok(subcatIds!!.mapNotNull { subcategoryDao.findById(it!!).orElse(null) })
     }
 
     @DeleteMapping("/delete-by-id")

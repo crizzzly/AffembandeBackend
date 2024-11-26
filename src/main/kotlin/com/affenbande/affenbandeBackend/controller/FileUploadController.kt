@@ -1,8 +1,8 @@
 package com.affenbande.affenbandeBackend.controller
 
 import com.affenbande.affenbandeBackend.controller.helper.ImageConstants
+import com.affenbande.affenbandeBackend.controller.helper.handleImageInput
 import com.affenbande.affenbandeBackend.dao.ImagePathDao
-import com.affenbande.affenbandeBackend.model.ImagePath
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
@@ -36,9 +36,5 @@ class FileUploadController {
         return ResponseEntity.ok(imagePaths)
     }
 
-    private fun handleImageInput(imageFile: MultipartFile, filepath: String): ImagePath {
-        // Simulate saving the image to disk and creating ImagePath object
-        return ImagePath(null, filepath)
-    }
 
 }
