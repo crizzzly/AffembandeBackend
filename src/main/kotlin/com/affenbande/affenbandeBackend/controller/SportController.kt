@@ -4,21 +4,16 @@ import com.affenbande.affenbandeBackend.controller.helper.loadRelatedEntitiesByN
 import com.affenbande.affenbandeBackend.dao.SportDao
 import com.affenbande.affenbandeBackend.dto.SportRequest
 import com.affenbande.affenbandeBackend.model.Sport
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.*
 import java.util.*
 
 
@@ -59,8 +54,8 @@ class SportController {
     }
 
 
-    @GetMapping("/get-by-id")
-    fun getSportById(@RequestParam("id") id: Int): ResponseEntity<Optional<Sport>> {
+    @GetMapping("/get-by-id/{id}")
+    fun getSportById(@PathVariable("id") id: Int): ResponseEntity<Optional<Sport>> {
         val sport = sportDao.findById(id)
         return ResponseEntity.ok(sport)
     }
@@ -79,8 +74,8 @@ class SportController {
         return ResponseEntity.ok(sports)
     }
 
-    @GetMapping("/get-by-name")
-    fun getSportByName(@RequestParam("name") name: String): ResponseEntity<Sport?> {
+    @GetMapping("/get-by-name/{name}")
+    fun getSportByName(@PathVariable("name") name: String): ResponseEntity<Sport?> {
         val sport = sportDao.findByNameOrNull(name)
         return ResponseEntity(sport, sport?.let { HttpStatus.OK } ?: HttpStatus.NOT_FOUND)
     }

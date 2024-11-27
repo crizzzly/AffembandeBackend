@@ -63,27 +63,27 @@ class SubcategoryController {
         return ResponseEntity.ok(subcats)
     }
 
-    @GetMapping("/get-by-id")
-    fun getSubcategoryById(@RequestParam("id") id: Int): ResponseEntity<Optional<Subcategory>> {
+    @GetMapping("/get-by-id/{id}")
+    fun getSubcategoryById(@PathVariable("id") id: Int): ResponseEntity<Optional<Subcategory>> {
         val subcat = subcategoryDao.findById(id)
         return ResponseEntity(subcat, subcat.let { HttpStatus.OK } ?: HttpStatus.NOT_FOUND)
     }
 
-    @GetMapping("/get-by-name")
-    fun getSubcategoryByName(@RequestParam("name") name: String): ResponseEntity<Subcategory> {
+    @GetMapping("/get-by-name/{name}")
+    fun getSubcategoryByName(@PathVariable("name") name: String): ResponseEntity<Subcategory> {
         val subcat = subcategoryDao.findByNameOrNull(name)
         return ResponseEntity(subcat, subcat?.let { HttpStatus.OK } ?: HttpStatus.NOT_FOUND)
     }
 
     @GetMapping("/get-by-sport/{sportId}")
-    fun getSubcategoriesBySportId(@RequestParam sportId: String): ResponseEntity<List<Subcategory>> {
+    fun getSubcategoriesBySportId(@PathVariable("sportId") sportId: String): ResponseEntity<List<Subcategory>> {
         println("getSubcategoriesBySportId Request: $sportId")
         val subcatIds = subcategoryDao.getSubcategoryIdsByRelatedSportId(sportId.toInt())
         return ResponseEntity.ok(subcatIds!!.mapNotNull { subcategoryDao.findById(it!!).orElse(null) })
     }
 
-    @DeleteMapping("/delete-by-id")
-    fun deleteSubcategoryById(@RequestParam("id") id: Int): ResponseEntity.BodyBuilder {
+    @DeleteMapping("/delete-by-id/{id}")
+    fun deleteSubcategoryById(@PathVariable("id") id: Int): ResponseEntity.BodyBuilder {
         subcategoryDao.deleteById(id)
         return ResponseEntity.ok()
     }

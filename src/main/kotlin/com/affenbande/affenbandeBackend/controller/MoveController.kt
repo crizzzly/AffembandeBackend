@@ -81,14 +81,14 @@ class MoveController {
         return ResponseEntity.ok(moves)
     }
 
-    @GetMapping("/get-by-id")
-    fun getMoveById(@RequestParam("id") id: Int): ResponseEntity<Optional<Move>> {
+    @GetMapping("/get-by-id/{id}")
+    fun getMoveById(@PathVariable("id") id: Int): ResponseEntity<Optional<Move>> {
         val move = moveDao.findById(id)
         return ResponseEntity.ok(move)
     }
 
-    @GetMapping("/get-by-name")
-    fun getMoveByName(@RequestParam("name") name: String): ResponseEntity<Move> {
+    @GetMapping("/get-by-name/{name}")
+    fun getMoveByName(@PathVariable("name") name: String): ResponseEntity<Move> {
         val move = moveDao.findByNameOrNull(name)
         return ResponseEntity.ok(move)
     }
