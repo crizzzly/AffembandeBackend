@@ -8,10 +8,12 @@ import com.affenbande.affenbandeBackend.model.ImagePath
 import com.affenbande.affenbandeBackend.model.Move
 import com.affenbande.affenbandeBackend.model.Sport
 import com.affenbande.affenbandeBackend.model.Subcategory
-import io.mockk.*
+import io.mockk.MockKAnnotations
+import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
+import io.mockk.verify
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -66,15 +68,15 @@ class MoveControllerTest {
             name = "Test Move",
             sports = emptyList<String>(),
             subcategories = emptyList<String>(),
-            isCoreMove = false,
+            is_core_move = false,
             level = 0,
             intensity = 0,
-            repetitions = 0,
-            timePreparation = 0,
-            timeExercise = 0,
-            setFormula = null,
-            preMoves = emptyList<String>(),
-            optPreMoves = emptyList<String>(),
+            frequency = 0,
+            time_preparation = 0,
+            time_exercise = 0,
+            formula = null,
+            pre_moves = emptyList<String>(),
+            opt_pre_moves = emptyList<String>(),
             description = null,
         )
 
