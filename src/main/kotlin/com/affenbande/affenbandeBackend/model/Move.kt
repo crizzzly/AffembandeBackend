@@ -71,12 +71,3 @@ class Move(
     // No-argument constructor
     constructor() : this(null, "", null, null, null, null, null, null, null, null, null)
 }
-
-//level = Column(Integer, nullable=False)
-//is_core_move = Column(Boolean, nullable=False)
-//descriptions = Column(Text, nullable=False)
-//intensity = Column(Integer, nullable=False)
-//repetitions = Column(Integer, default=0)
-//time_preparation = Column(Integer, default=0)
-//time_exercise = Column(Integer, nullable=False)
-//set_formula = Column(String, nullable=True)

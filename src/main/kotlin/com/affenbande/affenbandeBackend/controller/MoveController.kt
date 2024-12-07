@@ -47,23 +47,23 @@ class MoveController {
         val move = Move()
         move.name = request.name
         move.description = request.description ?: ""
-        move.isCoreMove = request.is_core_move ?: false
+        move.isCoreMove = request.isCoreMove ?: false
         move.level  = request.level ?: 0
         move.intensity = request.intensity ?: 0
         move.repetitions = request.frequency ?: 0
-        move.timePreparation = request.time_preparation ?: 0
-        move.timeExercise = request.time_exercise ?: 0
+        move.timePreparation = request.timePreparation ?: 0
+        move.timeExercise = request.timeExercise ?: 0
         move.setFormula = request.formula
 
         println("Incomin Move Data")
         println(request)
         println(request)
 
-        if (request.pre_moves != null) {
-            move.preMoves = loadRelatedEntitiesByName(request.pre_moves, moveDao::findByNameOrNull)
+        if (request.preMoves != null) {
+            move.preMoves = loadRelatedEntitiesByName(request.preMoves, moveDao::findByNameOrNull)
         }
-        if (request.opt_pre_moves != null) {
-            move.optPreMoves = loadRelatedEntitiesByName(request.opt_pre_moves, moveDao::findByNameOrNull)
+        if (request.optPreMoves != null) {
+            move.optPreMoves = loadRelatedEntitiesByName(request.optPreMoves, moveDao::findByNameOrNull)
         }
         if(request.subcategories != null) {
             move.subcategories = loadRelatedEntitiesByName(request.subcategories, subcategoryDao::findByNameOrNull)
