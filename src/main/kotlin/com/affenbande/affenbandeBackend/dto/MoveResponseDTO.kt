@@ -1,9 +1,10 @@
 package com.affenbande.affenbandeBackend.dto
 
-data class MoveRequest(
+class MoveResponseDTO(
+    val id: Int?,
     val name: String,
     val description: String?,
-    val subcategories: List<String>?,
+    val subcategoryIds: List<Int?>?,
     val level: Int?,
     val isCoreMove: Boolean?,
     val intensity: Int?,
@@ -11,8 +12,8 @@ data class MoveRequest(
     val timePreparation: Int?,
     val timeExercise: Int?,
     val formula: String?,
-    val preMoves: List<String>?,
-    val optPreMoves: List<String>?,
-    val sports: List<String>?,
-//    val imageFile: String? // You can handle file uploads separately if needed
-)
+    val preMoveIds: List<Int?>?,
+    val optPreMoveIds: List<Int?>?,
+    val sportIds: List<Int?>?,
+    val imagePathId: Int?,
+                     )

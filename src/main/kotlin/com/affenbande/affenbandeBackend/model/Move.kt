@@ -1,5 +1,6 @@
 package com.affenbande.affenbandeBackend.model
 
+import com.affenbande.affenbandeBackend.dto.MoveResponseDTO
 import com.fasterxml.jackson.annotation.JsonManagedReference
 import jakarta.persistence.*
 
@@ -29,45 +30,65 @@ class Move(
     var repetitions: Int? = null,
     var timePreparation: Int? = null,
     var timeExercise: Int? = null,
-    var setFormula: String? = null,
+    var formula: String? = null,
 
-    @ManyToMany(cascade = [CascadeType.PERSIST])
+    @ManyToMany(cascade = [CascadeType.MERGE])
     @JoinTable(
         name = "t_move_pre_moves",
-        joinColumns = [JoinColumn(name = "move_id")],
-        inverseJoinColumns = [JoinColumn(name = "pre_move_id")]
+        joinColumns = [JoinColumn(name = "fk_pre_move_id")],
+        inverseJoinColumns = [JoinColumn(name = "fk_move_id")]
     )
     var preMoves: List<Move>? = mutableListOf(),
 
-    @ManyToMany(cascade = [CascadeType.PERSIST])
+    @ManyToMany(cascade = [CascadeType.ALL])
     @JoinTable(
         name = "t_move_opt_pre_moves",
-        joinColumns = [JoinColumn(name = "fk_move_id")],
-        inverseJoinColumns = [JoinColumn(name = "fk_opt_pre_move_id")]
+        joinColumns = [JoinColumn(name = "fk_opt_pre_move_id")],
+        inverseJoinColumns = [JoinColumn(name = "fk_move_id")]
     )
     var optPreMoves: List<Move>? = mutableListOf(),
 
 
-    @ManyToMany(cascade = [CascadeType.PERSIST])
+    @ManyToMany(cascade = [CascadeType.ALL])
     @JsonManagedReference
     @JoinTable(
-        name = "t_sport_subcategory",
-        joinColumns = [JoinColumn(name = "fk_sport_id")],
-        inverseJoinColumns = [JoinColumn(name = "fk_subcategory_id")]
+        name = "t_move_subcategory",
+        joinColumns = [JoinColumn(name = "fk_subcategory_id")],
+        inverseJoinColumns = [JoinColumn(name = "fk_move_id")]
     )
     var subcategories: List<Subcategory>? = mutableListOf(),
 
-    @ManyToMany(cascade = [CascadeType.PERSIST])
+    @ManyToMany(cascade = [CascadeType.ALL])
     @JsonManagedReference
     @JoinTable(
-        name = "t_subcategory_move",
-        joinColumns = [JoinColumn(name = "fk_subcategory_id")],
+        name = "t_move_sport",
+        joinColumns = [JoinColumn(name = "fk_sport_id")],
         inverseJoinColumns = [JoinColumn(name = "fk_move_id")]
     )
     var sports: List<Sport>? = mutableListOf(),
 ) {
-
-
     // No-argument constructor
     constructor() : this(null, "", null, null, null, null, null, null, null, null, null)
+
+    fun toResponseDTO(): MoveResponseDTO = MoveResponseDTO(
+        id = id,
+        name = name,
+        description = description,
+        subcategoryIds = subcategories?.map { it.id }!!,
+        level = level,
+        isCoreMove = isCoreMove,
+        intensity = intensity,
+        frequency = repetitions,
+        timePreparation = timePreparation,
+        timeExercise = timeExercise,
+        formula = formula,
+        preMoveIds = preMoves?.map { it.id },
+        optPreMoveIds = optPreMoves?.map { it.id },
+        sportIds = sports?.map { it.id },
+        imagePathId = image?.id
+                                                          )
 }
+
+
+
+

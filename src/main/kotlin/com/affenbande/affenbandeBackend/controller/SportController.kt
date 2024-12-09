@@ -1,6 +1,6 @@
 package com.affenbande.affenbandeBackend.controller
 
-import com.affenbande.affenbandeBackend.controller.helper.loadRelatedEntitiesByName
+import com.affenbande.affenbandeBackend.controller.helper.loadRelatedEntitiesById
 import com.affenbande.affenbandeBackend.dao.SportDao
 import com.affenbande.affenbandeBackend.dto.SportRequest
 import com.affenbande.affenbandeBackend.model.Sport
@@ -44,10 +44,10 @@ class SportController {
         sport.image = imagePathDao.findById(request.imagePathId!!).orElse(null)
 
         if (request.subcategories!!.isNotEmpty()) {
-            sport.subcategories = loadRelatedEntitiesByName(request.subcategories, subcategoryDao::findByNameOrNull)
+            sport.subcategories = loadRelatedEntitiesById(request.subcategories, subcategoryDao::findByNameOrNull)
         }
         if (request.moves!!.isNotEmpty()) {
-            sport.moves = loadRelatedEntitiesByName(request.moves, moveDao::findByNameOrNull)
+            sport.moves = loadRelatedEntitiesById(request.moves, moveDao::findByNameOrNull)
         }
         sportDao.add(sport)
         return ResponseEntity.ok(sport)

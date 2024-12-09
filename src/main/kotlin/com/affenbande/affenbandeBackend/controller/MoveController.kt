@@ -1,17 +1,18 @@
 package com.affenbande.affenbandeBackend.controller
 
 import com.affenbande.affenbandeBackend.config.*
-import com.affenbande.affenbandeBackend.controller.helper.loadRelatedEntitiesByName
 import com.affenbande.affenbandeBackend.dao.ImagePathDao
 import com.affenbande.affenbandeBackend.dao.MoveDao
 import com.affenbande.affenbandeBackend.dao.SportDao
 import com.affenbande.affenbandeBackend.dao.SubcategoryDao
-import com.affenbande.affenbandeBackend.dto.MoveRequest
+import com.affenbande.affenbandeBackend.dto.MoveRequestDTO
 import com.affenbande.affenbandeBackend.model.Move
+import com.affenbande.affenbandeBackend.services.MoveService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.util.*
@@ -31,6 +32,10 @@ class MoveController {
     @Autowired
     lateinit var subcategoryDao: SubcategoryDao
 
+    @Autowired
+    lateinit var moveService: MoveService
+
+
     companion object {
         const val OPERATION_ADD = "Add a new move."
     }
@@ -42,38 +47,21 @@ class MoveController {
         ApiResponse(responseCode = RESPONSE_INTERNAL_SERVER_ERROR_CODE, description = RESPONSE_INTERNAL_SERVER_ERROR_DESCRIPTION)
     ])
     fun addMove(
-        @RequestBody request: MoveRequest,
-    ): ResponseEntity<Move> {
-        val move = Move()
-        move.name = request.name
-        move.description = request.description ?: ""
-        move.isCoreMove = request.isCoreMove ?: false
-        move.level  = request.level ?: 0
-        move.intensity = request.intensity ?: 0
-        move.repetitions = request.frequency ?: 0
-        move.timePreparation = request.timePreparation ?: 0
-        move.timeExercise = request.timeExercise ?: 0
-        move.setFormula = request.formula
+        @RequestBody moveRequestDTO: MoveRequestDTO,
+               ): ResponseEntity<Any> {
 
         println("Incomin Move Data")
-        println(request)
-        println(request)
+        println(moveRequestDTO)
 
-        if (request.preMoves != null) {
-            move.preMoves = loadRelatedEntitiesByName(request.preMoves, moveDao::findByNameOrNull)
+        lateinit var returnVal: ResponseEntity<Any>
+        try {
+            returnVal = ResponseEntity.ok(moveService.addMove(moveRequestDTO))
+        } catch (e: Exception) {
+            println("Error: ${e.message}")
+            returnVal = ResponseEntity("An error occurred: ${e.message}", HttpStatus.INTERNAL_SERVER_ERROR)
+//          HttpStatus.INTERNAL_SERVER_ERROR
         }
-        if (request.optPreMoves != null) {
-            move.optPreMoves = loadRelatedEntitiesByName(request.optPreMoves, moveDao::findByNameOrNull)
-        }
-        if(request.subcategories != null) {
-            move.subcategories = loadRelatedEntitiesByName(request.subcategories, subcategoryDao::findByNameOrNull)
-        }
-        if(request.sports != null) {
-            move.sports = loadRelatedEntitiesByName(request.sports, sportDao::findByNameOrNull)
-        }
-
-        moveDao.add(move)
-        return ResponseEntity.ok(move)
+        return returnVal
     }
 
     @GetMapping("/get-all")

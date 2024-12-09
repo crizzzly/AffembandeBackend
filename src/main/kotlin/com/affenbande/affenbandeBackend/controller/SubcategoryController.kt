@@ -1,6 +1,6 @@
 package com.affenbande.affenbandeBackend.controller
 
-import com.affenbande.affenbandeBackend.controller.helper.loadRelatedEntitiesByName
+import com.affenbande.affenbandeBackend.controller.helper.loadRelatedEntitiesById
 import com.affenbande.affenbandeBackend.dao.ImagePathDao
 import com.affenbande.affenbandeBackend.dao.MoveDao
 import com.affenbande.affenbandeBackend.dao.SportDao
@@ -37,11 +37,11 @@ class SubcategoryController {
 
         val subcategory = Subcategory()
         subcategory.name = request.name
-        subcategory.sports = loadRelatedEntitiesByName(request.sports!!, sportDao::findByNameOrNull)
+        subcategory.sports = loadRelatedEntitiesById(request.sports!!, sportDao::findByNameOrNull)
         subcategory.image = imagePathDao.findById(request.imagePathId!!).orElse(null)
 
         if (request.moves!!.isNotEmpty()) {
-            subcategory.moves = loadRelatedEntitiesByName(request.moves, moveDao::findByNameOrNull)
+            subcategory.moves = loadRelatedEntitiesById(request.moves, moveDao::findByNameOrNull)
         }
 
         subcategoryDao.add(subcategory)
