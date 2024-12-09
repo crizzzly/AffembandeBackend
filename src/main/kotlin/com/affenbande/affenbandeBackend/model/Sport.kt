@@ -1,5 +1,6 @@
 package com.affenbande.affenbandeBackend.model
 
+import com.affenbande.affenbandeBackend.dto.SportResponseDTO
 import com.fasterxml.jackson.annotation.JsonBackReference
 import jakarta.persistence.*
 
@@ -25,7 +26,13 @@ class Sport(
     var moves: List<Move>? = mutableListOf(),
     )
 {
-    // No-argument constructor
     constructor() : this(null, "", null, null, null)
-//    constructor() : this(null, "", null)
+
+    fun toResponseDTO(): SportResponseDTO = SportResponseDTO(
+        id = id,
+        name = name,
+        imagePathId = image?.id,
+        subcategoryIds = subcategories!!.map { it.id },
+        moveIds = moves!!.map { it.id }
+                                                            )
 }

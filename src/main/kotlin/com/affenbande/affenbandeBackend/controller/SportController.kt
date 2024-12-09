@@ -1,9 +1,8 @@
 package com.affenbande.affenbandeBackend.controller
 
-import com.affenbande.affenbandeBackend.controller.helper.loadRelatedEntitiesById
-import com.affenbande.affenbandeBackend.dao.SportDao
-import com.affenbande.affenbandeBackend.dto.SportRequest
-import com.affenbande.affenbandeBackend.model.Sport
+import com.affenbande.affenbandeBackend.dto.SportRequestDTO
+import com.affenbande.affenbandeBackend.dto.SportResponseDTO
+import com.affenbande.affenbandeBackend.services.SportService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
@@ -22,61 +21,39 @@ import java.util.*
 @Tag(name = "Sports API", description = "Endpoints for managing sports")
 class SportController {
     @Autowired
-    lateinit var sportDao: SportDao
-
-    @Autowired
-    lateinit var imagePathDao: com.affenbande.affenbandeBackend.dao.ImagePathDao
-
-    @Autowired
-    lateinit var subcategoryDao: com.affenbande.affenbandeBackend.dao.SubcategoryDao
-
-    @Autowired
-    lateinit var moveDao: com.affenbande.affenbandeBackend.dao.MoveDao
+    lateinit var sportService: SportService
 
 
     @PostMapping("/add")
     fun addSport(
-        @RequestBody request: SportRequest,
+        @RequestBody request: SportRequestDTO,
     ): ResponseEntity<out Any> {
-        println("new sport: $request")
-        val sport = Sport()
-        sport.name = request.name
-        sport.image = imagePathDao.findById(request.imagePathId!!).orElse(null)
-
-        if (request.subcategories!!.isNotEmpty()) {
-            sport.subcategories = loadRelatedEntitiesById(request.subcategories, subcategoryDao::findByNameOrNull)
-        }
-        if (request.moves!!.isNotEmpty()) {
-            sport.moves = loadRelatedEntitiesById(request.moves, moveDao::findByNameOrNull)
-        }
-        sportDao.add(sport)
-        return ResponseEntity.ok(sport)
+        return ResponseEntity.ok(sportService.addSport(request))
     }
 
 
     @GetMapping("/get-by-id/{id}")
-    fun getSportById(@PathVariable("id") id: Int): ResponseEntity<Optional<Sport>> {
-        val sport = sportDao.findById(id)
-        return ResponseEntity.ok(sport)
+    fun getSportById(@PathVariable("id") id: Int): ResponseEntity<SportResponseDTO> {
+        return ResponseEntity.ok(sportService.getSportById(id))
     }
+
 
     @Operation(summary = "Get all sports", description = "Returns a list of all available sports.")
     @ApiResponses(value = [
       ApiResponse(responseCode = "200", description = "Successful operation", content = [
-          (Content(mediaType = "application/json", schema = Schema(implementation = Array<SportRequest>::class)))]),
+          (Content(mediaType = "application/json", schema = Schema(implementation = Array<SportRequestDTO>::class)))]
+                 ),
       ApiResponse(responseCode = "404", description = "No sports found", content = [Content()])
     ])
     @GetMapping("/get-all")
-    fun getAllSports(): ResponseEntity<List<Sport>> {
-        val sports = sportDao.findAll()
-
-        println("Retrieved Sports: $sports")
-        return ResponseEntity.ok(sports)
+    fun getAllSports(): ResponseEntity<List<SportResponseDTO>> {
+        return ResponseEntity.ok(sportService.getAllSports())
     }
 
+
     @GetMapping("/get-by-name/{name}")
-    fun getSportByName(@PathVariable("name") name: String): ResponseEntity<Sport?> {
-        val sport = sportDao.findByNameOrNull(name)
+    fun getSportByName(@PathVariable("name") name: String): ResponseEntity<SportResponseDTO> {
+        val sport = sportService.getSportByName(name)
         return ResponseEntity(sport, sport?.let { HttpStatus.OK } ?: HttpStatus.NOT_FOUND)
     }
 }

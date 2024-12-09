@@ -53,14 +53,24 @@ class MoveService {
             }
         }
 
-        try {
+        return try {
             moveDao.add(move)
+            move.toResponseDTO()
         } catch (e: Exception) {
             println("Failed to add move: ${move.name}")
             throw Exception("Failed to add move: ${move.name}")
         }
-        print("move added successfully: ${move.name}")
-        return move.toResponseDTO()
     }
 
+    fun getAllMoves(): List<MoveResponseDTO> {
+        return moveDao.findAll().map { it.toResponseDTO() }
+    }
+
+    fun getMoveById(id: Int): MoveResponseDTO {
+        return moveDao.findById(id).get().toResponseDTO()
+    }
+
+    fun getMoveByName(name: String): MoveResponseDTO {
+        return moveDao.findByNameOrNull(name)!!.toResponseDTO()
+    }
 }

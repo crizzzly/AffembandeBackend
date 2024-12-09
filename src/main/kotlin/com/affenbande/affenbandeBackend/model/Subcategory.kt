@@ -1,9 +1,9 @@
 package com.affenbande.affenbandeBackend.model
 
+import com.affenbande.affenbandeBackend.dto.SubcategoryResponseDTO
 import com.fasterxml.jackson.annotation.JsonBackReference
 import com.fasterxml.jackson.annotation.JsonManagedReference
 import jakarta.persistence.*
-import kotlin.Int
 
 @Entity
 @Table(name = "t_subcategories")
@@ -34,4 +34,12 @@ class Subcategory(
 ) {
     // No-argument constructor
     constructor() : this(null, "", null, null, null)
+
+    fun toResponseDTO(): SubcategoryResponseDTO = SubcategoryResponseDTO(
+        id = id,
+        name = name,
+        imagePathId = image?.id,
+        sportIds = sports?.map { it.id },
+        moveIds = moves?.map { it.id }
+                                                                        )
 }
