@@ -1,7 +1,7 @@
 package com.affenbande.affenbandeBackend.dto
 
 data class MoveRequestDTO(
-    val name: String,
+    val name: String?,  // TODO: check if this can be nullable to remove issue in test
     val description: String?,
     val level: Int?,
     val isCoreMove: Boolean?,
