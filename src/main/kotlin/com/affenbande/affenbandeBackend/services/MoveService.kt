@@ -26,7 +26,7 @@ class MoveService {
 
     fun addMove(moveRequestDTO: MoveRequestDTO): MoveResponseDTO {
         val move = Move()
-        move.name = moveRequestDTO.name
+        move.name = moveRequestDTO.name.toString()
         move.description = moveRequestDTO.description ?: ""
         move.isCoreMove = moveRequestDTO.isCoreMove ?: false
         move.level = moveRequestDTO.level ?: 0
@@ -37,19 +37,45 @@ class MoveService {
         move.formula = moveRequestDTO.formula
 
         move.apply {
-            sports = moveRequestDTO.sports?.let {
-//                val it = convertIdsToListOfInt(it)
-                it.map { sportDao.findById(it).get() }
+            sports = moveRequestDTO.sports?.let { sportsIds ->
+                if (sportsIds.isNotEmpty()) {
+                    sportsIds.map { sportId ->  // Iterate through the list
+                        sportDao.findByIdOrNull(sportId.toIntOrNull() ?: 0) // Use ID or default to 0 if invalid format
+                            ?: throw NoSuchElementException("Sport with ID $sportId not found") // Handle if not found in DB
+                    }
+                } else {
+                    emptyList() // Or handle empty list as needed (e.g., set to null)
+                }
             }
-            subcategories = moveRequestDTO.subcategories?.let { list ->
-//                val it = convertIdsToListOfInt(it)
-                list.map { subcategoryDao.findById(it).get() }
+            subcategories = moveRequestDTO.subcategories?.let { subcategoryIds ->
+                if (subcategoryIds.isNotEmpty()) {
+                    subcategoryIds.map { subcategoryId ->
+                        subcategoryDao.findByIdOrNull(subcategoryId.toIntOrNull() ?: 0)
+                            ?: throw NoSuchElementException("Subcategory with ID $subcategoryId not found")
+                    }
+                } else {
+                    emptyList()
+                }
             }
-            preMoves = moveRequestDTO.preMoves?.let { list ->
-                list.map { moveDao.findById(it).get() }
+            preMoves = moveRequestDTO.preMoves?.let { moveIds ->
+                if (moveIds.isNotEmpty()) {
+                    moveIds.map { moveId ->
+                        moveDao.findByIdOrNull(moveId.toIntOrNull() ?: 0)
+                            ?: throw NoSuchElementException("Move with ID $moveId not found")
+                    }
+                } else {
+                    emptyList()
+                }
             }
-            optPreMoves = moveRequestDTO.optPreMoves?.let { list ->
-                list.map { moveDao.findById(it).get() }
+            optPreMoves = moveRequestDTO.preMoves?.let { moveIds ->
+                if (moveIds.isNotEmpty()) {
+                    moveIds.map { moveId ->
+                        moveDao.findByIdOrNull(moveId.toIntOrNull() ?: 0)
+                            ?: throw NoSuchElementException("Move with ID $moveId not found")
+                    }
+                } else {
+                    emptyList()
+                }
             }
         }
 
@@ -67,10 +93,53 @@ class MoveService {
     }
 
     fun getMoveById(id: Int): MoveResponseDTO {
-        return moveDao.findById(id).get().toResponseDTO()
+        return moveDao.findByIdOrNull(id)?.toResponseDTO()
+            ?: throw NoSuchElementException("Move with ID $id not found")
     }
 
     fun getMoveByName(name: String): MoveResponseDTO {
-        return moveDao.findByNameOrNull(name)!!.toResponseDTO()
+        return moveDao.findByNameOrNull(name)?.toResponseDTO()
+            ?: throw NoSuchElementException("Move with name $name not found")
+    }
+
+    fun updateMove(id: Int, moveRequestDTO: MoveRequestDTO): MoveResponseDTO {
+        val move = moveDao.findByIdOrNull(id)
+            ?: throw NoSuchElementException("Move with ID $id not found")
+        move.name = moveRequestDTO.name.toString()
+        move.description = moveRequestDTO.description
+        move.isCoreMove = moveRequestDTO.isCoreMove
+        move.level = moveRequestDTO.level
+        move.intensity = moveRequestDTO.intensity
+        move.repetitions = moveRequestDTO.frequency
+        move.timePreparation = moveRequestDTO.timePreparation
+        move.timeExercise = moveRequestDTO.timeExercise
+        move.formula = moveRequestDTO.formula
+        move.sports = moveRequestDTO.sports?.let { sportsIds ->
+            if (sportsIds.isNotEmpty()) {
+                sportsIds.map { sportId ->
+                    sportDao.findByIdOrNull(sportId.toIntOrNull() ?: 0)
+                        ?: throw NoSuchElementException("Sport with ID $sportId not found")
+                }
+            } else {
+                emptyList()
+            }
+        }
+        move.subcategories = moveRequestDTO.subcategories?.let { subcategoryIds ->
+            if (subcategoryIds.isNotEmpty()) {
+                subcategoryIds.map { subcategoryId ->
+                    subcategoryDao.findByIdOrNull(subcategoryId.toIntOrNull() ?: 0)
+                        ?: throw NoSuchElementException("Subcategory with ID $subcategoryId not found")
+                }
+            } else {
+                emptyList()
+            }
+        }
+
+        moveDao.update(move)
+        return move.toResponseDTO()
+    }
+
+    fun deleteMove(id: Int) {
+        moveDao.deleteById(id)
     }
 }

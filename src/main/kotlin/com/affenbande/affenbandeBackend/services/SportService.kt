@@ -29,18 +29,51 @@ class SportService {
         println("new sport: $sportRequestDTO")
         val sport = Sport()
         sport.name = sportRequestDTO.name
-        sport.image = imagePathDao.findById(sportRequestDTO.imagePathId!!).orElse(null)
-
-        if (sportRequestDTO.subcategories!!.isNotEmpty()) {
-            sport.subcategories =
-                loadRelatedEntitiesById(sportRequestDTO.subcategories, subcategoryDao::findByNameOrNull)
+        try {
+        sportRequestDTO.imagePathId?.let {
+            sport.image = imagePathDao.findByIdOrNull(it)
+                ?: throw NoSuchElementException("No image found for this id.")
+            }
+        } catch (e: Exception) {
+            // Handle the error (log, re-throw, etc.)
+            println("Error retrieving ImagePath in SportService.addSport: ${e.message}")
+            throw e // Re-throw if necessary
         }
-        if (sportRequestDTO.moves!!.isNotEmpty()) {
-            sport.moves = loadRelatedEntitiesById(sportRequestDTO.moves, moveDao::findByNameOrNull)
+
+        try {
+            if (!sportRequestDTO.subcategories.isNullOrEmpty()) {
+                sport.subcategories = sportRequestDTO.subcategories.let { subcategoryIds ->
+                    if (subcategoryIds.isNotEmpty()) {
+                        subcategoryIds.map { subcategoryId ->
+                            subcategoryDao.findByIdOrNull(subcategoryId.toIntOrNull() ?: 0)
+                                ?: throw NoSuchElementException("Subcategory with ID $subcategoryId not found")
+                        }
+                    } else {
+                        emptyList()
+                    }
+                }
+            }
+            if (!sportRequestDTO.moves.isNullOrEmpty()) {
+                sport.moves = sportRequestDTO.moves.let { moveIds ->
+                    if (moveIds.isNotEmpty()) {
+                        moveIds.map { moveId ->
+                            moveDao.findByIdOrNull(moveId.toIntOrNull() ?: 0)
+                                ?: throw NoSuchElementException("Move with ID $moveId not found")
+                        }
+                    } else {
+                        emptyList()
+                    }
+                }
+            }
+        }catch (e: Exception) {
+            // Handle the error
+            println("Error retrieving Subcategories or Moves in SportService.addSport: ${e.message}")
+            throw e
         }
         sportDao.add(sport)
         return sport.toResponseDTO()
     }
+
 
     fun getSportById(id: Int): SportResponseDTO {
         return sportDao.findById(id).get().toResponseDTO()

@@ -32,12 +32,29 @@ class SubcategoryService {
 
         val subcategory = Subcategory()
         subcategory.name = subcategoryRequestDTO.name
-        subcategory.sports = loadRelatedEntitiesById(subcategoryRequestDTO.sports!!, sportDao::findByNameOrNull)
-        subcategory.image = imagePathDao.findById(subcategoryRequestDTO.imagePathId!!).orElse(null)
+        subcategory.image = imagePathDao.findByIdOrNull(subcategoryRequestDTO.imagePathId!!)
 
-        if (subcategoryRequestDTO.moves!!.isNotEmpty()) {
-            subcategory.moves = loadRelatedEntitiesById(subcategoryRequestDTO.moves, moveDao::findByNameOrNull)
+        subcategory.sports = subcategoryRequestDTO.sports.let { sportIds ->
+            if (sportIds!!.isNotEmpty()) {
+                sportIds.map { sportId ->
+                    sportDao.findByIdOrNull(sportId.toIntOrNull() ?: 0)
+                        ?: throw NoSuchElementException("Sport with ID $sportId not found")
+                }
+            } else {
+                emptyList()
+            }
         }
+        subcategory.moves = subcategoryRequestDTO.moves.let { moveIds ->
+            if (moveIds!!.isNotEmpty()) {
+                moveIds.map { moveId ->
+                    moveDao.findByIdOrNull(moveId.toIntOrNull() ?: 0)
+                        ?: throw NoSuchElementException("Move with ID $moveId not found")
+                }
+            } else {
+                emptyList()
+            }
+        }
+
 
         subcategoryDao.add(subcategory)
         return subcategory.toResponseDTO()

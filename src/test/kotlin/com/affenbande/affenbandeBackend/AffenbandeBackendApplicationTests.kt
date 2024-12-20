@@ -1,4 +1,4 @@
-//package com.affenbande.affenbandeBackend
+package com.affenbande.affenbandeBackend
 //
 //import org.hamcrest.Matchers.equalTo
 //import org.junit.jupiter.api.Test
