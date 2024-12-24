@@ -2,12 +2,14 @@ package com.affenbande.affenbandeBackend.controller
 
 import com.affenbande.affenbandeBackend.dto.SubcategoryRequestDTO
 import com.affenbande.affenbandeBackend.dto.SubcategoryResponseDTO
+import com.affenbande.affenbandeBackend.model.Subcategory
 import com.affenbande.affenbandeBackend.services.SubcategoryService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.util.*
+import kotlin.collections.mutableListOf
 
 
 @RestController
@@ -39,10 +41,15 @@ class SubcategoryController {
         return ResponseEntity.ok(subcategoryService.getAllSubcategories())
     }
 
-    @GetMapping("/get-by-id/{id}")
-    fun getSubcategoryById(@PathVariable("id") id: Int): ResponseEntity<SubcategoryResponseDTO> {
-        val subcat = subcategoryService.getSubcategoryById(id)
-        return ResponseEntity(subcat, subcat.let { HttpStatus.OK } ?: HttpStatus.NOT_FOUND)
+
+    @GetMapping("/get-all-by-ids/{ids}")
+    fun getSubcategoryById(@PathVariable("ids") ids: List<Int>): ResponseEntity<MutableList<SubcategoryResponseDTO>> {
+         val subcats = mutableListOf<SubcategoryResponseDTO>();
+        ids.map{ id ->
+            val subcat = subcategoryService.getSubcategoryById(id)
+            subcats.add(subcat)
+        }
+        return ResponseEntity(subcats, subcats.let { HttpStatus.OK })
     }
 
     @GetMapping("/get-by-name/{name}")

@@ -50,6 +50,17 @@ class SportController {
         return ResponseEntity.ok(sportService.getAllSports())
     }
 
+    @GetMapping("/get-all-by-ids/{ids}")
+    fun getSportsByIds(@PathVariable("ids") ids: List<Int>): ResponseEntity<MutableList<SportResponseDTO>> {
+        val sports = mutableListOf<SportResponseDTO>();
+        ids.map{ id ->
+            val sport = sportService.getSportById(id)
+            sports.add(sport)
+        }
+        return ResponseEntity(sports, sports.let { HttpStatus.OK })
+    }
+
+
 
     @GetMapping("/get-by-name/{name}")
     fun getSportByName(@PathVariable("name") name: String): ResponseEntity<SportResponseDTO> {

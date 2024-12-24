@@ -48,4 +48,17 @@ class MoveController {
     fun getMoveByName(@PathVariable("name") name: String): ResponseEntity<MoveResponseDTO> {
         return ResponseEntity.ok(moveService.getMoveByName(name))
     }
+
+    @DeleteMapping("/delete/{id}")
+    fun deleteMoveById(@PathVariable("id") id: Int): ResponseEntity<Unit> {
+        return ResponseEntity.ok(moveService.deleteMove(id))
+    }
+
+    @PostMapping("/update/{id}")
+    fun updateMove(
+        @PathVariable("id") id: Int,
+        @RequestBody moveRequestDTO: MoveRequestDTO
+    ): ResponseEntity<MoveResponseDTO> {
+        return ResponseEntity.ok(moveService.updateMove(id, moveRequestDTO))
+    }
 }
