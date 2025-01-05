@@ -3,8 +3,8 @@ spring:
     web-application-type: servlet
   datasource:
     url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
-    username: chrissi-dev
-    password: BrowsePostgresInSpace
+    username: ${DB_USER}
+    password: ${DB_PASSWD}
   jpa:
     show-sql: true
     hibernate.ddl-auto: 'update' # update #create-drop
@@ -21,6 +21,10 @@ spring:
     favicon:
       enabled=false
     # TODO: Create Favicon
+server:
+  address: 0.0.0.0 # Listens on all network interfaces
+  port: 8080       # Optional: Define the port explicitly
+
 jakarta:
   persistence:
     jdbc:

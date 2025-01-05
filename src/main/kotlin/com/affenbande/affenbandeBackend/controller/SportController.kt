@@ -50,8 +50,12 @@ class SportController {
         return ResponseEntity.ok(sportService.getAllSports())
     }
 
+
+//    TODO: An error occurred: No static resource sports/get-all-by-ids/1,2
     @GetMapping("/get-all-by-ids/{ids}")
     fun getSportsByIds(@PathVariable("ids") ids: List<Int>): ResponseEntity<MutableList<SportResponseDTO>> {
+        println("getSportsByIds Request: $ids")
+        println("dataType ${ids.javaClass}")
         val sports = mutableListOf<SportResponseDTO>();
         ids.map{ id ->
             val sport = sportService.getSportById(id)
