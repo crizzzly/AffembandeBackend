@@ -14,7 +14,7 @@ class DatabaseTestController {
     @GetMapping("/")
     fun testDatabaseConnection(): String {
         try {
-            dataSource!!.connection.use { connection ->
+            dataSource!!.connection.use { _ ->
                 return "Database connection successful!"
             }
         } catch (e: Exception) {

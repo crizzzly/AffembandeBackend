@@ -32,6 +32,8 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa") // JPA with Hibernate
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0")
+	implementation("org.springframework.boot:spring-boot-starter-validation")
+
 	constraints {
        implementation("org.springdoc:springdoc-openapi-ui:1.6.0") {
            because("To ensure OpenApiCustomiser is available")

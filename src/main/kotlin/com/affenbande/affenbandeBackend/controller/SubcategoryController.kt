@@ -55,7 +55,8 @@ class SubcategoryController {
     @GetMapping("/get-by-name/{name}")
     fun getSubcategoryByName(@PathVariable("name") name: String): ResponseEntity<SubcategoryResponseDTO> {
         val subcat = subcategoryService.getSubcategoryByName(name)
-        return ResponseEntity(subcat, subcat?.let { HttpStatus.OK } ?: HttpStatus.NOT_FOUND)
+        // TODO: Exception handling
+        return ResponseEntity(subcat, subcat.let { HttpStatus.OK })
     }
 
     @GetMapping("/get-by-sport/{sportId}")

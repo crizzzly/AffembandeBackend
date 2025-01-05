@@ -69,6 +69,7 @@ class SportController {
     @GetMapping("/get-by-name/{name}")
     fun getSportByName(@PathVariable("name") name: String): ResponseEntity<SportResponseDTO> {
         val sport = sportService.getSportByName(name)
-        return ResponseEntity(sport, sport?.let { HttpStatus.OK } ?: HttpStatus.NOT_FOUND)
+        // TODO: Exception handling
+        return ResponseEntity(sport, sport.let { HttpStatus.OK } )
     }
 }

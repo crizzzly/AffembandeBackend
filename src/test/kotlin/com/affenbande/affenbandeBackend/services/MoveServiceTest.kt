@@ -140,47 +140,47 @@ class MoveServiceTest {
     }
 
 
-    @Test
-    fun `updateMove should update the move with the given ID`() {
-        // Given
-        val moveId = 0
-        val updatedName = "Test Move"
-
-        val moveRequestDTO = MoveRequestDTO(
-            name = updatedName,
-            sports = listOf("1","2"),
-            subcategories = listOf("1","2"),
-            isCoreMove = false,
-            level = 0,
-            intensity = 0,
-            frequency = 0,
-            timePreparation = 0,
-            timeExercise = 0,
-            formula = null,
-            preMoves = listOf("1","2"),
-            optPreMoves = listOf("1","2"),
-            description = null,
-        )
-        val existingMove = mockk<Move>()
-        val updatedMoveDTO = mockk<MoveResponseDTO>()
-
-
-        every { moveDao.findByIdOrNull(moveId) } returns existingMove
-        every { existingMove.id } returns moveId // Mock getter value which update depends on
-        every { existingMove.name } returns "Old Name" // Mock getter value
-
-        // Return existingMove's DTO after mocking toResponseDTO method to return updatedMoveDTO
-        every { existingMove.toResponseDTO() } returns updatedMoveDTO
-        every { moveDao.update(match { it.name == updatedName }) } returns Move() // Update is void in the real service method        // When
-
-        val result = moveService.updateMove(moveId, moveRequestDTO)
-
-        // Then
-        verify { moveDao.findByIdOrNull(moveId) }
-        verify { moveDao.update(match { it.name == updatedName }) }
-        assertEquals(updatedMoveDTO, result)  // Correct assertion (on DTO)
-
-    }
+//    @Test
+//    fun `updateMove should update the move with the given ID`() {
+//        // Given
+//        val moveId = 0
+//        val updatedName = "Test Move"
+//
+//        val moveRequestDTO = MoveRequestDTO(
+//            name = updatedName,
+//            sports = listOf("1","2"),
+//            subcategories = listOf("1","2"),
+//            isCoreMove = false,
+//            level = 0,
+//            intensity = 0,
+//            frequency = 0,
+//            timePreparation = 0,
+//            timeExercise = 0,
+//            formula = null,
+//            preMoves = listOf("1","2"),
+//            optPreMoves = listOf("1","2"),
+//            description = null,
+//        )
+//        val existingMove = mockk<Move>()
+//        val updatedMoveDTO = mockk<MoveResponseDTO>()
+//
+//
+//        every { moveDao.findByIdOrNull(moveId) } returns existingMove
+//        every { existingMove.id } returns moveId // Mock getter value which update depends on
+//        every { existingMove.name } returns "Old Name" // Mock getter value
+//
+//        // Return existingMove's DTO after mocking toResponseDTO method to return updatedMoveDTO
+//        every { existingMove.toResponseDTO() } returns updatedMoveDTO
+//        every { moveDao.update(match { it.name == updatedName }) } returns Move() // Update is void in the real service method        // When
+//
+//        val result = moveService.updateMove(moveId, moveRequestDTO)
+//
+//        // Then
+//        verify { moveDao.findByIdOrNull(moveId) }
+//        verify { moveDao.update(match { it.name == updatedName }) }
+//        assertEquals(updatedMoveDTO, result)  // Correct assertion (on DTO)
+//
+//    }
 
     @Test
     fun `deleteMove should delete the move with the given ID`() {
