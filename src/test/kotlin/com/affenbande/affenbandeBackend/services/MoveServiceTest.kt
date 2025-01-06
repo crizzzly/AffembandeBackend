@@ -51,6 +51,8 @@ class MoveServiceTest {
             preMoves = listOf("1","2"),
             optPreMoves = listOf("1","2"),
             description = null,
+            link = null,
+
         )
         val mockMove = mockk<Move>()
         every { mockMove.toResponseDTO() } returns mockk()
