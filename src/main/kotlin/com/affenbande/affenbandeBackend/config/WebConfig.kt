@@ -36,15 +36,6 @@ class WebConfig {
         }
     }
 
-    @Bean
-    fun characterEncodingFilter(): FilterRegistrationBean<CharacterEncodingFilter?> {
-        val registrationBean: FilterRegistrationBean<CharacterEncodingFilter?> = FilterRegistrationBean<CharacterEncodingFilter?>()
-        registrationBean.filter = CharacterEncodingFilter()
-        registrationBean.addUrlPatterns("/*") // Or specific patterns
-        registrationBean.addInitParameter("encoding", "UTF-8")
-        registrationBean.addInitParameter("forceEncoding", "true") // Important for setting response charset
-        return registrationBean
-    }
 }
 
 // TODO: add restrictions to admin page - only allowed users
