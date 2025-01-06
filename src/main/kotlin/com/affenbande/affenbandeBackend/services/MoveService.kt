@@ -117,29 +117,60 @@ class MoveService {
         move.sports = moveRequestDTO.sports?.let { sportsIds ->
             if (sportsIds.isNotEmpty()) {
                 sportsIds.map { sportId ->
-                    sportDao.findByIdOrNull(sportId.toIntOrNull() ?: 0)
+                    sportDao.findByIdOrNull(
+                        sportId.toIntOrNull()
+                            ?: 0
+                    )
                         ?: throw NoSuchElementException("Sport with ID $sportId not found")
-                }
+                }.toMutableList()
             } else {
-                emptyList()
+                mutableListOf()
             }
         }
         move.subcategories = moveRequestDTO.subcategories?.let { subcategoryIds ->
             if (subcategoryIds.isNotEmpty()) {
                 subcategoryIds.map { subcategoryId ->
-                    subcategoryDao.findByIdOrNull(subcategoryId.toIntOrNull() ?: 0)
+                    subcategoryDao.findByIdOrNull(
+                        subcategoryId.toIntOrNull()
+                            ?: 0
+                    )
                         ?: throw NoSuchElementException("Subcategory with ID $subcategoryId not found")
-                }
+                }.toMutableList()
             } else {
-                emptyList()
+                mutableListOf()
             }
         }
-
+        move.preMoves = moveRequestDTO.preMoves?.let { moveIds ->
+            if (moveIds.isNotEmpty()) {
+                moveIds.map { moveId ->
+                    moveDao.findByIdOrNull(
+                        moveId.toIntOrNull()
+                            ?: 0
+                    )
+                        ?: throw NoSuchElementException("Move with ID $moveId not found")
+                }.toMutableList()
+            } else {
+                mutableListOf()
+            }
+        }
+        move.optPreMoves = moveRequestDTO.optPreMoves?.let { moveIds ->
+            if (moveIds.isNotEmpty()) {
+                moveIds.map { moveId ->
+                    moveDao.findByIdOrNull(
+                        moveId.toIntOrNull()
+                            ?: 0
+                    )
+                        ?: throw NoSuchElementException("Move with ID $moveId not found")
+                }.toMutableList()
+            } else {
+                mutableListOf()
+            }
+        }
         moveDao.update(move)
         return move.toResponseDTO()
     }
+        fun deleteMove(id: Int) {
+            moveDao.deleteById(id)
+        }
 
-    fun deleteMove(id: Int) {
-        moveDao.deleteById(id)
-    }
 }
