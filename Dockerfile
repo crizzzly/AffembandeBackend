@@ -4,6 +4,10 @@ FROM openjdk:21-jdk-slim
 # Set the working directory inside the container
 WORKDIR /app
 
+# For example, if using Gradle
+# or any specific build command you have
+# RUN ./gradlew build
+
 # Copy your build files (like jar) to the working directory -> not good practice
 COPY build/libs/AffenbandeBackend-0.0.1-SNAPSHOT.jar .
 
@@ -16,10 +20,6 @@ COPY src/main/resources/application.yml /app/application.yml
 # Copy your application's build files and directories
 COPY . .
 
-
-# For example, if using Gradle
-# or any specific build command you have
-# RUN ./gradlew build
 
 # Expose the port that the Kotlin backend will run on
 EXPOSE 8080
