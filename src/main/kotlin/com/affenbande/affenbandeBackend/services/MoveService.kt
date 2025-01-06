@@ -31,7 +31,7 @@ class MoveService {
         move.isCoreMove = moveRequestDTO.isCoreMove ?: false
         move.level = moveRequestDTO.level ?: 0
         move.intensity = moveRequestDTO.intensity ?: 0
-        move.repetitions = moveRequestDTO.frequency ?: 0
+        move.repetitions = moveRequestDTO.repetitions ?: 0
         move.timePreparation = moveRequestDTO.timePreparation ?: 0
         move.timeExercise = moveRequestDTO.timeExercise ?: 0
         move.formula = moveRequestDTO.formula
@@ -106,11 +106,12 @@ class MoveService {
         val move = moveDao.findByIdOrNull(id)
             ?: throw NoSuchElementException("Move with ID $id not found")
         move.name = moveRequestDTO.name.toString()
+        move.link = moveRequestDTO.link
         move.description = moveRequestDTO.description
         move.isCoreMove = moveRequestDTO.isCoreMove
         move.level = moveRequestDTO.level
         move.intensity = moveRequestDTO.intensity
-        move.repetitions = moveRequestDTO.frequency
+        move.repetitions = moveRequestDTO.repetitions
         move.timePreparation = moveRequestDTO.timePreparation
         move.timeExercise = moveRequestDTO.timeExercise
         move.formula = moveRequestDTO.formula

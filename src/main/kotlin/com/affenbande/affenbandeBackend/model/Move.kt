@@ -31,6 +31,7 @@ class Move(
     var timePreparation: Int? = null,
     var timeExercise: Int? = null,
     var formula: String? = null,
+    var link: String? = null,
 
     @ManyToMany(cascade = [CascadeType.MERGE])
     @JoinTable(
@@ -68,17 +69,18 @@ class Move(
     var sports: List<Sport>? = mutableListOf(),
 ) {
     // No-argument constructor
-    constructor() : this(null, "", null, null, null, null, null, null, null, null, null)
+    constructor() : this(null, "", null, null, null, null, null, null, null, null, null, null, null, null, null, null)
 
     fun toResponseDTO(): MoveResponseDTO = MoveResponseDTO(
         id = id,
         name = name,
         description = description,
         subcategoryIds = subcategories?.map { it.id }!!,
+        link = link,
         level = level,
         isCoreMove = isCoreMove,
         intensity = intensity,
-        frequency = repetitions,
+        repetitions = repetitions,
         timePreparation = timePreparation,
         timeExercise = timeExercise,
         formula = formula,

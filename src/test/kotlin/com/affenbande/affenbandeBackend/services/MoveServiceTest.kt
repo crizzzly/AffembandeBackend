@@ -1,24 +1,18 @@
 package com.affenbande.affenbandeBackend.services
 
-import com.affenbande.affenbandeBackend.dao.ImagePathDao
 import com.affenbande.affenbandeBackend.dao.MoveDao
 import com.affenbande.affenbandeBackend.dao.SportDao
 import com.affenbande.affenbandeBackend.dao.SubcategoryDao
 import com.affenbande.affenbandeBackend.dto.MoveRequestDTO
-import com.affenbande.affenbandeBackend.dto.MoveResponseDTO
-import com.affenbande.affenbandeBackend.model.ImagePath
 import com.affenbande.affenbandeBackend.model.Move
 import com.affenbande.affenbandeBackend.model.Sport
 import com.affenbande.affenbandeBackend.model.Subcategory
-import com.affenbande.affenbandeBackend.services.MoveService
 import io.mockk.*
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.mockito.kotlin.any
-import java.util.*
 
 class MoveServiceTest {
 
@@ -50,7 +44,7 @@ class MoveServiceTest {
             isCoreMove = false,
             level = 0,
             intensity = 0,
-            frequency = 0,
+            repetitions = 0,
             timePreparation = 0,
             timeExercise = 0,
             formula = null,
