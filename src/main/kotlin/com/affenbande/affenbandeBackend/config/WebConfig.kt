@@ -15,24 +15,24 @@ Production: Always use a proxy server (Nginx, Apache) for production. This isola
 Development (with fixed URL): You can relax allowedOrigins to include common development URLs (localhost, emulator addresses). Be very cautious about using "*" even during development.
 Dynamic Backend URL (Discouraged): If the backend URL changes dynamically (not recommended), consider alternative app architectures. If you absolutely must use this pattern, only use "*" during development and evaluate secure alternatives for production.s
 * */
-//
-//@Configuration
-//class WebConfig {
-//    @Bean
-//    fun corsConfigurer(): WebMvcConfigurer {
-//        return object : WebMvcConfigurer {
-//
-//            override fun addCorsMappings(registry: CorsRegistry) {
-//                registry.addMapping("/**") // Adjust the path as needed
-//                    .allowedOrigins("*") // use Nginx as proxy for production
-//                    .allowedMethods("GET", "POST", "DELETE")
-//                    .allowedHeaders("Content-Type", "Authorization")
-////                    .allowedHeaders("*") // Specific headers
-//                    .maxAge(3600)
-//                    // .allowCredentials(true) // Only if needed, with CSRF protection
-//            }
-//        }
-//    }
-//}
+
+@Configuration
+class WebConfig {
+    @Bean
+    fun corsConfigurer(): WebMvcConfigurer {
+        return object : WebMvcConfigurer {
+
+            override fun addCorsMappings(registry: CorsRegistry) {
+                registry.addMapping("/**") // Adjust the path as needed
+                    .allowedOrigins("*") // use Nginx as proxy for production
+                    .allowedMethods("GET", "POST", "DELETE")
+                    .allowedHeaders("Content-Type", "Authorization")
+//                    .allowedHeaders("*") // Specific headers
+                    .maxAge(3600)
+                    // .allowCredentials(true) // Only if needed, with CSRF protection
+            }
+        }
+    }
+}
 
 // TODO: add restrictions to admin page - only allowed users
