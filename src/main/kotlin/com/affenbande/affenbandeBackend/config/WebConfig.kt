@@ -1,7 +1,9 @@
 package com.affenbande.affenbandeBackend.config
 
+import org.springframework.boot.web.servlet.FilterRegistrationBean
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.web.filter.CharacterEncodingFilter
 import org.springframework.web.servlet.config.annotation.CorsRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
@@ -32,6 +34,16 @@ class WebConfig {
                     // .allowCredentials(true) // Only if needed, with CSRF protection
             }
         }
+    }
+
+    @Bean
+    fun characterEncodingFilter(): FilterRegistrationBean<CharacterEncodingFilter?> {
+        val registrationBean: FilterRegistrationBean<CharacterEncodingFilter?> = FilterRegistrationBean<CharacterEncodingFilter?>()
+        registrationBean.filter = CharacterEncodingFilter()
+        registrationBean.addUrlPatterns("/*") // Or specific patterns
+        registrationBean.addInitParameter("encoding", "UTF-8")
+        registrationBean.addInitParameter("forceEncoding", "true") // Important for setting response charset
+        return registrationBean
     }
 }
 
