@@ -31,6 +31,7 @@ class MoveService {
         move.description = moveRequestDTO.description ?: ""
         move.isCoreMove = moveRequestDTO.isCoreMove == true
         move.level = moveRequestDTO.level ?: 0
+        move.link = moveRequestDTO.link ?: ""
         move.intensity = moveRequestDTO.intensity ?: 0
         move.repetitions = moveRequestDTO.repetitions ?: 0
         move.timePreparation = moveRequestDTO.timePreparation ?: 0
