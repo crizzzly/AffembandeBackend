@@ -28,12 +28,21 @@ class WebConfig {
                 registry.addMapping("/**") // Adjust the path as needed
                     .allowedOrigins("*") // use Nginx as proxy for production
                     .allowedMethods("GET", "POST", "DELETE")
-                    .allowedHeaders("Content-Type", "Authorization")
+                    .allowedHeaders("Content-Type", "Authorization", "Charset")
+
 //                    .allowedHeaders("*") // Specific headers
                     .maxAge(3600)
                     // .allowCredentials(true) // Only if needed, with CSRF protection
             }
         }
+    }
+
+    @Bean
+    fun filterRegistrationBean(): FilterRegistrationBean<*> {
+        val filter = CharacterEncodingFilter()
+        filter.encoding = "UTF-8"
+        filter.setForceEncoding(true)
+        return FilterRegistrationBean(filter)
     }
 }
 

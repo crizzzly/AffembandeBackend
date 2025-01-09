@@ -11,13 +11,13 @@ class ImagePathController {
     @Autowired
     lateinit var imagePathDao: ImagePathDao
 
-    @PostMapping("/images/add", produces = ["application/json,charset=utf8"])
+    @PostMapping("/images/add")
     fun addImageSrc(imagePath: ImagePath) {
         return imagePathDao.add(imagePath)
     }
 
 
-    @GetMapping("/images/get-all", produces = ["application/json,charset=utf8"])
+    @GetMapping("/images/get-all")
     fun getImageSrc(): List<ImagePath> {
         return imagePathDao.findAll()
     }
