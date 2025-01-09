@@ -9,8 +9,9 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
+//, produces = ["application/json,charset=utf8"]
 @RestController
-@RequestMapping("/moves", produces = ["application/json,charset=utf8"])
+@RequestMapping("/moves")
 class MoveController {
     @Autowired
     lateinit var moveService: MoveService
@@ -19,7 +20,7 @@ class MoveController {
     companion object {
         const val OPERATION_ADD = "Add a new move."
     }
-    @PostMapping("/add", produces = ["application/json,charset=utf8"])
+    @PostMapping("/add")
     @Operation(summary = OPERATION_ADD, description = OPERATION_ADD)
     fun addMove(@RequestBody moveRequestDTO: MoveRequestDTO): ResponseEntity<Any> {
         print("Incomin Move Data \n$moveRequestDTO")
@@ -32,29 +33,29 @@ class MoveController {
     }
 
 
-    @GetMapping("/get-all", produces = ["application/json,charset=utf8"])
+    @GetMapping("/get-all")
     fun getAllMoves(): ResponseEntity<List<MoveResponseDTO>> {
         return ResponseEntity.ok(moveService.getAllMoves())
     }
 
 
-    @GetMapping("/get-by-id/{id}", produces = ["application/json,charset=utf8"])
+    @GetMapping("/get-by-id/{id}")
     fun getMoveById(@PathVariable("id") id: Int): ResponseEntity<MoveResponseDTO> {
         return ResponseEntity.ok(moveService.getMoveById(id))
     }
 
 
-    @GetMapping("/get-by-name/{name}", produces = ["application/json,charset=utf8"])
+    @GetMapping("/get-by-name/{name}")
     fun getMoveByName(@PathVariable("name") name: String): ResponseEntity<MoveResponseDTO> {
         return ResponseEntity.ok(moveService.getMoveByName(name))
     }
 
-    @DeleteMapping("/delete/{id}", produces = ["application/json,charset=utf8"])
+    @DeleteMapping("/delete/{id}")
     fun deleteMoveById(@PathVariable("id") id: Int): ResponseEntity<Unit> {
         return ResponseEntity.ok(moveService.deleteMove(id))
     }
 
-    @PostMapping("/update/{id}", produces = ["application/json,charset=utf8"])
+    @PostMapping("/update/{id}")
     fun updateMove(
         @PathVariable("id") id: Int,
         @RequestBody moveRequestDTO: MoveRequestDTO
