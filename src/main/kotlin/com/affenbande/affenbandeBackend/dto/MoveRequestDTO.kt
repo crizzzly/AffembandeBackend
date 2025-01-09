@@ -13,7 +13,7 @@ data class MoveRequestDTO(
     val formula: String?,
     val sports: List<String>?,
     val subcategories: List<String>?,
-    val preMoves: List<String>?,
-    val optPreMoves: List<String>?,
+    val preMoveIds: List<Int?>?,
+    val optPreMoveIds: List<Int?>?,
 //    val imageFile: String? // You can handle file uploads separately if needed
                          )

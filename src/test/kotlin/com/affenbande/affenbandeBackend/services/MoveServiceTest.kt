@@ -48,8 +48,8 @@ class MoveServiceTest {
             timePreparation = 0,
             timeExercise = 0,
             formula = null,
-            preMoves = listOf("1","2"),
-            optPreMoves = listOf("1","2"),
+            preMoveIds = listOf(1, 2),
+            optPreMoveIds = listOf(1, 2),
             description = null,
             link = null,
 

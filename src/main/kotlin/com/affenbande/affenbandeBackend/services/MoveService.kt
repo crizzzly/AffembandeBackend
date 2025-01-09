@@ -9,6 +9,7 @@ import com.affenbande.affenbandeBackend.dto.MoveResponseDTO
 import com.affenbande.affenbandeBackend.model.Move
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import kotlin.text.toIntOrNull
 
 @Service
 class MoveService {
@@ -28,7 +29,7 @@ class MoveService {
         val move = Move()
         move.name = moveRequestDTO.name.toString()
         move.description = moveRequestDTO.description ?: ""
-        move.isCoreMove = moveRequestDTO.isCoreMove ?: false
+        move.isCoreMove = moveRequestDTO.isCoreMove == true
         move.level = moveRequestDTO.level ?: 0
         move.intensity = moveRequestDTO.intensity ?: 0
         move.repetitions = moveRequestDTO.repetitions ?: 0
@@ -57,20 +58,20 @@ class MoveService {
                     emptyList()
                 }
             }
-            preMoves = moveRequestDTO.preMoves?.let { moveIds ->
+            preMoves = moveRequestDTO.preMoveIds?.let { moveIds ->
                 if (moveIds.isNotEmpty()) {
                     moveIds.map { moveId ->
-                        moveDao.findByIdOrNull(moveId.toIntOrNull() ?: 0)
+                        moveDao.findByIdOrNull(moveId ?: 0)
                             ?: throw NoSuchElementException("Move with ID $moveId not found")
                     }
                 } else {
                     emptyList()
                 }
             }
-            optPreMoves = moveRequestDTO.preMoves?.let { moveIds ->
+            optPreMoves = moveRequestDTO.preMoveIds?.let { moveIds ->
                 if (moveIds.isNotEmpty()) {
                     moveIds.map { moveId ->
-                        moveDao.findByIdOrNull(moveId.toIntOrNull() ?: 0)
+                        moveDao.findByIdOrNull(moveId ?: 0)
                             ?: throw NoSuchElementException("Move with ID $moveId not found")
                     }
                 } else {
@@ -84,7 +85,8 @@ class MoveService {
             move.toResponseDTO()
         } catch (e: Exception) {
             println("Failed to add move: ${move.name}")
-            throw Exception("Failed to add move: ${move.name}")
+            throw Exception("Failed to add move: ${move.name}\n" +
+                    "error: ${e.message}")
         }
     }
 
@@ -141,11 +143,11 @@ class MoveService {
                 mutableListOf()
             }
         }
-        move.preMoves = moveRequestDTO.preMoves?.let { moveIds ->
+        move.preMoves = moveRequestDTO.preMoveIds?.let { moveIds ->
             if (moveIds.isNotEmpty()) {
                 moveIds.map { moveId ->
                     moveDao.findByIdOrNull(
-                        moveId.toIntOrNull()
+                        moveId
                             ?: 0
                     )
                         ?: throw NoSuchElementException("Move with ID $moveId not found")
@@ -154,11 +156,11 @@ class MoveService {
                 mutableListOf()
             }
         }
-        move.optPreMoves = moveRequestDTO.optPreMoves?.let { moveIds ->
+        move.optPreMoves = moveRequestDTO.optPreMoveIds?.let { moveIds ->
             if (moveIds.isNotEmpty()) {
                 moveIds.map { moveId ->
                     moveDao.findByIdOrNull(
-                        moveId.toIntOrNull()
+                        moveId
                             ?: 0
                     )
                         ?: throw NoSuchElementException("Move with ID $moveId not found")
