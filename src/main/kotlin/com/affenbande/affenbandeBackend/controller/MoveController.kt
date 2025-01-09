@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/moves")
+@RequestMapping("/moves", produces = ["application/json,charset=utf8"])
 class MoveController {
     @Autowired
     lateinit var moveService: MoveService
@@ -19,7 +19,7 @@ class MoveController {
     companion object {
         const val OPERATION_ADD = "Add a new move."
     }
-    @PostMapping("/add")
+    @PostMapping("/add", produces = ["application/json,charset=utf8"])
     @Operation(summary = OPERATION_ADD, description = OPERATION_ADD)
     fun addMove(@RequestBody moveRequestDTO: MoveRequestDTO): ResponseEntity<Any> {
         print("Incomin Move Data \n$moveRequestDTO")
@@ -32,29 +32,29 @@ class MoveController {
     }
 
 
-    @GetMapping("/get-all")
+    @GetMapping("/get-all", produces = ["application/json,charset=utf8"])
     fun getAllMoves(): ResponseEntity<List<MoveResponseDTO>> {
         return ResponseEntity.ok(moveService.getAllMoves())
     }
 
 
-    @GetMapping("/get-by-id/{id}")
+    @GetMapping("/get-by-id/{id}", produces = ["application/json,charset=utf8"])
     fun getMoveById(@PathVariable("id") id: Int): ResponseEntity<MoveResponseDTO> {
         return ResponseEntity.ok(moveService.getMoveById(id))
     }
 
 
-    @GetMapping("/get-by-name/{name}")
+    @GetMapping("/get-by-name/{name}", produces = ["application/json,charset=utf8"])
     fun getMoveByName(@PathVariable("name") name: String): ResponseEntity<MoveResponseDTO> {
         return ResponseEntity.ok(moveService.getMoveByName(name))
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id}", produces = ["application/json,charset=utf8"])
     fun deleteMoveById(@PathVariable("id") id: Int): ResponseEntity<Unit> {
         return ResponseEntity.ok(moveService.deleteMove(id))
     }
 
-    @PostMapping("/update/{id}")
+    @PostMapping("/update/{id}", produces = ["application/json,charset=utf8"])
     fun updateMove(
         @PathVariable("id") id: Int,
         @RequestBody moveRequestDTO: MoveRequestDTO

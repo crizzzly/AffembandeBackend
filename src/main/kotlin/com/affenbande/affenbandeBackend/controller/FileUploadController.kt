@@ -18,7 +18,7 @@ class FileUploadController {
     @Autowired
     lateinit var imagePathDao: ImagePathDao
 
-    @PostMapping("/upload-image")
+    @PostMapping("/upload-image", produces = ["application/json,charset=utf8"])
     fun uploadImage(
         @RequestParam("image_file") imageFile: MultipartFile,
         @RequestParam("model") model: String

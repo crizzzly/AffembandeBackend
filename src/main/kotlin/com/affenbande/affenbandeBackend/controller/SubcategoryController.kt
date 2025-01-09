@@ -19,7 +19,7 @@ class SubcategoryController {
     @Autowired
     private lateinit var subcategoryService: SubcategoryService
 
-    @PostMapping("/add")
+    @PostMapping("/add", produces = ["application/json,charset=utf8"])
     fun addSubcategory(
         @RequestBody request: SubcategoryRequestDTO,
                       ): ResponseEntity<SubcategoryResponseDTO> {
@@ -27,7 +27,7 @@ class SubcategoryController {
         return ResponseEntity.ok(subcategoryService.addSubcategory(request))
     }
 
-    @PostMapping("/update")
+    @PostMapping("/update", produces = ["application/json,charset=utf8"])
     fun updateSubcategory(
         @RequestParam("id") id: Int,
         @RequestParam("name") name: String
@@ -36,13 +36,13 @@ class SubcategoryController {
     }
 
 
-    @GetMapping("/get-all")
+    @GetMapping("/get-all", produces = ["application/json,charset=utf8"])
     fun getAllSubcategories(): ResponseEntity<List<SubcategoryResponseDTO>> {
         return ResponseEntity.ok(subcategoryService.getAllSubcategories())
     }
 
 
-    @GetMapping("/get-all-by-ids/{ids}")
+    @GetMapping("/get-all-by-ids/{ids}", produces = ["application/json,charset=utf8"])
     fun getSubcategoryById(@PathVariable("ids") ids: List<Int>): ResponseEntity<MutableList<SubcategoryResponseDTO>> {
          val subcats = mutableListOf<SubcategoryResponseDTO>();
         ids.map{ id ->
@@ -52,20 +52,20 @@ class SubcategoryController {
         return ResponseEntity(subcats, subcats.let { HttpStatus.OK })
     }
 
-    @GetMapping("/get-by-name/{name}")
+    @GetMapping("/get-by-name/{name}", produces = ["application/json,charset=utf8"])
     fun getSubcategoryByName(@PathVariable("name") name: String): ResponseEntity<SubcategoryResponseDTO> {
         val subcat = subcategoryService.getSubcategoryByName(name)
         // TODO: Exception handling
         return ResponseEntity(subcat, subcat.let { HttpStatus.OK })
     }
 
-    @GetMapping("/get-by-sport/{sportId}")
+    @GetMapping("/get-by-sport/{sportId}", produces = ["application/json,charset=utf8"])
     fun getSubcategoriesBySportId(@PathVariable("sportId") sportId: String): ResponseEntity<List<Optional<SubcategoryResponseDTO>>> {
         println("getSubcategoriesBySportId Request: $sportId")
         return ResponseEntity.ok(subcategoryService.getSubcategoriesBySportId(sportId))
     }
 
-    @DeleteMapping("/delete-by-id/{id}")
+    @DeleteMapping("/delete-by-id/{id}", produces = ["application/json,charset=utf8"])
     fun deleteSubcategoryById(@PathVariable("id") id: Int): ResponseEntity<Unit> {
         return ResponseEntity.ok(subcategoryService.deleteSubcategory(id))
     }
