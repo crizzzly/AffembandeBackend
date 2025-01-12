@@ -30,9 +30,9 @@ class SubcategoryController {
     @PostMapping("/update")
     fun updateSubcategory(
         @RequestParam("id") id: Int,
-        @RequestParam("name") name: String
+        @RequestParam("subcat") subcat: SubcategoryRequestDTO
                          ): ResponseEntity<SubcategoryResponseDTO> {
-        return ResponseEntity.ok(subcategoryService.updateSubcategory(id, name))
+        return ResponseEntity.ok(subcategoryService.updateSubcategory(id, subcat))
     }
 
 

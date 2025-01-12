@@ -1,6 +1,7 @@
 package com.affenbande.affenbandeBackend.model
 
 import com.affenbande.affenbandeBackend.dto.MoveResponseDTO
+import com.fasterxml.jackson.annotation.JsonBackReference
 import com.fasterxml.jackson.annotation.JsonManagedReference
 import jakarta.persistence.*
 
@@ -67,9 +68,14 @@ class Move(
         inverseJoinColumns = [JoinColumn(name = "fk_move_id")]
     )
     var sports: List<Sport>? = mutableListOf(),
+
+//    @ManyToMany(mappedBy = "moves")
+//    @JsonBackReference
+//    var trainingSets: List<TrainingSet>? = mutableListOf(),
 ) {
     // No-argument constructor
-    constructor() : this(null, "", null, null, null, null, null, null, null, null, null, null, null, null, null, null)
+    constructor() : this(null, "", null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null)
 
     fun toResponseDTO(): MoveResponseDTO = MoveResponseDTO(
         id = id,

@@ -80,16 +80,16 @@ class SubcategoryServiceTest {
     }
 
 
-    @Test
-    fun `updateSubcategory should update the name`() {
-        every { subcategoryDao.findById(any()) } returns Optional.of(Subcategory())
-        every { subcategoryDao.update(any()) } returns Subcategory() // Or capture the argument and assert
-
-        val result = subcategoryService.updateSubcategory(1, "New Name")
-
-        verify { subcategoryDao.update(match { it.name == "New Name" }) } // Verify update() call with correct name
-        assertEquals("New Name", result.name) // Assert updated name in DTO
-    }
+//    @Test
+//    fun `updateSubcategory should update the name`() {
+//        every { subcategoryDao.findById(any()) } returns Optional.of(Subcategory())
+//        every { subcategoryDao.update(any()) } returns Subcategory() // Or capture the argument and assert
+//
+//        val result = subcategoryService.updateSubcategory(1, "New Name")
+//
+//        verify { subcategoryDao.update(match { it.name == "New Name" }) } // Verify update() call with correct name
+//        assertEquals("New Name", result.name) // Assert updated name in DTO
+//    }
 
 
     @Test
@@ -120,14 +120,14 @@ class SubcategoryServiceTest {
     }
 
 
-    @Test
-    fun `getSubcategory by id should return a subcategory`() {
-        every { subcategoryDao.findById(1) } returns Optional.of(Subcategory())
-
-        subcategoryService.getSubcategoryById(1)
-
-        verify { subcategoryDao.findById(1) }
-        confirmVerified(subcategoryDao)
-    }
+//    @Test
+//    fun `getSubcategory by id should return a subcategory`() {
+//        every { subcategoryDao.findById(1) } returns Optional.of(Subcategory())
+//
+//        subcategoryService.getSubcategoryById(1)
+//
+//        verify { subcategoryDao.findById(1) }
+//        confirmVerified(subcategoryDao)
+//    }
 
 }

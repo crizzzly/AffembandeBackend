@@ -31,15 +31,35 @@ class Subcategory(
     @ManyToMany(mappedBy = "subcategories", cascade = [CascadeType.ALL])
     @JsonBackReference
     var moves: List<Move>? = mutableListOf(),
-) {
+
+    @ManyToMany(mappedBy = "subcategories", cascade = [CascadeType.ALL])
+    @JsonBackReference
+    var trainingSessions: List<TrainingSession>? = mutableListOf(),
+
+    @ManyToMany(mappedBy = "subcategories", cascade = [CascadeType.ALL])
+    @JsonBackReference
+    var trainingPlans: List<TrainingPlan>? = mutableListOf(),
+
+    @ManyToMany(mappedBy = "subcategories")
+    @JsonBackReference
+    var constructionIdeas: List<ConstructionIdea>? = mutableListOf(),
+
+    @ManyToMany(mappedBy = "subcategories")
+    @JsonBackReference
+    var trainingDevices: List<TrainingDevice>? = mutableListOf(),
+
+    ) {
     // No-argument constructor
-    constructor() : this(null, "", null, null, null)
+    constructor() : this(null, "", null, null, null, null, null)
 
     fun toResponseDTO(): SubcategoryResponseDTO = SubcategoryResponseDTO(
         id = id,
         name = name,
         imagePathId = image?.id,
         sportIds = sports?.map { it.id },
-        moveIds = moves?.map { it.id }
-                                                                        )
+        moveIds = moves?.map { it.id },
+        trainingSessionIds = trainingSessions?.map { it.id },
+        trainingPlanIds = trainingPlans?.map { it.id },
+        trainingDeviceIds = moves!!.map { it.id },
+        constructionIdeaIds = moves!!.map { it.id },                                                                            )
 }
