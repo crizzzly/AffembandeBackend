@@ -55,7 +55,7 @@ class SportService {
             }
             if (!sportRequestDTO.moves.isNullOrEmpty()) {
                 sport.moves = sportRequestDTO.moves.let { moveIds ->
-                    if (moveIds.isNotEmpty()) {
+                    if (moveIds!!.isNotEmpty() ) {
                         moveIds.map { moveId ->
                             moveDao.findByIdOrNull(moveId.toIntOrNull() ?: 0)
                                 ?: throw NoSuchElementException("Move with ID $moveId not found")
