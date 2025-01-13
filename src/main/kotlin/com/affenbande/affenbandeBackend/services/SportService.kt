@@ -1,11 +1,10 @@
 package com.affenbande.affenbandeBackend.services
 
-import com.affenbande.affenbandeBackend.controller.helper.loadRelatedEntitiesById
 import com.affenbande.affenbandeBackend.dao.MoveDao
 import com.affenbande.affenbandeBackend.dao.SportDao
 import com.affenbande.affenbandeBackend.dao.SubcategoryDao
-import com.affenbande.affenbandeBackend.dto.SportRequestDTO
-import com.affenbande.affenbandeBackend.dto.SportResponseDTO
+import com.affenbande.affenbandeBackend.dto.request.SportRequestDTO
+import com.affenbande.affenbandeBackend.dto.response.SportResponseDTO
 import com.affenbande.affenbandeBackend.model.Sport
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -51,7 +50,7 @@ class SportService {
                     } else {
                         emptyList()
                     }
-                }
+                }.toSet()
             }
             if (!sportRequestDTO.moves.isNullOrEmpty()) {
                 sport.moves = sportRequestDTO.moves.let { moveIds ->
@@ -63,7 +62,7 @@ class SportService {
                     } else {
                         emptyList()
                     }
-                }
+                }.toSet()
             }
         }catch (e: Exception) {
             // Handle the error

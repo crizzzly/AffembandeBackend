@@ -1,6 +1,6 @@
 package com.affenbande.affenbandeBackend.model
 
-import com.affenbande.affenbandeBackend.dto.SportResponseDTO
+import com.affenbande.affenbandeBackend.dto.response.SportResponseDTO
 import com.fasterxml.jackson.annotation.JsonBackReference
 import jakarta.persistence.*
 
@@ -20,10 +20,10 @@ class Sport(
 
     @ManyToMany(mappedBy = "sports")
     @JsonBackReference
-    var subcategories: List<Subcategory>? = mutableListOf(),
+    var subcategories: Set<Subcategory>? = mutableSetOf(),
 
     @ManyToMany(mappedBy = "sports")
-    var moves: List<Move>? = mutableListOf(),
+    var moves: Set<Move>? = mutableSetOf(),
     )
 {
     constructor() : this(null, "", null, null, null)

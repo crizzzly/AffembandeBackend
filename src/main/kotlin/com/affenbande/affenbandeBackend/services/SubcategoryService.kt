@@ -1,12 +1,11 @@
 package com.affenbande.affenbandeBackend.services
 
-import com.affenbande.affenbandeBackend.controller.helper.loadRelatedEntitiesById
 import com.affenbande.affenbandeBackend.dao.ImagePathDao
 import com.affenbande.affenbandeBackend.dao.MoveDao
 import com.affenbande.affenbandeBackend.dao.SportDao
 import com.affenbande.affenbandeBackend.dao.SubcategoryDao
 import com.affenbande.affenbandeBackend.dto.SubcategoryRequestDTO
-import com.affenbande.affenbandeBackend.dto.SubcategoryResponseDTO
+import com.affenbande.affenbandeBackend.dto.response.SubcategoryResponseDTO
 import com.affenbande.affenbandeBackend.model.Subcategory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -43,7 +42,7 @@ class SubcategoryService {
             } else {
                 emptyList()
             }
-        }
+        }.toSet()
         subcategory.moves = subcategoryRequestDTO.moves.let { moveIds ->
             if (moveIds!!.isNotEmpty()) {
                 moveIds.map { moveId ->
@@ -53,7 +52,7 @@ class SubcategoryService {
             } else {
                 emptyList()
             }
-        }
+        }.toSet()
 
 
         subcategoryDao.add(subcategory)
@@ -76,7 +75,7 @@ class SubcategoryService {
     }
 
     fun deleteSubcategory(id: Int) {
-        subcategoryDao.deleteById(id)
+        subcategoryDao.deleteSubcategoryAndRelatedEntitiesById(id)
     }
 
     fun getSubcategoryByName(name: String): SubcategoryResponseDTO {

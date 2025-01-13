@@ -4,8 +4,7 @@ import com.affenbande.affenbandeBackend.dao.ImagePathDao
 import com.affenbande.affenbandeBackend.dao.MoveDao
 import com.affenbande.affenbandeBackend.dao.SportDao
 import com.affenbande.affenbandeBackend.dao.SubcategoryDao
-import com.affenbande.affenbandeBackend.dto.SportRequestDTO
-import com.affenbande.affenbandeBackend.dto.SportResponseDTO
+import com.affenbande.affenbandeBackend.dto.request.SportRequestDTO
 import com.affenbande.affenbandeBackend.model.ImagePath
 import com.affenbande.affenbandeBackend.model.Move
 import com.affenbande.affenbandeBackend.model.Sport
@@ -14,7 +13,6 @@ import io.mockk.*
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import org.junit.jupiter.api.Test
-import java.util.*
 import org.junit.jupiter.api.BeforeEach
 
 class SportServiceTest {

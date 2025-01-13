@@ -1,4 +1,4 @@
-package com.affenbande.affenbandeBackend.dto
+package com.affenbande.affenbandeBackend.dto.response
 
 class SubcategoryResponseDTO(
     val id: Int?,

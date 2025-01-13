@@ -1,7 +1,7 @@
 package com.affenbande.affenbandeBackend.controller
 
-import com.affenbande.affenbandeBackend.dto.SportRequestDTO
-import com.affenbande.affenbandeBackend.dto.SportResponseDTO
+import com.affenbande.affenbandeBackend.dto.request.SportRequestDTO
+import com.affenbande.affenbandeBackend.dto.response.SportResponseDTO
 import com.affenbande.affenbandeBackend.services.SportService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import java.util.*
 
 
 @RestController
@@ -56,8 +55,8 @@ class SportController {
     fun getSportsByIds(@PathVariable("ids") ids: List<Int>): ResponseEntity<MutableList<SportResponseDTO>> {
         println("getSportsByIds Request: $ids")
         println("dataType ${ids.javaClass}")
-        val sports = mutableListOf<SportResponseDTO>();
-        ids.map{ id ->
+        val sports = mutableListOf<SportResponseDTO>()
+    ids.map{ id ->
             val sport = sportService.getSportById(id)
             sports.add(sport)
         }

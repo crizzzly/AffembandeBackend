@@ -37,11 +37,8 @@ abstract class BaseDao<E : Any>(private val entityType: Class<E>) {
         entityManager.remove(if (entityManager.contains(entity)) entity else entityManager.merge(entity))
     }
 
-    /**
-     * Delete by ID.
-     */
     @Transactional
-    open fun deleteById(id: Any) {
+    open fun deleteById(id: Int) {
         val entity = entityManager.find(entityType, id)
         if (entity != null) {
             entityManager.remove(entity)
@@ -49,26 +46,44 @@ abstract class BaseDao<E : Any>(private val entityType: Class<E>) {
     }
 
     /**
+     * Delete by ID.
+     */
+    @Transactional
+    open fun deleteEntityAndRelations(
+        entityId: Int,
+        joinTableNames: List<String>,
+        joinColumnNames: List<String>
+    ) {
+        if(joinTableNames.size != joinColumnNames.size) {
+            throw IllegalArgumentException("joinTableNames and joinColumnNames must have the same size")
+        }
+        for (i in joinTableNames.size - 1 downTo 0) {
+            val tableName = joinTableNames[i]
+            val columnName = joinColumnNames[i]
+            val queryString = "DELETE FROM $tableName WHERE $columnName = :entityId"
+            entityManager.createNativeQuery(queryString).setParameter("entityId", entityId).executeUpdate()
+        } // for
+        deleteById(entityId)
+    }
+
+    /**
      * Find by ID.
      */
+    @Transactional
     open fun findById(id: Any): Optional<E> {
         return Optional.ofNullable(entityManager.find(entityType, id))
     }
 
+    @Transactional
     open fun findByIdOrNull(id: Any): E? {
-        return entityManager.find(entityType, id) ?: null
+        return entityManager.find(entityType, id)
     }
 
-//    /**
-//     * Find by ID.
-//     */
-//    open fun findAllById(id: Any): Optional<E> {
-//        return Optional.ofNullable(entityManager.find(entityType, id))
-//    }
 
     /**
      * Find by Name
      */
+    @Transactional
     open fun findByNameOrNull(name: String): E? {
         val query = entityManager.createQuery(
             "SELECT e FROM ${entityType.simpleName} e WHERE e.name = :name", entityType
@@ -80,6 +95,7 @@ abstract class BaseDao<E : Any>(private val entityType: Class<E>) {
     /**
      * Find all entities of the type.
      */
+    @Transactional
     open fun findAll(): List<E> {
         val query = entityManager.createQuery("from ${entityType.simpleName}", entityType)
         return query.resultList
@@ -88,6 +104,7 @@ abstract class BaseDao<E : Any>(private val entityType: Class<E>) {
     /**
      * Count all entities of the type.
      */
+    @Transactional
     open fun count(): Long {
         val query = entityManager.createQuery("select count(e) from ${entityType.simpleName} e", Long::class.javaObjectType)
         return query.singleResult
@@ -96,7 +113,19 @@ abstract class BaseDao<E : Any>(private val entityType: Class<E>) {
     /**
      * Check if any entity matches a specific condition (using JPA's criteria query).
      */
+    @Transactional
     open fun existsById(id: Any): Boolean {
         return findById(id).isPresent
+    }
+
+    @Transactional
+    protected fun <T : Any> fetchRelatedEntities(
+        ids: Set<Int?>?,
+        dao: BaseDao<T>,
+        notFoundMessage: String
+    ): MutableSet<T> {
+        return ids?.mapNotNull { id ->
+            dao.findByIdOrNull(id!!) ?: throw NoSuchElementException("$notFoundMessage with ID $id not found")
+        }?.toMutableSet() ?: mutableSetOf()
     }
 }

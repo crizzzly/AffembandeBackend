@@ -1,8 +1,7 @@
 package com.affenbande.affenbandeBackend.controller
 
 import com.affenbande.affenbandeBackend.dto.SubcategoryRequestDTO
-import com.affenbande.affenbandeBackend.dto.SubcategoryResponseDTO
-import com.affenbande.affenbandeBackend.model.Subcategory
+import com.affenbande.affenbandeBackend.dto.response.SubcategoryResponseDTO
 import com.affenbande.affenbandeBackend.services.SubcategoryService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -44,7 +43,7 @@ class SubcategoryController {
 
     @GetMapping("/get-all-by-ids/{ids}")
     fun getSubcategoryById(@PathVariable("ids") ids: List<Int>): ResponseEntity<MutableList<SubcategoryResponseDTO>> {
-         val subcats = mutableListOf<SubcategoryResponseDTO>();
+         val subcats = mutableListOf<SubcategoryResponseDTO>()
         ids.map{ id ->
             val subcat = subcategoryService.getSubcategoryById(id)
             subcats.add(subcat)

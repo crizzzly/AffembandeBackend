@@ -3,7 +3,7 @@ package com.affenbande.affenbandeBackend.services
 import com.affenbande.affenbandeBackend.dao.MoveDao
 import com.affenbande.affenbandeBackend.dao.SportDao
 import com.affenbande.affenbandeBackend.dao.SubcategoryDao
-import com.affenbande.affenbandeBackend.dto.MoveRequestDTO
+import com.affenbande.affenbandeBackend.dto.request.MoveRequestDTO
 import com.affenbande.affenbandeBackend.model.Move
 import com.affenbande.affenbandeBackend.model.Sport
 import com.affenbande.affenbandeBackend.model.Subcategory
@@ -39,8 +39,8 @@ class MoveServiceTest {
         // Given
         val moveRequestDTO = MoveRequestDTO(
             name = "Test Move",
-            sports = listOf("1","2"),
-            subcategories = listOf("1","2"),
+            sportIds = listOf(1,2),
+            subcategoryIds = listOf(1,2),
             isCoreMove = false,
             level = 0,
             intensity = 0,
@@ -182,13 +182,13 @@ class MoveServiceTest {
     fun `deleteMove should delete the move with the given ID`() {
         // Given
         val moveId = 1
-        every { moveDao.deleteById(any()) } returns Unit
+        every { moveDao.deleteMoveById(any()) } returns Unit
 
         // When
         moveService.deleteMove(moveId)
 
         // Then
-        verify(exactly = 1) { moveDao.deleteById(moveId) }
+        verify(exactly = 1) { moveDao.deleteMoveById(moveId) }
     }
 
 

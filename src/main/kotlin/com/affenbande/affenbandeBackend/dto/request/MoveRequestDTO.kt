@@ -1,4 +1,4 @@
-package com.affenbande.affenbandeBackend.dto
+package com.affenbande.affenbandeBackend.dto.request
 
 data class MoveRequestDTO(
     val name: String?,  // TODO: check if this can be nullable to remove issue in test
@@ -11,8 +11,8 @@ data class MoveRequestDTO(
     val timePreparation: Int?,
     val timeExercise: Int?,
     val formula: String?,
-    val sports: List<String>?,
-    val subcategories: List<String>?,
+    val sportIds: List<Int>?,
+    val subcategoryIds: List<Int>?,
     val preMoveIds: List<Int?>?,
     val optPreMoveIds: List<Int?>?,
 //    val imageFile: String? // You can handle file uploads separately if needed

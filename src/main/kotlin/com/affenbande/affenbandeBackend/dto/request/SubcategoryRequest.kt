@@ -1,4 +1,4 @@
-package com.affenbande.affenbandeBackend.dto
+package com.affenbande.affenbandeBackend.dto.request
 
 data class SubcategoryRequest(
     val name: String,

@@ -1,6 +1,6 @@
 package com.affenbande.affenbandeBackend.model
 
-import com.affenbande.affenbandeBackend.dto.MoveResponseDTO
+import com.affenbande.affenbandeBackend.dto.response.MoveResponseDTO
 import com.fasterxml.jackson.annotation.JsonManagedReference
 import jakarta.persistence.*
 
@@ -33,40 +33,41 @@ class Move(
     var formula: String? = null,
     var link: String? = null,
 
+    // TODO: USE OneToMany!
     @ManyToMany(cascade = [CascadeType.MERGE])
     @JoinTable(
         name = "t_move_pre_moves",
         joinColumns = [JoinColumn(name = "fk_pre_move_id")],
         inverseJoinColumns = [JoinColumn(name = "fk_move_id")]
     )
-    var preMoves: List<Move>? = mutableListOf(),
+    var preMoves: Set<Move>? = mutableSetOf(),
 
-    @ManyToMany(cascade = [CascadeType.MERGE, CascadeType.REMOVE])
+    @ManyToMany(cascade = [CascadeType.MERGE])
     @JoinTable(
         name = "t_move_opt_pre_moves",
         joinColumns = [JoinColumn(name = "fk_opt_pre_move_id")],
         inverseJoinColumns = [JoinColumn(name = "fk_move_id")]
     )
-    var optPreMoves: List<Move>? = mutableListOf(),
+    var optPreMoves: Set<Move>? = mutableSetOf(),
 
 
-    @ManyToMany(cascade = [CascadeType.MERGE,  CascadeType.REMOVE])
+    @ManyToMany(cascade = [CascadeType.MERGE])
     @JsonManagedReference
     @JoinTable(
         name = "t_move_subcategory",
         joinColumns = [JoinColumn(name = "fk_subcategory_id")],
         inverseJoinColumns = [JoinColumn(name = "fk_move_id")]
     )
-    var subcategories: List<Subcategory>? = mutableListOf(),
+    var subcategories: Set<Subcategory>? = mutableSetOf(),
 
-    @ManyToMany(cascade = [CascadeType.MERGE, CascadeType.REMOVE])
+    @ManyToMany(cascade = [CascadeType.MERGE])
     @JsonManagedReference
     @JoinTable(
         name = "t_move_sport",
         joinColumns = [JoinColumn(name = "fk_sport_id")],
         inverseJoinColumns = [JoinColumn(name = "fk_move_id")]
     )
-    var sports: List<Sport>? = mutableListOf(),
+    var sports: Set<Sport>? = mutableSetOf(),
 ) {
     // No-argument constructor
     constructor() : this(null, "", null, null, null, null, null, null, null, null, null, null, null, null, null, null)

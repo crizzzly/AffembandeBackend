@@ -1,6 +1,6 @@
 package com.affenbande.affenbandeBackend.model
 
-import com.affenbande.affenbandeBackend.dto.SubcategoryResponseDTO
+import com.affenbande.affenbandeBackend.dto.response.SubcategoryResponseDTO
 import com.fasterxml.jackson.annotation.JsonBackReference
 import com.fasterxml.jackson.annotation.JsonManagedReference
 import jakarta.persistence.*
@@ -15,22 +15,22 @@ class Subcategory(
     @Column(unique = true)
     var name: String,
 
-    @ManyToOne(cascade = [CascadeType.MERGE, CascadeType.REMOVE])
+    @ManyToOne(cascade = [CascadeType.MERGE])
     @JoinColumn(name = "image_path_ids")
     var image: ImagePath?,
 
-    @ManyToMany(cascade = [CascadeType.MERGE, CascadeType.REMOVE])
+    @ManyToMany(cascade = [CascadeType.MERGE])
     @JsonManagedReference
     @JoinTable(
         name = "t_sport_subcategory",
         joinColumns = [JoinColumn(name = "fk_subcategory_id")],
         inverseJoinColumns = [JoinColumn(name = "fk_sport_id")]
     )
-    var sports: List<Sport>? = mutableListOf(),
+    var sports: Set<Sport>? = mutableSetOf(),
 
     @ManyToMany(mappedBy = "subcategories")
     @JsonBackReference
-    var moves: List<Move>? = mutableListOf(),
+    var moves: Set<Move>? = mutableSetOf(),
 ) {
     // No-argument constructor
     constructor() : this(null, "", null, null, null)
