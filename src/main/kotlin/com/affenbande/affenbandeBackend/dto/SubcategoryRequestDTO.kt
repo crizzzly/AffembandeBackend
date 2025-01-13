@@ -5,4 +5,7 @@ data class SubcategoryRequestDTO(
     val sports: List<String>?,
     val moves: List<String>?,
     val imagePathId: Int?,
+    val trainingUnits: List<String>?,
+    val trainingDevices: List<String>?,
+    val trainingPlans: List<String>?,
 )

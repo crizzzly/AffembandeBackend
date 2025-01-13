@@ -67,9 +67,47 @@ class Move(
         inverseJoinColumns = [JoinColumn(name = "fk_move_id")]
     )
     var sports: List<Sport>? = mutableListOf(),
+
+    @ManyToMany(cascade = [CascadeType.ALL])
+    @JsonManagedReference
+    @JoinTable(
+        name = "t_move_training_unit",
+        joinColumns = [JoinColumn(name = "fk_training_unit_id")],
+        inverseJoinColumns = [JoinColumn(name = "fk_move_id")]
+    )
+    var trainingUnits: List<TrainingUnit>? = mutableListOf(),
+
+    @ManyToMany(cascade = [CascadeType.ALL])
+    @JsonManagedReference
+    @JoinTable(
+        name = "t_move_construction_idea",
+        joinColumns = [JoinColumn(name = "fk_construction_idea_id")],
+        inverseJoinColumns = [JoinColumn(name = "fk_move_id")]
+    )
+    var constructionIdeas: List<ConstructionIdea>? = mutableListOf(),
+
+    @ManyToMany(cascade = [CascadeType.ALL])
+    @JsonManagedReference
+    @JoinTable(
+        name = "t_move_training_device",
+        joinColumns = [JoinColumn(name = "fk_training_device_id")],
+        inverseJoinColumns = [JoinColumn(name = "fk_move_id")]
+    )
+    var trainingDevices: List<TrainingDevice>? = mutableListOf(),
+
+    @ManyToMany(cascade = [CascadeType.ALL])
+    @JsonManagedReference
+    @JoinTable(
+        name = "t_move_training_plan",
+        joinColumns = [JoinColumn(name = "fk_training_plan_id")],
+        inverseJoinColumns = [JoinColumn(name = "fk_move_id")]
+    )
+    var trainingPlans: List<TrainingPlan>? = mutableListOf(),
 ) {
     // No-argument constructor
-    constructor() : this(null, "", null, null, null, null, null, null, null, null, null, null, null, null, null, null)
+    constructor() : this(null, "", null, null, null, null, null,
+        null, null, null, null, null, null,
+        null, null, null, null, null, null)
 
     fun toResponseDTO(): MoveResponseDTO = MoveResponseDTO(
         id = id,
@@ -87,7 +125,10 @@ class Move(
         preMoveIds = preMoves?.map { it.id },
         optPreMoveIds = optPreMoves?.map { it.id },
         sportIds = sports?.map { it.id },
-        imagePathId = image?.id
+        imagePathId = image?.id,
+        trainingUnitIds = trainingUnits?.map { it.id },
+        trainingDeviceIds = trainingDevices?.map { it.id },
+        constructionIdeaIds = constructionIdeas?.map { it.id },
                                                           )
 }
 
