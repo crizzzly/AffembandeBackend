@@ -94,7 +94,7 @@ class SubcategoryServiceTest {
 
     @Test
     fun `getSubcategoriesBySportId should return an empty List when there are no related Subcategories for a Sport ID`() {
-        val subcatIds: List<Int?> = listOf() // Empty list of Ids.
+//        listOf() // Empty list of Ids.
         val sportId = "1"
         every { subcategoryDao.getSubcategoryIdsByRelatedSportId(sportId.toInt()) } returns mutableListOf<Any?>()
 

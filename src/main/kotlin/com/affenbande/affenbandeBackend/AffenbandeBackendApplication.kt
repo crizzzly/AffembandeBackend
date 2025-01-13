@@ -12,7 +12,7 @@ import java.util.*
 
 @SpringBootApplication
 @EntityScan(basePackages = ["com.affenbande.affenbandeBackend.model"])
-public class AffenbandeBackendApplication{
+class AffenbandeBackendApplication{
 
 	@Bean
 	fun commandLineRunner(ctx: ApplicationContext): CommandLineRunner {
