@@ -35,7 +35,6 @@ class MoveDao: BaseDao<Move>(Move::class.java){
             "fk_move_id",
             "fk_opt_pre_move_id",
             "fk_move_id",
-            "fk_move_id",
             "fk_move_id")
 
         deleteEntityAndRelations(moveId, joinTableNames, joinColumnNames)
