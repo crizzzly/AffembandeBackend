@@ -18,11 +18,11 @@ class Sport(
     @JoinColumn(name = "image_path_id")
     var image: ImagePath?,
 
-    @ManyToMany(mappedBy = "sports",  cascade = [CascadeType.ALL])
+    @ManyToMany(mappedBy = "sports")
     @JsonBackReference
     var subcategories: List<Subcategory>? = mutableListOf(),
 
-    @ManyToMany(mappedBy = "sports", cascade = [CascadeType.ALL])
+    @ManyToMany(mappedBy = "sports")
     var moves: List<Move>? = mutableListOf(),
     )
 {

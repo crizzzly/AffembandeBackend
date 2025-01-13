@@ -15,11 +15,11 @@ class Subcategory(
     @Column(unique = true)
     var name: String,
 
-    @ManyToOne(cascade = [CascadeType.MERGE])
+    @ManyToOne(cascade = [CascadeType.MERGE, CascadeType.REMOVE])
     @JoinColumn(name = "image_path_ids")
     var image: ImagePath?,
 
-    @ManyToMany(cascade = [CascadeType.ALL])
+    @ManyToMany(cascade = [CascadeType.MERGE, CascadeType.REMOVE])
     @JsonManagedReference
     @JoinTable(
         name = "t_sport_subcategory",
@@ -28,7 +28,7 @@ class Subcategory(
     )
     var sports: List<Sport>? = mutableListOf(),
 
-    @ManyToMany(mappedBy = "subcategories", cascade = [CascadeType.ALL])
+    @ManyToMany(mappedBy = "subcategories")
     @JsonBackReference
     var moves: List<Move>? = mutableListOf(),
 ) {

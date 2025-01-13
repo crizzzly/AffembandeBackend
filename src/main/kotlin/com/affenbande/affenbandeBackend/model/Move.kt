@@ -41,7 +41,7 @@ class Move(
     )
     var preMoves: List<Move>? = mutableListOf(),
 
-    @ManyToMany(cascade = [CascadeType.ALL])
+    @ManyToMany(cascade = [CascadeType.MERGE, CascadeType.REMOVE])
     @JoinTable(
         name = "t_move_opt_pre_moves",
         joinColumns = [JoinColumn(name = "fk_opt_pre_move_id")],
@@ -50,7 +50,7 @@ class Move(
     var optPreMoves: List<Move>? = mutableListOf(),
 
 
-    @ManyToMany(cascade = [CascadeType.ALL])
+    @ManyToMany(cascade = [CascadeType.MERGE,  CascadeType.REMOVE])
     @JsonManagedReference
     @JoinTable(
         name = "t_move_subcategory",
@@ -59,7 +59,7 @@ class Move(
     )
     var subcategories: List<Subcategory>? = mutableListOf(),
 
-    @ManyToMany(cascade = [CascadeType.ALL])
+    @ManyToMany(cascade = [CascadeType.MERGE, CascadeType.REMOVE])
     @JsonManagedReference
     @JoinTable(
         name = "t_move_sport",
@@ -75,7 +75,7 @@ class Move(
         id = id,
         name = name,
         description = description,
-        subcategoryIds = subcategories?.map { it.id }!!,
+        imagePathId = image?.id,
         link = link,
         level = level,
         isCoreMove = isCoreMove,
@@ -87,8 +87,8 @@ class Move(
         preMoveIds = preMoves?.map { it.id },
         optPreMoveIds = optPreMoves?.map { it.id },
         sportIds = sports?.map { it.id },
-        imagePathId = image?.id
-                                                          )
+        subcategoryIds = subcategories?.map { it.id }!!
+    )
 }
 
 
