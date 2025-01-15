@@ -1,4 +1,4 @@
-package com.affenbande.affenbandeBackend.dto
+package com.affenbande.affenbandeBackend.dto.request
 
 import com.affenbande.affenbandeBackend.model.TrainingPlan
 
@@ -13,8 +13,8 @@ data class MoveRequestDTO(
     val timePreparation: Int?,
     val timeExercise: Int?,
     val formula: String?,
-    val sports: List<String>?,
-    val subcategories: List<String>?,
+    val sportIds: List<Int>?,
+    val subcategoryIds: List<Int>?,
     val preMoveIds: List<Int?>?,
     val optPreMoveIds: List<Int?>?,
     val trainingPlanIds: List<Int?>?,

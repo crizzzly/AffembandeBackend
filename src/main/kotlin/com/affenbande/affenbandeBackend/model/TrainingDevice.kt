@@ -1,7 +1,6 @@
 package com.affenbande.affenbandeBackend.model
 
-import com.affenbande.affenbandeBackend.dto.TrainingDeviceResponseDTO
-import com.fasterxml.jackson.annotation.JsonBackReference
+import com.affenbande.affenbandeBackend.dto.response.TrainingDeviceResponseDTO
 import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -26,26 +25,32 @@ class TrainingDevice(
     @Column(length = 1000)
     var description: String? = null,
 
-    @ManyToMany(mappedBy = "training_devices", cascade = [CascadeType.MERGE])
-    @JsonBackReference
+    @ManyToMany(cascade = [CascadeType.MERGE])
+    @JoinTable(
+        name = "t_training_devices_moves",
+        joinColumns = [JoinColumn(name = "fk_move_id")],
+        inverseJoinColumns = [JoinColumn(name = "fk_training_device_id")]
+    )
     var moves: List<Move>? = mutableListOf(),
 
-    @ManyToMany(mappedBy = "training_devices", cascade = [CascadeType.ALL])
-    @JsonBackReference
+    @ManyToMany(cascade = [CascadeType.MERGE])
+    @JoinTable(
+        name = "t_training_devices_sports",
+        joinColumns = [JoinColumn(name = "fk_sport_id")],
+        inverseJoinColumns = [JoinColumn(name = "fk_training_device_id")]
+    )
     var sports: List<Sport>? = mutableListOf(),
 
-    @ManyToMany(mappedBy = "training_devices", cascade = [CascadeType.MERGE])
-    @JsonBackReference
+    @ManyToMany(cascade = [CascadeType.MERGE])
+    @JoinTable(
+        name = "t_training_devices_subcategories",
+        joinColumns = [JoinColumn(name = "fk_subcategory_id")],
+        inverseJoinColumns = [JoinColumn(name = "fk_training_device_id")]
+    )
     var subcategories: List<Subcategory>? = mutableListOf(),
 
-    @ManyToMany(mappedBy = "training_devices", cascade = [CascadeType.MERGE])
-    @JsonBackReference
-    @JoinTable(
-        name = "t_training_devices_training_units",
-        joinColumns = [JoinColumn(name = "training_device_id")],
-        inverseJoinColumns = [JoinColumn(name = "training_unit_id")]
-    )
-    var trainingUnits: List<TrainingUnit>? = mutableListOf(),
+    @ManyToMany(mappedBy = "trainingDevices", cascade = [CascadeType.MERGE])
+    var constructionIdeas: Set<ConstructionIdea>? = mutableSetOf(),
 ){
     constructor() : this(null, "", null, null, null, null, null)
 
@@ -53,10 +58,10 @@ class TrainingDevice(
         id = id,
         name = name,
         description = description,
-        moves = moves?.map { it.id },
-        sports = sports?.map { it.id },
-        subcategories = subcategories?.map { it.id },
-        trainingUnits = trainingUnits?.map { it.id },
+        moves = moves!!.map { it.id },
+        sports = sports!!.map { it.id },
+        subcategories = subcategories!!.map { it.id },
+        constructionIdeas = constructionIdeas!!.map { it.id },
     )
 }
 

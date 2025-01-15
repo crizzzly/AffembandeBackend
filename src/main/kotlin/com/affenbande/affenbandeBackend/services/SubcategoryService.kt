@@ -1,12 +1,11 @@
 package com.affenbande.affenbandeBackend.services
 
-import com.affenbande.affenbandeBackend.controller.helper.loadRelatedEntitiesById
 import com.affenbande.affenbandeBackend.dao.ImagePathDao
 import com.affenbande.affenbandeBackend.dao.MoveDao
 import com.affenbande.affenbandeBackend.dao.SportDao
 import com.affenbande.affenbandeBackend.dao.SubcategoryDao
-import com.affenbande.affenbandeBackend.dto.SubcategoryRequestDTO
-import com.affenbande.affenbandeBackend.dto.SubcategoryResponseDTO
+import com.affenbande.affenbandeBackend.dto.request.SubcategoryRequestDTO
+import com.affenbande.affenbandeBackend.dto.response.SubcategoryResponseDTO
 import com.affenbande.affenbandeBackend.model.Subcategory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -34,26 +33,26 @@ class SubcategoryService {
         subcategory.name = subcategoryRequestDTO.name
         subcategory.image = imagePathDao.findByIdOrNull(subcategoryRequestDTO.imagePathId!!)
 
-        subcategory.sports = subcategoryRequestDTO.sports.let { sportIds ->
+        subcategory.sports = subcategoryRequestDTO.sportIds.let { sportIds ->
             if (sportIds!!.isNotEmpty()) {
                 sportIds.map { sportId ->
-                    sportDao.findByIdOrNull(sportId.toIntOrNull() ?: 0)
+                    sportDao.findByIdOrNull(sportId!!.toInt())
                         ?: throw NoSuchElementException("Sport with ID $sportId not found")
                 }
             } else {
-                emptyList()
+                emptySet()
             }
-        }
-        subcategory.moves = subcategoryRequestDTO.moves.let { moveIds ->
+        }.toSet()
+        subcategory.moves = subcategoryRequestDTO.moveIds.let { moveIds ->
             if (moveIds!!.isNotEmpty()) {
                 moveIds.map { moveId ->
-                    moveDao.findByIdOrNull(moveId.toIntOrNull() ?: 0)
+                    moveDao.findByIdOrNull(moveId!!.toInt())
                         ?: throw NoSuchElementException("Move with ID $moveId not found")
                 }
             } else {
-                emptyList()
+                emptySet()
             }
-        }
+        }.toSet()
 
 
         subcategoryDao.add(subcategory)
@@ -71,8 +70,8 @@ class SubcategoryService {
         return subcategoryDao.findById(id).get().toResponseDTO()
     }
 
-    fun getAllSubcategories(): List<SubcategoryResponseDTO> {
-        return subcategoryDao.findAll().map { it.toResponseDTO() }
+    fun getAllSubcategories(): Set<SubcategoryResponseDTO> {
+        return subcategoryDao.findAll().map { it.toResponseDTO() }.toSet()
     }
 
     fun deleteSubcategory(id: Int) {
@@ -83,9 +82,9 @@ class SubcategoryService {
         return subcategoryDao.findByNameOrNull(name)!!.toResponseDTO()
     }
 
-    fun getSubcategoriesBySportId(sportId: String): List<Optional<SubcategoryResponseDTO>> {
+    fun getSubcategoriesBySportId(sportId: String): Set<Optional<SubcategoryResponseDTO>> {
         val subcatIds = subcategoryDao.getSubcategoryIdsByRelatedSportId(sportId.toInt())
 
-        return subcatIds!!.mapNotNull { id -> subcategoryDao.findById(id!!).map { it!!.toResponseDTO() } }
+        return subcatIds!!.mapNotNull { id -> subcategoryDao.findById(id!!).map { it.toResponseDTO() } }.toSet()
     }
 }

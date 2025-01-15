@@ -1,6 +1,6 @@
 package com.affenbande.affenbandeBackend.model
 
-import com.affenbande.affenbandeBackend.dto.TrainingPlanResponseDTO
+import com.affenbande.affenbandeBackend.dto.response.TrainingPlanResponseDTO
 import com.fasterxml.jackson.annotation.JsonBackReference
 import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
@@ -61,8 +61,8 @@ class TrainingPlan(
         endDate = endDate.toString(),
         moveIds = moves!!.map { it.id },
         trainingDayIds = trainingDays!!.map { it.id },
-        sportIds = sports?.map { it.id },
-        subcategoryIds = subcategories?.map { it.id },
+        sportIds = sports!!.map { it.id },
+        subcategoryIds = subcategories!!.map { it.id },
     )
 
 

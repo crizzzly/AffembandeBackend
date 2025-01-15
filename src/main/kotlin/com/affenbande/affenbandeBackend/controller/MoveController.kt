@@ -1,7 +1,7 @@
 package com.affenbande.affenbandeBackend.controller
 
-import com.affenbande.affenbandeBackend.dto.MoveRequestDTO
-import com.affenbande.affenbandeBackend.dto.MoveResponseDTO
+import com.affenbande.affenbandeBackend.dto.request.MoveRequestDTO
+import com.affenbande.affenbandeBackend.dto.response.MoveResponseDTO
 import com.affenbande.affenbandeBackend.services.MoveService
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.beans.factory.annotation.Autowired

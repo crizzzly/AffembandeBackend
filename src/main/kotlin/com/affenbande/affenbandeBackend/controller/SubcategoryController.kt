@@ -1,8 +1,7 @@
 package com.affenbande.affenbandeBackend.controller
 
-import com.affenbande.affenbandeBackend.dto.SubcategoryRequestDTO
-import com.affenbande.affenbandeBackend.dto.SubcategoryResponseDTO
-import com.affenbande.affenbandeBackend.model.Subcategory
+import com.affenbande.affenbandeBackend.dto.request.SubcategoryRequestDTO
+import com.affenbande.affenbandeBackend.dto.response.SubcategoryResponseDTO
 import com.affenbande.affenbandeBackend.services.SubcategoryService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -38,7 +37,7 @@ class SubcategoryController {
 
     @GetMapping("/get-all")
     fun getAllSubcategories(): ResponseEntity<List<SubcategoryResponseDTO>> {
-        return ResponseEntity.ok(subcategoryService.getAllSubcategories())
+        return ResponseEntity.ok(subcategoryService.getAllSubcategories().toList())
     }
 
 
@@ -56,13 +55,13 @@ class SubcategoryController {
     fun getSubcategoryByName(@PathVariable("name") name: String): ResponseEntity<SubcategoryResponseDTO> {
         val subcat = subcategoryService.getSubcategoryByName(name)
         // TODO: Exception handling
-        return ResponseEntity(subcat, subcat.let { HttpStatus.OK })
+        return ResponseEntity.ok(subcat)
     }
 
     @GetMapping("/get-by-sport/{sportId}")
     fun getSubcategoriesBySportId(@PathVariable("sportId") sportId: String): ResponseEntity<List<Optional<SubcategoryResponseDTO>>> {
         println("getSubcategoriesBySportId Request: $sportId")
-        return ResponseEntity.ok(subcategoryService.getSubcategoriesBySportId(sportId))
+        return ResponseEntity.ok(subcategoryService.getSubcategoriesBySportId(sportId).toList())
     }
 
     @DeleteMapping("/delete-by-id/{id}")

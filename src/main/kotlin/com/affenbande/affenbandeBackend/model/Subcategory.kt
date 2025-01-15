@@ -1,6 +1,6 @@
 package com.affenbande.affenbandeBackend.model
 
-import com.affenbande.affenbandeBackend.dto.SubcategoryResponseDTO
+import com.affenbande.affenbandeBackend.dto.response.SubcategoryResponseDTO
 import com.fasterxml.jackson.annotation.JsonBackReference
 import com.fasterxml.jackson.annotation.JsonManagedReference
 import jakarta.persistence.*
@@ -26,11 +26,11 @@ class Subcategory(
         joinColumns = [JoinColumn(name = "fk_sport_id")],
         inverseJoinColumns = [JoinColumn(name = "fk_subcategory_id")]
     )
-    var sports: List<Sport>? = mutableListOf(),
+    var sports: Set<Sport>? = mutableSetOf(),
 
     @ManyToMany(mappedBy = "subcategories", cascade = [CascadeType.ALL])
     @JsonBackReference
-    var moves: List<Move>? = mutableListOf(),
+    var moves: Set<Move>? = mutableSetOf(),
 
     @ManyToMany(cascade = [CascadeType.ALL])
     @JsonManagedReference
@@ -39,7 +39,7 @@ class Subcategory(
         joinColumns = [JoinColumn(name = "fk_training_unit_id")],
         inverseJoinColumns = [JoinColumn(name = "fk_subcategory_id")]
     )
-    var trainingUnits: List<TrainingUnit>? = mutableListOf(),
+    var trainingUnits: Set<TrainingUnit>? = mutableSetOf(),
 
     @ManyToMany(cascade = [CascadeType.ALL])
     @JsonManagedReference
@@ -48,7 +48,7 @@ class Subcategory(
         joinColumns = [JoinColumn(name = "fk_training_device_id")],
         inverseJoinColumns = [JoinColumn(name = "fk_subcategory_id")]
     )
-    var trainingDevices: List<TrainingDevice>? = mutableListOf(),
+    var trainingDevices: Set<TrainingDevice>? = mutableSetOf(),
 
     @ManyToMany(cascade = [CascadeType.ALL])
     @JsonManagedReference
@@ -57,7 +57,7 @@ class Subcategory(
         joinColumns = [JoinColumn(name = "fk_training_device_id")],
         inverseJoinColumns = [JoinColumn(name = "fk_subcategory_id")]
     )
-    var trainingPlans: List<TrainingDevice>? = mutableListOf(),
+    var trainingPlans: Set<TrainingDevice>? = mutableSetOf(),
 ) {
     // No-argument constructor
     constructor() : this(null, "", null, null, null, null, null, null)

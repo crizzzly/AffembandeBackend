@@ -1,7 +1,7 @@
 package com.affenbande.affenbandeBackend.controller
 
-import com.affenbande.affenbandeBackend.dto.SportRequestDTO
-import com.affenbande.affenbandeBackend.dto.SportResponseDTO
+import com.affenbande.affenbandeBackend.dto.request.SportRequestDTO
+import com.affenbande.affenbandeBackend.dto.response.SportResponseDTO
 import com.affenbande.affenbandeBackend.services.SportService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import java.util.*
 
 
 @RestController
@@ -52,12 +51,12 @@ class SportController {
 
 
 //    TODO: An error occurred: No static resource sports/get-all-by-ids/1,2
-    @GetMapping("/get-all-by-ids/{ids}")
+    @GetMapping("/get-all-by-id/{ids}")
     fun getSportsByIds(@PathVariable("ids") ids: List<Int>): ResponseEntity<MutableList<SportResponseDTO>> {
         println("getSportsByIds Request: $ids")
         println("dataType ${ids.javaClass}")
-        val sports = mutableListOf<SportResponseDTO>();
-        ids.map{ id ->
+        val sports = mutableListOf<SportResponseDTO>()
+    ids.map{ id ->
             val sport = sportService.getSportById(id)
             sports.add(sport)
         }
@@ -71,5 +70,19 @@ class SportController {
         val sport = sportService.getSportByName(name)
         // TODO: Exception handling
         return ResponseEntity(sport, sport.let { HttpStatus.OK } )
+    }
+
+
+    @PostMapping("/update/{id}")
+    fun updateSport(
+        @PathVariable("id") id: Int,
+        @RequestBody sportRequestDTO: SportRequestDTO
+    ): ResponseEntity<SportResponseDTO> {
+        return ResponseEntity.ok(sportService.updateSport(id, sportRequestDTO))
+    }
+
+    @DeleteMapping("/delete/{id}")
+    fun deleteSportById(@PathVariable("id") id: Int): ResponseEntity<Unit> {
+        return ResponseEntity.ok(sportService.deleteSportById(id))
     }
 }
