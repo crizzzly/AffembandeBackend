@@ -1,10 +1,14 @@
 package com.affenbande.affenbandeBackend.model
 
+import com.fasterxml.jackson.annotation.JsonBackReference
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import jakarta.persistence.JoinColumn
+import jakarta.persistence.JoinTable
+import jakarta.persistence.ManyToMany
 import jakarta.persistence.Table
 import java.time.LocalDateTime
 
@@ -25,8 +29,14 @@ class TrainingDay (
     @Column(columnDefinition = "TIMESTAMP")
     var endTime: LocalDateTime,
 
-    @Column
-    var trainingPlanId: Int,
+    @ManyToMany(mappedBy = "trainingDays")
+    @JsonBackReference
+    @JoinTable(
+        name = "training_plan_id",
+        joinColumns = [JoinColumn(name = "training_plan_id")],
+        inverseJoinColumns = [JoinColumn(name = "training_day_id")]
+    )
+    var trainingPlans: Int,
 
     // TODO: make them multiChoicable
     @Column

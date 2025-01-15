@@ -19,7 +19,7 @@ class ImagePathController {
 
     @GetMapping("/images/get-all")
     fun getImageSrc(): List<ImagePath> {
-        return imagePathDao.findAll()
+        return imagePathDao.findAll().toList()
     }
 
 }
