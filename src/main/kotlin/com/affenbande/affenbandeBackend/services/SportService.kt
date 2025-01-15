@@ -87,4 +87,8 @@ class SportService {
         return sportDao.findAll().map { it.toResponseDTO() }
     }
 
+//    fun updateSports(sportRequestDTO: SportRequestDTO){
+//        return
+//    }
+
 }

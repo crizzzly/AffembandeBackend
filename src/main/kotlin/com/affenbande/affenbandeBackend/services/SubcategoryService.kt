@@ -60,9 +60,9 @@ class SubcategoryService {
         return subcategory.toResponseDTO()
     }
 
-    fun updateSubcategory(id: Int, name: String): SubcategoryResponseDTO {
+    fun updateSubcategory(id: Int, newSubcat: SubcategoryRequestDTO): SubcategoryResponseDTO {
         val subcategory = subcategoryDao.findById(id).get()
-        subcategory.name = name
+        subcategory.name = newSubcat.name
         subcategoryDao.update(subcategory)
         return subcategory.toResponseDTO()
     }
