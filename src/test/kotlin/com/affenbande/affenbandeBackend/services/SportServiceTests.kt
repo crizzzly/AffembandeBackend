@@ -50,8 +50,8 @@ class SportServiceTest {
         // Given
         val sportRequestDTO = SportRequestDTO(
             name = "Test Sport",
-            subcategories = listOf("1", "2"),
-            moves = listOf("1", "2"),
+            subcategoryIds = listOf(1, 2),
+            moveIds = listOf(1, 2),
             imagePathId = 2
         )
         val expectedImagePath = ImagePath(2, "path")

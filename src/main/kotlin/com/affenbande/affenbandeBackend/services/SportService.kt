@@ -40,11 +40,11 @@ class SportService {
         }
 
         try {
-            if (!sportRequestDTO.subcategories.isNullOrEmpty()) {
-                sport.subcategories = sportRequestDTO.subcategories.let { subcategoryIds ->
+            if (!sportRequestDTO.subcategoryIds.isNullOrEmpty()) {
+                sport.subcategories = sportRequestDTO.subcategoryIds.let { subcategoryIds ->
                     if (subcategoryIds.isNotEmpty()) {
                         subcategoryIds.map { subcategoryId ->
-                            subcategoryDao.findByIdOrNull(subcategoryId.toIntOrNull() ?: 0)
+                            subcategoryDao.findByIdOrNull(subcategoryId)
                                 ?: throw NoSuchElementException("Subcategory with ID $subcategoryId not found")
                         }
                     } else {
@@ -52,11 +52,11 @@ class SportService {
                     }
                 }.toSet()
             }
-            if (!sportRequestDTO.moves.isNullOrEmpty()) {
-                sport.moves = sportRequestDTO.moves.let { moveIds ->
-                    if (moveIds!!.isNotEmpty() ) {
+            if (!sportRequestDTO.moveIds.isNullOrEmpty()) {
+                sport.moves = sportRequestDTO.moveIds.let { moveIds ->
+                    if (moveIds.isNotEmpty() ) {
                         moveIds.map { moveId ->
-                            moveDao.findByIdOrNull(moveId.toIntOrNull() ?: 0)
+                            moveDao.findByIdOrNull(moveId)
                                 ?: throw NoSuchElementException("Move with ID $moveId not found")
                         }
                     } else {
@@ -84,6 +84,26 @@ class SportService {
 
     fun getAllSports(): List<SportResponseDTO> {
         return sportDao.findAll().map { it.toResponseDTO() }
+    }
+
+    fun updateSport(id: Int, sportRequestDTO: SportRequestDTO): SportResponseDTO {
+        val sport = sportDao.findById(id).get()
+        sport.name = sportRequestDTO.name
+        sport.image = imagePathDao.findByIdOrNull(sportRequestDTO.imagePathId!!)
+        sport.subcategories = sportRequestDTO.subcategoryIds!!.map { subcategoryId ->
+            subcategoryDao.findByIdOrNull(subcategoryId)
+                ?: throw NoSuchElementException("Subcategory with ID $subcategoryId not found")
+        }.toSet()
+        sport.moves = sportRequestDTO.moveIds!!.map { moveId ->
+            moveDao.findByIdOrNull(moveId)
+                ?: throw NoSuchElementException("Move with ID $moveId not found")
+        }.toSet()
+        val updatedSport = sportDao.update(sport)
+        return updatedSport.toResponseDTO()
+    }
+
+    fun deleteSportById(id: Int) {
+        sportDao.deleteSportById(id)
     }
 
 }

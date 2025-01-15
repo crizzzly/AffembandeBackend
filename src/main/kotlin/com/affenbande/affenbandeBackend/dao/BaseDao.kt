@@ -49,7 +49,7 @@ abstract class BaseDao<E : Any>(private val entityType: Class<E>) {
      * Delete by ID.
      */
     @Transactional
-    open fun deleteEntityAndRelations(
+    open fun deleteEntityAndRelationships(
         entityId: Int,
         joinTableNames: List<String>,
         joinColumnNames: List<String>
@@ -75,8 +75,15 @@ abstract class BaseDao<E : Any>(private val entityType: Class<E>) {
     }
 
     @Transactional
-    open fun findByIdOrNull(id: Any): E? {
+    open fun findByIdOrNull(id: Int): E? {
         return entityManager.find(entityType, id)
+    }
+
+    @Transactional
+    open fun findAllByIdOrNull(ids: Set<Int?>?): MutableSet<E> {
+        return ids?.mapNotNull { id ->
+            entityManager.find(entityType, id)
+        }?.toMutableSet() ?: mutableSetOf()
     }
 
 
@@ -128,4 +135,6 @@ abstract class BaseDao<E : Any>(private val entityType: Class<E>) {
             dao.findByIdOrNull(id!!) ?: throw NoSuchElementException("$notFoundMessage with ID $id not found")
         }?.toMutableSet() ?: mutableSetOf()
     }
+
 }
+

@@ -33,20 +33,20 @@ class SubcategoryService {
         subcategory.name = subcategoryRequestDTO.name
         subcategory.image = imagePathDao.findByIdOrNull(subcategoryRequestDTO.imagePathId!!)
 
-        subcategory.sports = subcategoryRequestDTO.sports.let { sportIds ->
+        subcategory.sports = subcategoryRequestDTO.sportIds.let { sportIds ->
             if (sportIds!!.isNotEmpty()) {
                 sportIds.map { sportId ->
-                    sportDao.findByIdOrNull(sportId.toIntOrNull() ?: 0)
+                    sportDao.findByIdOrNull(sportId)
                         ?: throw NoSuchElementException("Sport with ID $sportId not found")
                 }
             } else {
                 emptyList()
             }
         }.toSet()
-        subcategory.moves = subcategoryRequestDTO.moves.let { moveIds ->
+        subcategory.moves = subcategoryRequestDTO.moveIds.let { moveIds ->
             if (moveIds!!.isNotEmpty()) {
                 moveIds.map { moveId ->
-                    moveDao.findByIdOrNull(moveId.toIntOrNull() ?: 0)
+                    moveDao.findByIdOrNull(moveId)
                         ?: throw NoSuchElementException("Move with ID $moveId not found")
                 }
             } else {
@@ -59,9 +59,21 @@ class SubcategoryService {
         return subcategory.toResponseDTO()
     }
 
-    fun updateSubcategory(id: Int, name: String): SubcategoryResponseDTO {
+    fun updateSubcategory(id: Int, subcat: SubcategoryRequestDTO): SubcategoryResponseDTO {
         val subcategory = subcategoryDao.findById(id).get()
-        subcategory.name = name
+        subcategory.name = subcat.name
+        subcategory.image = imagePathDao.findByIdOrNull(subcat.imagePathId!!)
+        subcategory.sports = subcat.sportIds!!.map { sportId ->
+            sportDao.findByIdOrNull(sportId)
+                ?: throw NoSuchElementException("Sport with ID $sportId not found")
+        }.toSet()
+        subcategory.moves = subcat.moveIds!!.map { moveId ->
+            moveDao.findByIdOrNull(moveId)
+                ?: throw NoSuchElementException("Move with ID $moveId not found")
+            subcategoryDao.update(subcategory)
+            return subcategory.toResponseDTO()
+        }.toSet()
+
         subcategoryDao.update(subcategory)
         return subcategory.toResponseDTO()
     }
@@ -75,7 +87,7 @@ class SubcategoryService {
     }
 
     fun deleteSubcategory(id: Int) {
-        subcategoryDao.deleteSubcategoryAndRelatedEntitiesById(id)
+        subcategoryDao.deleteSubcategoryById(id)
     }
 
     fun getSubcategoryByName(name: String): SubcategoryResponseDTO {

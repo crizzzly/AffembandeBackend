@@ -29,9 +29,9 @@ class SubcategoryController {
     @PostMapping("/update")
     fun updateSubcategory(
         @RequestParam("id") id: Int,
-        @RequestParam("name") name: String
+        @RequestBody new: SubcategoryRequestDTO,
                          ): ResponseEntity<SubcategoryResponseDTO> {
-        return ResponseEntity.ok(subcategoryService.updateSubcategory(id, name))
+        return ResponseEntity.ok(subcategoryService.updateSubcategory(id, new))
     }
 
 
@@ -41,7 +41,7 @@ class SubcategoryController {
     }
 
 
-    @GetMapping("/get-all-by-ids/{ids}")
+    @GetMapping("/get-all-by-id/{ids}")
     fun getSubcategoryById(@PathVariable("ids") ids: List<Int>): ResponseEntity<MutableList<SubcategoryResponseDTO>> {
          val subcats = mutableListOf<SubcategoryResponseDTO>()
         ids.map{ id ->

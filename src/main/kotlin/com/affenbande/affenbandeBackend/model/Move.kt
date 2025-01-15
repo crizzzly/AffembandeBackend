@@ -25,7 +25,7 @@ class Move(
     var image: ImagePath? = null,
 
     var level: Int? = null,
-    var isCoreMove: Boolean? = null,
+    var isCoreMove: Boolean? = false,
     var intensity: Int? = null,
     var repetitions: Int? = null,
     var timePreparation: Int? = null,

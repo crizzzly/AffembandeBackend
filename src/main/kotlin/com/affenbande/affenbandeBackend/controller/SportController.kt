@@ -51,7 +51,7 @@ class SportController {
 
 
 //    TODO: An error occurred: No static resource sports/get-all-by-ids/1,2
-    @GetMapping("/get-all-by-ids/{ids}")
+    @GetMapping("/get-all-by-id/{ids}")
     fun getSportsByIds(@PathVariable("ids") ids: List<Int>): ResponseEntity<MutableList<SportResponseDTO>> {
         println("getSportsByIds Request: $ids")
         println("dataType ${ids.javaClass}")
@@ -70,5 +70,19 @@ class SportController {
         val sport = sportService.getSportByName(name)
         // TODO: Exception handling
         return ResponseEntity(sport, sport.let { HttpStatus.OK } )
+    }
+
+
+    @PostMapping("/update/{id}")
+    fun updateSport(
+        @PathVariable("id") id: Int,
+        @RequestBody sportRequestDTO: SportRequestDTO
+    ): ResponseEntity<SportResponseDTO> {
+        return ResponseEntity.ok(sportService.updateSport(id, sportRequestDTO))
+    }
+
+    @DeleteMapping("/delete/{id}")
+    fun deleteSportById(@PathVariable("id") id: Int): ResponseEntity<Unit> {
+        return ResponseEntity.ok(sportService.deleteSportById(id))
     }
 }

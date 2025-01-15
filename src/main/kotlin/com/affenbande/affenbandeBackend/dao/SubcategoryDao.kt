@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component
 
 @Component
 class SubcategoryDao: BaseDao<Subcategory>(Subcategory::class.java) {
+
     fun getSubcategoryIdsByRelatedSportId(@Param("sportId") sportId: Int): MutableList<Any?>? {
     return  entityManager.createQuery(
         "SELECT s.id FROM Subcategory s JOIN s.sports sport WHERE sport.id = :sportId"
@@ -16,11 +17,13 @@ class SubcategoryDao: BaseDao<Subcategory>(Subcategory::class.java) {
             .resultList
     }
 
+
+
     @Transactional
-    fun deleteSubcategoryAndRelatedEntitiesById(subcategoryId: Int) {
+    fun deleteSubcategoryById(subcategoryId: Int) {
         val joinTableNames = listOf("t_subcategory_sport", "t_move_subcategory")
         val joinColumnNames = listOf("fk_subcategory_id", "fk_subcategory_id")
-        deleteEntityAndRelations(subcategoryId, joinTableNames, joinColumnNames)
+        deleteEntityAndRelationships(subcategoryId, joinTableNames, joinColumnNames)
     }
 
 }

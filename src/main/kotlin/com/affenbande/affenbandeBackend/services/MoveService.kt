@@ -7,6 +7,8 @@ import com.affenbande.affenbandeBackend.dao.SubcategoryDao
 import com.affenbande.affenbandeBackend.dto.request.MoveRequestDTO
 import com.affenbande.affenbandeBackend.dto.response.MoveResponseDTO
 import com.affenbande.affenbandeBackend.model.Move
+import com.affenbande.affenbandeBackend.model.Sport
+import com.affenbande.affenbandeBackend.model.Subcategory
 import jakarta.transaction.Transactional
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -104,7 +106,22 @@ class MoveService {
             val move = moveDao.findByIdOrNull(id)
                 ?: throw NoSuchElementException("Move with ID $id not found")
 
-            moveDao.updateMove(move, moveRequestDTO)
+            move.name = moveRequestDTO.name.toString()
+            move.link = moveRequestDTO.link
+            move.description = moveRequestDTO.description
+            move.isCoreMove = moveRequestDTO.isCoreMove
+            move.level = moveRequestDTO.level
+            move.intensity = moveRequestDTO.intensity
+            move.repetitions = moveRequestDTO.repetitions
+            move.timePreparation = moveRequestDTO.timePreparation
+            move.timeExercise = moveRequestDTO.timeExercise
+            move.formula = moveRequestDTO.formula
+            move.sports = sportDao.findAllByIdOrNull(moveRequestDTO.sportIds!!.toSet())
+            move.subcategories = subcategoryDao.findAllByIdOrNull(moveRequestDTO.subcategoryIds!!.toSet())
+            move.preMoves = moveDao.findAllByIdOrNull(moveRequestDTO.preMoveIds!!.toSet())
+            move.optPreMoves = moveDao.findAllByIdOrNull(moveRequestDTO.optPreMoveIds!!.toSet())
+
+            moveDao.update(move)
             return move.toResponseDTO()
         }
 
