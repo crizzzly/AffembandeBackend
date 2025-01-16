@@ -1,6 +1,7 @@
-package com.affenbande.affenbandeBackend.model
+package com.affenbande.affenbandeBackend.model.training
 
-import jakarta.persistence.CascadeType
+import com.affenbande.affenbandeBackend.dto.response.training.TrainingGoalResponseDTO
+import com.affenbande.affenbandeBackend.model.Move
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
@@ -20,7 +21,7 @@ class TrainingGoal (
     var id: Int?,
 
     @Column(unique = true)
-    var name: String,
+    var name: String?,
 
     // TODO: description should be a list/set - create new table "descriptions"
     @Column
@@ -34,11 +35,20 @@ class TrainingGoal (
     )
     var moves: Set<Move>? = mutableSetOf(),
 
-    @ManyToMany(cascade = [CascadeType.MERGE])
-    @JoinTable(
-        name = "t_training_goal_training_plans",
-        joinColumns = [JoinColumn(name = "fk_training_plan_id")],
-        inverseJoinColumns = [JoinColumn(name = "fk_training_goal_id")]
+//    @ManyToMany(cascade = [CascadeType.MERGE])
+//    @JoinTable(
+//        name = "t_training_goal_training_plans",
+//        joinColumns = [JoinColumn(name = "fk_training_plan_id")],
+//        inverseJoinColumns = [JoinColumn(name = "fk_training_goal_id")]
+//    )
+//    var trainingPlans: Set<TrainingPlan>? = mutableSetOf()
+){
+    constructor() : this(null, "", null, mutableSetOf())
+
+    fun toResponseDTO(): TrainingGoalResponseDTO = TrainingGoalResponseDTO(
+        id = id!!,
+        name = name!!,
+        description = description!!,
+        moveIds = moves!!.map { it.id!! }
     )
-    var trainingPlans: Set<TrainingPlan>? = mutableSetOf()
-)
+}

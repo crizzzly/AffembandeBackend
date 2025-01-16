@@ -1,6 +1,7 @@
-package com.affenbande.affenbandeBackend.model
+package com.affenbande.affenbandeBackend.model.training
 
-import com.fasterxml.jackson.annotation.JsonBackReference
+import com.affenbande.affenbandeBackend.dto.response.training.ConstructionIdeaResponseDTO
+import com.affenbande.affenbandeBackend.model.Move
 import com.fasterxml.jackson.annotation.JsonManagedReference
 import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
@@ -35,16 +36,19 @@ class ConstructionIdea(
     )
     var moves: Set<Move>? = mutableSetOf(),
 
-    @ManyToMany( cascade = [CascadeType.MERGE])
-    @JoinTable(
-        name = "t_construction_idea_sport",
-        joinColumns = [JoinColumn(name = "fk_sport_id")],
-        inverseJoinColumns = [JoinColumn(name = "fk_construction_idea_id")]
-    )
-    var sports: Set<Sport>? = mutableSetOf(),
-
     @ManyToMany(mappedBy = "constructionIdeas", cascade = [CascadeType.MERGE])
-    @JsonBackReference
-    var trainingDevices: Set<TrainingDevice>? = mutableSetOf(),
-)
+    @JsonManagedReference
+    var trainingDevices: Set<TrainingDevice> = mutableSetOf(),
+) {
+    // No-argument constructor
+    constructor() : this(null, "", null, null, mutableSetOf())
+
+    fun toResponseDTO(): ConstructionIdeaResponseDTO = ConstructionIdeaResponseDTO(
+        id = id,
+        name = name,
+        description = description!!,
+        moveIds = moves!!.map { it.id },
+        trainingDeviceIds = trainingDevices.map { it.id }
+    )
+}
 

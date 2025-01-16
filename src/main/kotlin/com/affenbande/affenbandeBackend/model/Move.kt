@@ -1,6 +1,10 @@
 package com.affenbande.affenbandeBackend.model
 
 import com.affenbande.affenbandeBackend.dto.response.MoveResponseDTO
+import com.affenbande.affenbandeBackend.model.training.ConstructionIdea
+import com.affenbande.affenbandeBackend.model.training.TrainingDevice
+import com.affenbande.affenbandeBackend.model.training.TrainingSession
+import com.affenbande.affenbandeBackend.model.training.TrainingSet
 import com.fasterxml.jackson.annotation.JsonBackReference
 import com.fasterxml.jackson.annotation.JsonManagedReference
 import jakarta.persistence.*
@@ -69,20 +73,24 @@ class Move(
     )
     var sports: Set<Sport>? = mutableSetOf(),
 
-    @ManyToMany(mappedBy = "moves")
-    @JsonBackReference
-    var trainingSessions: Set<TrainingSession>? = mutableSetOf(),
+//    @ManyToMany(mappedBy = "moves")
+//    @JsonBackReference
+//    var trainingSessions: Set<TrainingSession>? = mutableSetOf(),
 
-    @ManyToMany(cascade = [CascadeType.MERGE])
+    @ManyToMany(mappedBy = "moves", cascade = [CascadeType.MERGE])
     @JsonBackReference
     var constructionIdeas: Set<ConstructionIdea>? = mutableSetOf(),
 
-    @ManyToMany(cascade = [CascadeType.MERGE])
+    @ManyToMany(mappedBy = "moves", cascade = [CascadeType.MERGE])
     @JsonBackReference
     var trainingDevices: Set<TrainingDevice>? = mutableSetOf(),
 
-//    @OneToMany(mappedBy = "move", cascade = [CascadeType.MERGE], orphanRemoval = true)
-//    var trainingSets: Set<TrainingSet>? = mutableSetOf(),
+    @OneToMany(mappedBy = "move", cascade = [CascadeType.MERGE], orphanRemoval = true)
+    var trainingSets: Set<TrainingSet>? = mutableSetOf(),
+
+    @ManyToMany(mappedBy = "preMoves", cascade = [CascadeType.MERGE])
+    @JsonBackReference
+    var trainingSessions:  Set<TrainingSession>? = mutableSetOf(),
 ) {
     // No-argument constructor
     constructor() : this(null, "", null, null, null, null, null,
@@ -93,8 +101,8 @@ class Move(
         id = id,
         name = name,
         description = description,
-        subcategoryIds = subcategories?.map { it.id }!!,
         link = link,
+        imagePathId = image!!.id,
         level = level,
         isCoreMove = isCoreMove,
         intensity = intensity,
@@ -102,13 +110,14 @@ class Move(
         timePreparation = timePreparation,
         timeExercise = timeExercise,
         formula = formula,
+        sportIds = sports!!.map { it.id },
+        subcategoryIds = subcategories?.map { it.id }!!,
         preMoveIds = preMoves!!.map { it.id },//preMoves?.map { it.id },
         optPreMoveIds = optPreMoves!!.map { it.id },
-        sportIds = sports!!.map { it.id },
-        imagePathId = image!!.id,
-        trainingSessionIds = trainingSessions!!.map { it.id },
         trainingDeviceIds = trainingDevices!!.map { it.id },
         constructionIdeaIds = constructionIdeas!!.map { it.id },
+        trainingSetIds = trainingSets!!.map { it.id },
+        trainingSessionIds = trainingSessions!!.map { it.id }
     )
 }
 

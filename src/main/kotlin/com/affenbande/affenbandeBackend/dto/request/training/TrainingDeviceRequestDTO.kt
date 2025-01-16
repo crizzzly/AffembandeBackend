@@ -1,4 +1,4 @@
-package com.affenbande.affenbandeBackend.dto.request
+package com.affenbande.affenbandeBackend.dto.request.training
 
 data class TrainingDeviceRequestDTO(
     val name: String,

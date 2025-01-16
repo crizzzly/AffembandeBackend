@@ -1,7 +1,7 @@
 package com.affenbande.affenbandeBackend.controller
 
-import com.affenbande.affenbandeBackend.controller.helper.ImageConstants
-import com.affenbande.affenbandeBackend.controller.helper.handleImageInput
+import com.affenbande.affenbandeBackend.helper.ImageConstants
+import com.affenbande.affenbandeBackend.helper.controller.handleImageInput
 import com.affenbande.affenbandeBackend.dao.ImagePathDao
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity

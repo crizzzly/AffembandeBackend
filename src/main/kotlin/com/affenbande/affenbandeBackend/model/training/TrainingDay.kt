@@ -1,7 +1,8 @@
-package com.affenbande.affenbandeBackend.model
+package com.affenbande.affenbandeBackend.model.training
 
-import com.fasterxml.jackson.annotation.JsonBackReference
-import com.fasterxml.jackson.annotation.JsonManagedReference
+import com.affenbande.affenbandeBackend.dto.response.training.TrainingDayResponseDTO
+import com.affenbande.affenbandeBackend.helper.getCustomDateTimeFromLocalDateTime
+import com.affenbande.affenbandeBackend.helper.getDateFromLocalDateTime
 import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -29,11 +30,10 @@ class TrainingDay (
     var startTime: LocalDateTime?,
 
     @Column(columnDefinition = "TIMESTAMP")
-    var endTime: LocalDateTime,
+    var endTime: LocalDateTime?,
 
     // TODO: make them multiChoicable
     @ManyToMany(cascade = [CascadeType.MERGE])
-    @JsonBackReference
     @JoinTable(
         name = "t_training_day_training_sessions",
         joinColumns = [JoinColumn(name = "fk_training_day_id")],
@@ -41,12 +41,19 @@ class TrainingDay (
     )
     var trainingSessions: Set<TrainingSession> = mutableSetOf(),
 
-    @ManyToMany(cascade = [CascadeType.MERGE])
-    @JsonManagedReference
-    @JoinTable(
-        name = "t_training_day_training_plans",
-        joinColumns = [JoinColumn(name = "training_plan_id")],
-        inverseJoinColumns = [JoinColumn(name = "training_day_id")]
-    )
+    @ManyToMany(mappedBy = "trainingDays", cascade = [CascadeType.MERGE])
     var trainingPlans: Set<TrainingPlan> = mutableSetOf(),
-)
+) {
+    constructor() : this(null, null, null, null, mutableSetOf(), mutableSetOf())
+
+    fun toResponseDTO(): TrainingDayResponseDTO = TrainingDayResponseDTO(
+        id = id,
+        name = "",
+        date = getDateFromLocalDateTime(date!!)!!,
+        startTime = getCustomDateTimeFromLocalDateTime(startTime!!)!!,
+        endTime = getCustomDateTimeFromLocalDateTime(endTime!!)!!,
+        trainingPlanIds = trainingPlans.map { it.id },
+        trainingSessionIds = trainingSessions.map { it.id }
+    )
+
+}

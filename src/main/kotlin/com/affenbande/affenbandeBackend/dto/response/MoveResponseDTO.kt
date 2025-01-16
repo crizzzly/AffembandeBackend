@@ -17,7 +17,8 @@ class MoveResponseDTO(
     val subcategoryIds: List<Int?>?,
     val preMoveIds: List<Int?>?,
     val optPreMoveIds: List<Int?>?,
-    val trainingSessionIds: List<Int?>?,
+    val trainingSetIds: List<Int?>?,
     val trainingDeviceIds: List<Int?>?,
     val constructionIdeaIds: List<Int?>?,
+    val trainingSessionIds: List<Int?>?,
     )

@@ -1,6 +1,7 @@
 package com.affenbande.affenbandeBackend.model
 
 import com.affenbande.affenbandeBackend.dto.response.SubcategoryResponseDTO
+import com.affenbande.affenbandeBackend.model.training.TrainingSession
 import com.fasterxml.jackson.annotation.JsonBackReference
 import com.fasterxml.jackson.annotation.JsonManagedReference
 import jakarta.persistence.*
@@ -19,7 +20,7 @@ class Subcategory(
     @JoinColumn(name = "image_path_id")
     var image: ImagePath? = null,
 
-    @ManyToMany(cascade = [CascadeType.ALL])
+    @ManyToMany(cascade = [CascadeType.MERGE])
     @JsonManagedReference
     @JoinTable(
         name = "t_sport_subcategory",
@@ -28,39 +29,33 @@ class Subcategory(
     )
     var sports: Set<Sport>? = mutableSetOf(),
 
-    @ManyToMany(mappedBy = "subcategories", cascade = [CascadeType.ALL])
+    @ManyToMany(mappedBy = "subcategories", cascade = [CascadeType.MERGE])
     @JsonBackReference
     var moves: Set<Move>? = mutableSetOf(),
 
-    @ManyToMany(cascade = [CascadeType.ALL])
-    @JsonManagedReference
-    @JoinTable(
-        name = "t_subcategory_training_sessions",
-        joinColumns = [JoinColumn(name = "fk_training_session_id")],
-        inverseJoinColumns = [JoinColumn(name = "fk_subcategory_id")]
-    )
+    @ManyToMany(mappedBy = "subcategories", cascade = [CascadeType.MERGE])
     var trainingSessions: Set<TrainingSession>? = mutableSetOf(),
 
-    @ManyToMany(cascade = [CascadeType.ALL])
-    @JsonManagedReference
-    @JoinTable(
-        name = "t_subcategory_training_devices",
-        joinColumns = [JoinColumn(name = "fk_training_device_id")],
-        inverseJoinColumns = [JoinColumn(name = "fk_subcategory_id")]
-    )
-    var trainingDevices: Set<TrainingDevice>? = mutableSetOf(),
+//    @ManyToMany(cascade = [CascadeType.MERGE])
+//    @JsonManagedReference
+//    @JoinTable(
+//        name = "t_subcategory_training_devices",
+//        joinColumns = [JoinColumn(name = "fk_training_device_id")],
+//        inverseJoinColumns = [JoinColumn(name = "fk_subcategory_id")]
+//    )
+//    var trainingDevices: Set<TrainingDevice>? = mutableSetOf(),
 
-    @ManyToMany(cascade = [CascadeType.ALL])
-    @JsonManagedReference
-    @JoinTable(
-        name = "t_subcategory_training_plans",
-        joinColumns = [JoinColumn(name = "fk_training_device_id")],
-        inverseJoinColumns = [JoinColumn(name = "fk_subcategory_id")]
-    )
-    var trainingPlans: Set<TrainingDevice>? = mutableSetOf(),
+//    @ManyToMany(cascade = [CascadeType.MERGE])
+//    @JsonManagedReference
+//    @JoinTable(
+//        name = "t_subcategory_training_plans",
+//        joinColumns = [JoinColumn(name = "fk_training_device_id")],
+//        inverseJoinColumns = [JoinColumn(name = "fk_subcategory_id")]
+//    )
+//    var trainingPlans: Set<TrainingPlan>? = mutableSetOf(),
 ) {
     // No-argument constructor
-    constructor() : this(null, "", null, null, null, null, null, null)
+    constructor() : this(null, "", null, null, null)
 
     fun toResponseDTO(): SubcategoryResponseDTO = SubcategoryResponseDTO(
         id = id,
@@ -68,8 +63,8 @@ class Subcategory(
         imagePathId = image?.id,
         sportIds = sports?.map { it.id },
         moveIds = moves?.map { it.id },
-        trainingSessionIds = trainingSessions!!.map { it.id },
-        trainingDeviceIds = trainingDevices!!.map { it.id },
-        trainingPlanIds = trainingPlans!!.map { it.id }
+//        trainingSessionIds = trainingSessions!!.map { it.id },
+//        trainingDeviceIds = trainingDevices!!.map { it.id },
+//        trainingPlanIds = trainingPlans!!.map { it.id }
     )
 }

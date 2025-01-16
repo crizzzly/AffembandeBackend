@@ -1,6 +1,5 @@
 package com.affenbande.affenbandeBackend.dto.request
 
-import com.affenbande.affenbandeBackend.model.TrainingPlan
 
 data class MoveRequestDTO(
     val name: String?,  // TODO: check if this can be nullable to remove issue in test
@@ -18,7 +17,7 @@ data class MoveRequestDTO(
     val preMoveIds: List<Int?>?,
     val optPreMoveIds: List<Int?>?,
     val trainingPlanIds: List<Int?>?,
-    val trainingUnitIds: List<Int?>?,
+//    val trainingUnitIds: List<Int?>?,
     val trainingDeviceIds: List<Int?>?,
     val constructionIdeaIds: List<Int?>?,
 

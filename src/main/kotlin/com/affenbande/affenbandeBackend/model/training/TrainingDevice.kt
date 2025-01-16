@@ -1,6 +1,7 @@
-package com.affenbande.affenbandeBackend.model
+package com.affenbande.affenbandeBackend.model.training
 
-import com.affenbande.affenbandeBackend.dto.response.TrainingDeviceResponseDTO
+import com.affenbande.affenbandeBackend.model.Move
+import com.affenbande.affenbandeBackend.model.Sport
 import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -25,13 +26,6 @@ class TrainingDevice(
     @Column(length = 1000)
     var description: String? = null,
 
-    @ManyToMany(cascade = [CascadeType.MERGE])
-    @JoinTable(
-        name = "t_training_devices_moves",
-        joinColumns = [JoinColumn(name = "fk_move_id")],
-        inverseJoinColumns = [JoinColumn(name = "fk_training_device_id")]
-    )
-    var moves: Set<Move>? = mutableSetOf(),
 
     @ManyToMany(cascade = [CascadeType.MERGE])
     @JoinTable(
@@ -43,26 +37,30 @@ class TrainingDevice(
 
     @ManyToMany(cascade = [CascadeType.MERGE])
     @JoinTable(
-        name = "t_training_devices_subcategories",
-        joinColumns = [JoinColumn(name = "fk_subcategory_id")],
+        name = "t_training_devices_moves",
+        joinColumns = [JoinColumn(name = "fk_move_id")],
         inverseJoinColumns = [JoinColumn(name = "fk_training_device_id")]
     )
-    var subcategories: Set<Subcategory>? = mutableSetOf(),
+    var moves: Set<Move>? = mutableSetOf(),
 
-    @ManyToMany(mappedBy = "trainingDevices", cascade = [CascadeType.MERGE])
+
+    @ManyToMany(cascade = [CascadeType.MERGE])
+    @JoinTable(
+        name = "training_device_construction_ideas",
+        joinColumns = [JoinColumn(name = "fk_construction_idea_id")],
+        inverseJoinColumns = [JoinColumn(name = "fk_training_device_id")]
+    )
     var constructionIdeas: Set<ConstructionIdea>? = mutableSetOf(),
 ){
-    constructor() : this(null, "", null, null, null, null, null)
-
-    fun toResponseDTO(): TrainingDeviceResponseDTO = TrainingDeviceResponseDTO(
-        id = id,
-        name = name,
-        description = description,
-        moves = moves!!.map { it.id },
-        sports = sports!!.map { it.id },
-        subcategories = subcategories!!.map { it.id },
-        constructionIdeas = constructionIdeas!!.map { it.id },
-    )
+    constructor() : this(null, "", null, null, null)
+//
+//    fun toResponseDTO(): TrainingDeviceResponseDTO = TrainingDeviceResponseDTO(
+//        id = id,
+//        name = name,
+//        description = description,
+//        moves = moves!!.map { it.id },
+//        constructionIdeas = constructionIdeas!!.map { it.id },
+//    )
 }
 
 

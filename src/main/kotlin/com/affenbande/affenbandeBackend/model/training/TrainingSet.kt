@@ -1,6 +1,7 @@
-package com.affenbande.affenbandeBackend.model
+package com.affenbande.affenbandeBackend.model.training
 
-import com.fasterxml.jackson.annotation.JsonBackReference
+import com.affenbande.affenbandeBackend.dto.response.training.TrainingSetResponseDTO
+import com.affenbande.affenbandeBackend.model.Move
 import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -12,7 +13,6 @@ import jakarta.persistence.JoinTable
 import jakarta.persistence.ManyToMany
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
-import kotlin.time.Duration
 
 
 @Entity
@@ -27,17 +27,18 @@ class TrainingSet (
     var name: String?,
 
 
-    // TODO: use Int or Duration?
+    // TODO: use Int or Duration? should be at least 1
     @Column
-    var duration: Duration,
+    var duration: Int,
 
+    // TODO: should be at least 1
     @Column
     var repetitions: Int,
 
 
-//    @ManyToOne
-//    @JoinColumn(name = "move_id")
-//    var move: Move,
+    @ManyToOne
+    @JoinColumn(name = "move_id")
+    var move: Move,
 
 
 
@@ -49,7 +50,16 @@ class TrainingSet (
     )
     var trainingSessions: Set<TrainingSession> = mutableSetOf(),
 
-)
+    ){
+    constructor() : this(null, "", 1, 1, Move())
+
+    fun toResponseDTO(): TrainingSetResponseDTO = TrainingSetResponseDTO(
+        id = id!!,
+        name = name!!,
+        moveId = move.id!!,
+        trainingSessionIds = trainingSessions.map { it.id!! }
+    )
+}
 
 
 

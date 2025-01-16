@@ -1,8 +1,9 @@
 package com.affenbande.affenbandeBackend.model
 
 import com.affenbande.affenbandeBackend.dto.response.SportResponseDTO
+import com.affenbande.affenbandeBackend.model.training.TrainingDevice
+import com.affenbande.affenbandeBackend.model.training.TrainingSession
 import com.fasterxml.jackson.annotation.JsonBackReference
-import com.fasterxml.jackson.annotation.JsonManagedReference
 import jakarta.persistence.*
 
 @Entity
@@ -17,7 +18,7 @@ class Sport(
 
     @ManyToOne(cascade = [CascadeType.MERGE])
     @JoinColumn(name = "image_path_id")
-    var image: ImagePath? = null ,
+    var image: ImagePath? = null,
 
     @ManyToMany(mappedBy = "sports",  cascade = [CascadeType.MERGE])
     @JsonBackReference
@@ -28,15 +29,15 @@ class Sport(
 
     @ManyToMany(mappedBy = "sports", cascade = [CascadeType.MERGE])
     var trainingSessions: Set<TrainingSession>? = mutableSetOf(),
-
+//
     @ManyToMany(mappedBy = "sports", cascade = [CascadeType.MERGE])
     var trainingDevices: Set<TrainingDevice>? = mutableSetOf(),
-
-    @ManyToMany(mappedBy = "sports", cascade = [CascadeType.MERGE])
-    var trainingPlans: Set<TrainingPlan>? = mutableSetOf(),
+//
+//    @ManyToMany(mappedBy = "sports", cascade = [CascadeType.MERGE])
+//    var trainingPlans: Set<TrainingPlan>? = mutableSetOf(),
 )
 {
-    constructor() : this(null, "", null, null, null, null, null, null)
+    constructor() : this(null, "", null, null, null)
 
     fun toResponseDTO(): SportResponseDTO = SportResponseDTO(
         id = id,
@@ -45,7 +46,7 @@ class Sport(
         subcategoryIds = subcategories!!.map { it.id },
         moveIds = moves!!.map { it.id },
         trainingDeviceIds = trainingDevices!!.map { it.id },
-        trainingSessionIds = trainingSessions!!.map { it.id },
-        trainingPlanIds = trainingPlans!!.map { it.id },
+//        trainingSessionIds = trainingSessions!!.map { it.id },
+//        trainingPlanIds = trainingPlans!!.map { it.id },
     )
 }

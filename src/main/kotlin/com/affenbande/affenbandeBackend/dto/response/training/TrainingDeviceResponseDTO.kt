@@ -1,4 +1,4 @@
-package com.affenbande.affenbandeBackend.dto.response
+package com.affenbande.affenbandeBackend.dto.response.training
 
 class TrainingDeviceResponseDTO(
     val id: Int?,

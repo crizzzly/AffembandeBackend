@@ -1,4 +1,4 @@
-package com.affenbande.affenbandeBackend.dto.response
+package com.affenbande.affenbandeBackend.dto.response.training
 
 class TrainingPlanResponseDTO(
     val id: Int?,
@@ -6,10 +6,10 @@ class TrainingPlanResponseDTO(
     val description: String?,
     val startDate: String,
     val endDate: String,
-//    val moveIds: List<Int?>?,
+    val level: Int,
+    val intensity: Int,
+    val preMoveIds: List<Int?>?,
     val trainingDayIds: List<Int?>?,
-//    val sportIds: List<Int?>?,
-//    val subcategoryIds: List<Int?>?,
-
+    val goalIds: List<Int?>?
 
 )
