@@ -57,6 +57,8 @@ class TrainingSet (
         id = id!!,
         name = name!!,
         moveId = move.id!!,
+        repetitions = repetitions,
+        duration = duration,
         trainingSessionIds = trainingSessions.map { it.id!! }
     )
 }

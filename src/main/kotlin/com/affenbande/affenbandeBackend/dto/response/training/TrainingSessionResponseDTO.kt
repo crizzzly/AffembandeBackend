@@ -13,6 +13,4 @@ class TrainingSessionResponseDTO(
     val sportIds: List<Int>?,
     val subcategoryIds: List<Int>?,
     val goalId: Int?,
-
-
     )
