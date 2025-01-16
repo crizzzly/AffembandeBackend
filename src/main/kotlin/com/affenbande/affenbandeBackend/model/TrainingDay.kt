@@ -1,6 +1,8 @@
 package com.affenbande.affenbandeBackend.model
 
 import com.fasterxml.jackson.annotation.JsonBackReference
+import com.fasterxml.jackson.annotation.JsonManagedReference
+import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
@@ -14,7 +16,7 @@ import java.time.LocalDateTime
 
 
 @Entity
-@Table(name = "t_training_day")
+@Table(name = "t_training_days")
 class TrainingDay (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,18 +31,22 @@ class TrainingDay (
     @Column(columnDefinition = "TIMESTAMP")
     var endTime: LocalDateTime,
 
-    @ManyToMany(mappedBy = "trainingDays")
+    // TODO: make them multiChoicable
+    @ManyToMany(cascade = [CascadeType.MERGE])
     @JsonBackReference
     @JoinTable(
-        name = "training_plan_id",
+        name = "t_training_day_training_sessions",
+        joinColumns = [JoinColumn(name = "fk_training_day_id")],
+        inverseJoinColumns = [JoinColumn(name = "fk_training_session_id")]
+    )
+    var trainingSessions: Set<TrainingSession> = mutableSetOf(),
+
+    @ManyToMany(cascade = [CascadeType.MERGE])
+    @JsonManagedReference
+    @JoinTable(
+        name = "t_training_day_training_plans",
         joinColumns = [JoinColumn(name = "training_plan_id")],
         inverseJoinColumns = [JoinColumn(name = "training_day_id")]
     )
-    var trainingPlans: Int,
-
-    // TODO: make them multiChoicable
-    @Column
-    var trainingUnits: List<TrainingUnit>
-
-
+    var trainingPlans: Set<TrainingPlan> = mutableSetOf(),
 )

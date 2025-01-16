@@ -16,8 +16,8 @@ class Subcategory(
     var name: String,
 
     @ManyToOne(cascade = [CascadeType.MERGE])
-    @JoinColumn(name = "image_path_ids")
-    var image: ImagePath?,
+    @JoinColumn(name = "image_path_id")
+    var image: ImagePath? = null,
 
     @ManyToMany(cascade = [CascadeType.ALL])
     @JsonManagedReference
@@ -35,11 +35,11 @@ class Subcategory(
     @ManyToMany(cascade = [CascadeType.ALL])
     @JsonManagedReference
     @JoinTable(
-        name = "t_subcategory_training_units",
-        joinColumns = [JoinColumn(name = "fk_training_unit_id")],
+        name = "t_subcategory_training_sessions",
+        joinColumns = [JoinColumn(name = "fk_training_session_id")],
         inverseJoinColumns = [JoinColumn(name = "fk_subcategory_id")]
     )
-    var trainingUnits: Set<TrainingUnit>? = mutableSetOf(),
+    var trainingSessions: Set<TrainingSession>? = mutableSetOf(),
 
     @ManyToMany(cascade = [CascadeType.ALL])
     @JsonManagedReference
@@ -68,7 +68,7 @@ class Subcategory(
         imagePathId = image?.id,
         sportIds = sports?.map { it.id },
         moveIds = moves?.map { it.id },
-        trainingUnitIds = trainingUnits!!.map { it.id },
+        trainingSessionIds = trainingSessions!!.map { it.id },
         trainingDeviceIds = trainingDevices!!.map { it.id },
         trainingPlanIds = trainingPlans!!.map { it.id }
     )

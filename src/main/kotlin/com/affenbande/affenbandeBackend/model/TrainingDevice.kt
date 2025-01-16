@@ -31,7 +31,7 @@ class TrainingDevice(
         joinColumns = [JoinColumn(name = "fk_move_id")],
         inverseJoinColumns = [JoinColumn(name = "fk_training_device_id")]
     )
-    var moves: List<Move>? = mutableListOf(),
+    var moves: Set<Move>? = mutableSetOf(),
 
     @ManyToMany(cascade = [CascadeType.MERGE])
     @JoinTable(
@@ -39,7 +39,7 @@ class TrainingDevice(
         joinColumns = [JoinColumn(name = "fk_sport_id")],
         inverseJoinColumns = [JoinColumn(name = "fk_training_device_id")]
     )
-    var sports: List<Sport>? = mutableListOf(),
+    var sports: Set<Sport>? = mutableSetOf(),
 
     @ManyToMany(cascade = [CascadeType.MERGE])
     @JoinTable(
@@ -47,7 +47,7 @@ class TrainingDevice(
         joinColumns = [JoinColumn(name = "fk_subcategory_id")],
         inverseJoinColumns = [JoinColumn(name = "fk_training_device_id")]
     )
-    var subcategories: List<Subcategory>? = mutableListOf(),
+    var subcategories: Set<Subcategory>? = mutableSetOf(),
 
     @ManyToMany(mappedBy = "trainingDevices", cascade = [CascadeType.MERGE])
     var constructionIdeas: Set<ConstructionIdea>? = mutableSetOf(),

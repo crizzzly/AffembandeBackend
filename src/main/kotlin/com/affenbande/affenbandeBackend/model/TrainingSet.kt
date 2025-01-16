@@ -16,7 +16,7 @@ import kotlin.time.Duration
 
 
 @Entity
-@Table(name = "t_training_device")
+@Table(name = "t_training_sets")
 class TrainingSet (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,28 +26,28 @@ class TrainingSet (
     @Column()
     var name: String?,
 
-    @ManyToOne(cascade = [CascadeType.MERGE])
-    @JoinTable(
-        name = "t_move_training_set",
-        joinColumns = [JoinColumn(name = "fk_move_id")],
-        inverseJoinColumns = [JoinColumn(name = "fk_training_set_id")]
-    )
-    var move: Move,
-
-    @Column
-    var repetitions: Int,
 
     // TODO: use Int or Duration?
     @Column
     var duration: Duration,
 
-    @ManyToMany(cascade = [CascadeType.ALL])
+    @Column
+    var repetitions: Int,
+
+
+//    @ManyToOne
+//    @JoinColumn(name = "move_id")
+//    var move: Move,
+
+
+
+    @ManyToMany(cascade = [CascadeType.MERGE])
     @JoinTable(
         name = "training_session_training_set",
         joinColumns = [JoinColumn(name = "fk_training_set_id")],
         inverseJoinColumns = [JoinColumn(name = "fk_training_session_id")]
     )
-    var trainingSessions: List<TrainingSession> = mutableListOf(),
+    var trainingSessions: Set<TrainingSession> = mutableSetOf(),
 
 )
 

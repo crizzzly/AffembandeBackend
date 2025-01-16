@@ -17,7 +17,7 @@ class Sport(
 
     @ManyToOne(cascade = [CascadeType.MERGE])
     @JoinColumn(name = "image_path_id")
-    var image: ImagePath?,
+    var image: ImagePath? = null ,
 
     @ManyToMany(mappedBy = "sports",  cascade = [CascadeType.MERGE])
     @JsonBackReference
@@ -27,7 +27,7 @@ class Sport(
     var moves: Set<Move>? = mutableSetOf(),
 
     @ManyToMany(mappedBy = "sports", cascade = [CascadeType.MERGE])
-    var trainingUnits: Set<TrainingUnit>? = mutableSetOf(),
+    var trainingSessions: Set<TrainingSession>? = mutableSetOf(),
 
     @ManyToMany(mappedBy = "sports", cascade = [CascadeType.MERGE])
     var trainingDevices: Set<TrainingDevice>? = mutableSetOf(),
@@ -45,7 +45,7 @@ class Sport(
         subcategoryIds = subcategories!!.map { it.id },
         moveIds = moves!!.map { it.id },
         trainingDeviceIds = trainingDevices!!.map { it.id },
-        trainingUnitIds = trainingUnits!!.map { it.id },
+        trainingSessionIds = trainingSessions!!.map { it.id },
         trainingPlanIds = trainingPlans!!.map { it.id },
     )
 }

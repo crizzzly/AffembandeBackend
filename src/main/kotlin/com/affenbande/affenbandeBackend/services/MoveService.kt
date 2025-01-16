@@ -44,25 +44,25 @@ class MoveService {
                     sportDao.findByIdOrNull(it.toInt())
                         ?: throw NoSuchElementException("Sport with ID $it not found")
                 }
-            }.toSet()
+            }.toMutableSet()
             subcategories = moveRequestDTO.subcategoryIds!!.map {
                 subcategoryDao.findByIdOrNull(it.toInt())
                     ?: throw NoSuchElementException("Subcategory with ID $it not found")
 
-            }.toSet()
+            }.toMutableSet()
             preMoves = moveRequestDTO.preMoveIds.let { moveIds ->
                 moveIds!!.map {
                     moveDao.findByIdOrNull(it!!.toInt())
                         ?: throw NoSuchElementException("Move with ID $it not found")
 
-                }.toSet()
+                }.toMutableSet()
             }
             optPreMoves = moveRequestDTO.optPreMoveIds.let { moveIds ->
                 moveIds!!.map {
                     moveDao.findByIdOrNull(it!!.toInt())
                         ?: throw NoSuchElementException("Move with ID $it not found")
                 }
-            }.toSet()
+            }.toMutableSet()
 
             return try {
                 moveDao.add(move)
@@ -105,10 +105,10 @@ class MoveService {
         move.timePreparation = moveRequestDTO.timePreparation
         move.timeExercise = moveRequestDTO.timeExercise
         move.formula = moveRequestDTO.formula
-        move.sports = sportDao.findAllByIdOrNull(moveRequestDTO.sportIds!!.toSet())
-        move.subcategories = subcategoryDao.findAllByIdOrNull(moveRequestDTO.subcategoryIds!!.toSet())
-        move.preMoves = moveDao.findAllByIdOrNull(moveRequestDTO.preMoveIds!!.toSet())
-        move.optPreMoves = moveDao.findAllByIdOrNull(moveRequestDTO.optPreMoveIds!!.toSet())
+        move.sports = sportDao.findAllByIdOrNull(moveRequestDTO.sportIds!!.toMutableSet())
+        move.subcategories = subcategoryDao.findAllByIdOrNull(moveRequestDTO.subcategoryIds!!.toMutableSet())
+        move.preMoves = moveDao.findAllByIdOrNull(moveRequestDTO.preMoveIds!!.toMutableSet())
+        move.optPreMoves = moveDao.findAllByIdOrNull(moveRequestDTO.optPreMoveIds!!.toMutableSet())
 
         moveDao.update(move)
         return move.toResponseDTO()

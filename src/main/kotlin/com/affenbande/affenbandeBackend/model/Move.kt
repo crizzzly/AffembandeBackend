@@ -42,7 +42,7 @@ class Move(
     )
     var preMoves: Set<Move>? = mutableSetOf(),
 
-    @ManyToMany(cascade = [CascadeType.ALL])
+    @ManyToMany(cascade = [CascadeType.MERGE])
     @JoinTable(
         name = "t_move_opt_pre_moves",
         joinColumns = [JoinColumn(name = "fk_opt_pre_move_id")],
@@ -51,7 +51,7 @@ class Move(
     var optPreMoves: Set<Move>? = mutableSetOf(),
 
 
-    @ManyToMany(cascade = [CascadeType.ALL])
+    @ManyToMany(cascade = [CascadeType.MERGE])
     @JsonManagedReference
     @JoinTable(
         name = "t_move_subcategory",
@@ -60,7 +60,7 @@ class Move(
     )
     var subcategories: Set<Subcategory>? = mutableSetOf(),
 
-    @ManyToMany(cascade = [CascadeType.ALL])
+    @ManyToMany(cascade = [CascadeType.MERGE])
     @JsonManagedReference
     @JoinTable(
         name = "t_move_sport",
@@ -71,19 +71,18 @@ class Move(
 
     @ManyToMany(mappedBy = "moves")
     @JsonBackReference
-    var trainingUnits: Set<TrainingUnit>? = mutableSetOf(),
+    var trainingSessions: Set<TrainingSession>? = mutableSetOf(),
 
-    @ManyToMany(cascade = [CascadeType.ALL])
+    @ManyToMany(cascade = [CascadeType.MERGE])
     @JsonBackReference
     var constructionIdeas: Set<ConstructionIdea>? = mutableSetOf(),
 
-    @ManyToMany(cascade = [CascadeType.ALL])
+    @ManyToMany(cascade = [CascadeType.MERGE])
     @JsonBackReference
     var trainingDevices: Set<TrainingDevice>? = mutableSetOf(),
 
-    @ManyToMany(cascade = [CascadeType.ALL])
-    @JsonBackReference
-    var trainingPlans: Set<TrainingPlan>? = mutableSetOf(),
+//    @OneToMany(mappedBy = "move", cascade = [CascadeType.MERGE], orphanRemoval = true)
+//    var trainingSets: Set<TrainingSet>? = mutableSetOf(),
 ) {
     // No-argument constructor
     constructor() : this(null, "", null, null, null, null, null,
@@ -107,7 +106,7 @@ class Move(
         optPreMoveIds = optPreMoves!!.map { it.id },
         sportIds = sports!!.map { it.id },
         imagePathId = image!!.id,
-        trainingUnitIds = trainingUnits!!.map { it.id },
+        trainingSessionIds = trainingSessions!!.map { it.id },
         trainingDeviceIds = trainingDevices!!.map { it.id },
         constructionIdeaIds = constructionIdeas!!.map { it.id },
     )

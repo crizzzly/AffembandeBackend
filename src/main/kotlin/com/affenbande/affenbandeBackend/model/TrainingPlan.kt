@@ -2,6 +2,7 @@ package com.affenbande.affenbandeBackend.model
 
 import com.affenbande.affenbandeBackend.dto.response.TrainingPlanResponseDTO
 import com.fasterxml.jackson.annotation.JsonBackReference
+import com.fasterxml.jackson.annotation.JsonManagedReference
 import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -15,7 +16,7 @@ import java.time.LocalDateTime
 
 
 @Entity
-@Table(name = "t_training_plan")
+@Table(name = "t_training_plans")
 class TrainingPlan(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,23 +35,16 @@ class TrainingPlan(
     @Column(columnDefinition = "TIMESTAMP")
     var endDate: LocalDateTime,
 
-    @OneToMany(mappedBy = "training_plans")
-    @JsonBackReference
-    var trainingDays: List<TrainingDay>? = mutableListOf(),
+    // TODO: CHeck if One/ManyToMany
+    @ManyToMany(mappedBy = "trainingPlans")
+    @JsonManagedReference
+    var trainingDays: Set<TrainingDay>? = mutableSetOf(),
 
-    @ManyToMany(mappedBy = "training_plans", cascade = [CascadeType.ALL])
-    @JsonBackReference
-    var moves: List<Move>? = mutableListOf(),
-
-    @ManyToMany(mappedBy = "training_plans", cascade = [CascadeType.ALL])
-    @JsonBackReference
-    var sports: List<Sport>? = mutableListOf(),
-
-    @ManyToMany(mappedBy = "training_plans", cascade = [CascadeType.ALL])
-    @JsonBackReference
-    var subcategories: List<Subcategory>? = mutableListOf(),
+    @ManyToMany(mappedBy = "trainingPlans")
+    var goals: Set<TrainingGoal>? = mutableSetOf(),
     ){
-    constructor() : this(null, "", null, LocalDateTime.now(), LocalDateTime.now(), mutableListOf(), null, null, null)
+    constructor() : this(null, "", null, LocalDateTime.now(), LocalDateTime.now(),mutableSetOf())
+//    constructor() : this(null, "", null, LocalDateTime.now(), LocalDateTime.now(), mutableSetOf(), null, null, null)
 
     fun toResponseDTO(): TrainingPlanResponseDTO = TrainingPlanResponseDTO(
         id = id,
@@ -59,10 +53,10 @@ class TrainingPlan(
         // TODO: format time
         startDate = startDate.toString(),
         endDate = endDate.toString(),
-        moveIds = moves!!.map { it.id },
+//        moveIds = moves!!.map { it.id },
         trainingDayIds = trainingDays!!.map { it.id },
-        sportIds = sports!!.map { it.id },
-        subcategoryIds = subcategories!!.map { it.id },
+//        sportIds = sports!!.map { it.id },
+//        subcategoryIds = subcategories!!.map { it.id },
     )
 
 

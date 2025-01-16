@@ -15,7 +15,7 @@ import java.time.LocalDateTime
 
 
 @Entity
-@Table(name = "t_training_session")
+@Table(name = "t_training_sessions")
 class TrainingSession(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,7 +39,7 @@ class TrainingSession(
     // TODO: should contain at least one set, each set can be there multiple times
     @ManyToMany(mappedBy = "trainingSessions", cascade = [CascadeType.ALL])
     @JsonBackReference
-    var trainingSets: List<TrainingSet> = mutableListOf(),
+    var trainingSets: Set<TrainingSet> = mutableSetOf(),
 
     @ManyToMany(cascade = [CascadeType.ALL])
     @JoinTable(
@@ -47,7 +47,7 @@ class TrainingSession(
         joinColumns = [JoinColumn(name = "fk_training_session_id")],
         inverseJoinColumns = [JoinColumn(name = "fk_sport_id")]
     )
-    var sports: List<Sport> = mutableListOf(),
+    var sports: Set<Sport> = mutableSetOf(),
 
     @ManyToMany(cascade = [CascadeType.ALL])
         @JoinTable(
@@ -55,7 +55,7 @@ class TrainingSession(
             joinColumns = [JoinColumn(name = "fk_training_session_id")],
             inverseJoinColumns = [JoinColumn(name = "fk_subcategory_id")]
         )
-    var subcategories: List<Subcategory> = mutableListOf(),
+    var subcategories: Set<Subcategory> = mutableSetOf(),
 
 
 

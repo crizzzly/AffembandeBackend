@@ -14,7 +14,7 @@ import jakarta.persistence.ManyToMany
 import jakarta.persistence.Table
 
 @Entity
-@Table(name = "t_construction_idea")
+@Table(name = "t_construction_ideas")
 class ConstructionIdea(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,10 +42,6 @@ class ConstructionIdea(
         inverseJoinColumns = [JoinColumn(name = "fk_construction_idea_id")]
     )
     var sports: Set<Sport>? = mutableSetOf(),
-
-    @ManyToMany(mappedBy = "constructionIdeas", cascade = [CascadeType.MERGE])
-    @JsonBackReference
-    var subcategories: Set<Subcategory>? = mutableSetOf(),
 
     @ManyToMany(mappedBy = "constructionIdeas", cascade = [CascadeType.MERGE])
     @JsonBackReference
