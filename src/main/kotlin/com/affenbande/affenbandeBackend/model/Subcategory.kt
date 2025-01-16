@@ -16,7 +16,7 @@ class Subcategory(
     var name: String,
 
     @ManyToOne(cascade = [CascadeType.MERGE])
-    @JoinColumn(name = "image_path_ids")
+    @JoinColumn(name = "image_path_id")
     var image: ImagePath?,
 
     @ManyToMany(cascade = [CascadeType.MERGE])
