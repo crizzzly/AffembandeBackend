@@ -1,0 +1,14 @@
+README.md
+  h_f4582de56b3d8b 3,8,10-30
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "71efae21f87a1cb531d5f4e8b530daf276ee87cb",
+  "prompts": {},
+  "humans": {
+    "h_f4582de56b3d8b": {
+      "author": "crizzzly <c.christina.rost@gmail.com>"
+    }
+  }
+}
