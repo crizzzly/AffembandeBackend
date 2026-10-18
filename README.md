@@ -15,7 +15,7 @@ REST backend for a sports and exercise platform, developed with Kotlin and Sprin
 * **Framework:** Spring Boot
 * **Database:** PostgreSQL
 * **API Documentation:** Swagger UI
-* **Image Storage:** (Specify your image storage solution, e.g., AWS S3, local storage)
+* **Image Storage:** local storage
 
 ## Architecture
 
